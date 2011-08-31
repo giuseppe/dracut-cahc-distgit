@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 6%{?dist}
+Release: 7%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -27,6 +27,8 @@ Patch2: 0002-90dmsquash-live-dmsquash-live-root-include-fs_lib.sh.patch
 Patch3: 0003-fix-live-crash-with-livenet-installed.patch
 Patch18: 0018-90mdraid-65-md-incremental-imsm.rules-incremental-ru.patch
 Patch24: 0024-99base-init-save-and-restore-environment-given-from-.patch
+Patch26: 0026-dracut-functions-hmac-checksum-files-can-be-symlinks.patch
+Patch27: 0027-95udev-rules-add-input_id.patch
 
 BuildArch: noarch
 BuildRequires: dash bash
@@ -164,6 +166,8 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch3 -p1
 %patch18 -p1
 %patch24 -p1
+%patch26 -p1
+%patch27 -p1
 
 %build
 make
@@ -302,6 +306,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Wed Aug 31 2011 Harald Hoyer <harald@redhat.com> 013-7
+- add /lib/udev/input_id to the initramfs
+- fix hmac install
+
 * Tue Aug 30 2011 Harald Hoyer <harald@redhat.com> 013-6
 - fixed environment passing to real init
 Resolves: rhbz#733674
