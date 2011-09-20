@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 8%{?dist}
+Release: 9%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -32,6 +32,9 @@ Patch27: 0027-95udev-rules-add-input_id.patch
 Patch34: 0034-99base-init-do-not-fail-when-importing-the-original-.patch
 Patch37: 0037-dmsquash-live-root-use-blkid-to-determine-fstype-of-.patch
 Patch38: 0038-dmsquash-live-root-load-filesystem-modules-before-mo.patch
+Patch39: 0039-90dmsquash-live-do-not-symlink-to-dev-live.patch
+Patch40: 0040-99base-init-remove-dev-root-helper-symlink.patch
+Patch41: 0041-Do-not-use-run-udev-rules.d-for-udev-rules.patch
 
 BuildArch: noarch
 BuildRequires: dash bash
@@ -174,6 +177,10 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch34 -p1
 %patch37 -p1
 %patch38 -p1
+%patch39 -p1
+%patch40 -p1
+%patch41 -p1
+
 %build
 make
 
@@ -311,6 +318,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Sep 20 2011 Harald Hoyer <harald@redhat.com> 013-9
+- do not carry over initramfs udev rules
+Resolves: rhbz#734096
+
 * Fri Sep 02 2011 Harald Hoyer <harald@redhat.com> 013-8
 - hopefully fixed one part of a loop/udev and loop/mount race
 Resolves: rhbz#735199
