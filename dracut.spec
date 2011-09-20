@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 10%{?dist}
+Release: 11%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -36,6 +36,7 @@ Patch39: 0039-90dmsquash-live-do-not-symlink-to-dev-live.patch
 Patch40: 0040-99base-init-remove-dev-root-helper-symlink.patch
 Patch41: 0041-Do-not-use-run-udev-rules.d-for-udev-rules.patch
 Patch42: 0042-99base-init-mount-securityfs-with-source-securityfs-.patch
+Patch43: 0043-mount-securityfs-in-a-seperate-dracut-module.patch
 
 BuildArch: noarch
 BuildRequires: dash bash
@@ -182,6 +183,8 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch40 -p1
 %patch41 -p1
 %patch42 -p1
+%patch43 -p1
+chmod a+x modules.d/*/*.sh
 
 %build
 make
@@ -274,6 +277,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dracut/modules.d/95zfcp
 %{_datadir}/dracut/modules.d/95terminfo
 %{_datadir}/dracut/modules.d/95udev-rules
+%{_datadir}/dracut/modules.d/96securityfs
 %{_datadir}/dracut/modules.d/97biosdevname
 %{_datadir}/dracut/modules.d/97masterkey
 %{_datadir}/dracut/modules.d/98ecryptfs
@@ -320,6 +324,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Sep 20 2011 Harald Hoyer <harald@redhat.com> 013-11
+- move mounting of securitfs to a seperate module
+Resolves: rhbz#737140
+
 * Tue Sep 20 2011 Harald Hoyer <harald@redhat.com> 013-10
 - mount securitfs with the correct source
 Resolves: rhbz#737140
