@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 11%{?dist}
+Release: 12%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -179,13 +179,13 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch34 -p1
 %patch37 -p1
 %patch38 -p1
-%patch39 -p1
+#%patch39 -p1
 %patch40 -p1
 %patch41 -p1
 %patch42 -p1
 %patch43 -p1
 chmod a+x modules.d/*/*.sh
-
+find . -name *.orig -print0 | xargs -0 rm -f
 %build
 make
 
@@ -324,6 +324,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Wed Sep 21 2011 Harald Hoyer <harald@redhat.com> 013-12
+- removed patch backup files
+- reintroduced /dev/live
+
 * Tue Sep 20 2011 Harald Hoyer <harald@redhat.com> 013-11
 - move mounting of securitfs to a seperate module
 Resolves: rhbz#737140
