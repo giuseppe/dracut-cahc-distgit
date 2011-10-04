@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 14%{?dist}
+Release: 15%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -56,6 +56,7 @@ Patch60: 0060-90mdraid-more-thorough-64-md-raid.rules-edit.patch
 Patch61: 0061-90mdraid-adjust-dev-md-loops.patch
 Patch64: 0064-order-mdadm-and-lvm-timeout-operations.patch
 Patch65: 0065-90mdraid-mdraid_start.sh-fix-path-to-md-sysfs.patch
+Patch66: 0066-90mdraid-module-setup.sh-fixed-sed-arguments.patch
 
 BuildArch: noarch
 BuildRequires: dash bash
@@ -222,6 +223,7 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch61 -p1
 %patch64 -p1
 %patch65 -p1
+%patch66 -p1
 
 chmod a+x modules.d/*/*.sh
 find . -name *.orig -print0 | xargs -0 rm -f
@@ -363,7 +365,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
-* Tue Oct 04 2011 Harald Hoyer <harald@redhat.com> 013-13
+* Tue Oct 04 2011 Harald Hoyer <harald@redhat.com> 013-15
 - fixed mdraid container handling
 Resolves: rhbz#743240
 
