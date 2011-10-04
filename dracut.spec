@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 12%{?dist}
+Release: 13%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -32,11 +32,30 @@ Patch27: 0027-95udev-rules-add-input_id.patch
 Patch34: 0034-99base-init-do-not-fail-when-importing-the-original-.patch
 Patch37: 0037-dmsquash-live-root-use-blkid-to-determine-fstype-of-.patch
 Patch38: 0038-dmsquash-live-root-load-filesystem-modules-before-mo.patch
-Patch39: 0039-90dmsquash-live-do-not-symlink-to-dev-live.patch
 Patch40: 0040-99base-init-remove-dev-root-helper-symlink.patch
 Patch41: 0041-Do-not-use-run-udev-rules.d-for-udev-rules.patch
 Patch42: 0042-99base-init-mount-securityfs-with-source-securityfs-.patch
 Patch43: 0043-mount-securityfs-in-a-seperate-dracut-module.patch
+Patch44: 0044-mount-securityfs-in-a-seperate-dracut-module.patch
+Patch45: 0045-90mdraid-adjust-stock-mdadm-udev-rules.patch
+Patch46: 0046-90mdraid-containers-are-not-runnable.patch
+Patch47: 0047-90mdraid-fix-adjust-mdraid-cleanup.patch
+Patch48: 0048-90mdraid-fix-adjust-force-run-script.patch
+Patch49: 0049-90-md-dm-raid-recognize-ddf-container.patch
+Patch50: 0050-90mdraid-fix-adjust-65-md-rules-and-related-scripts.patch
+Patch51: 0051-TEST-40-NBD-relaxed-check-on-ext3-filesystem-options.patch
+Patch52: 0052-99fs-lib-fs-lib.sh-fsck-btrfs-via-mounting-like-xfs.patch
+Patch53: 0053-dracut-functions-inst_rules-do-not-check-std-dirs-fo.patch
+Patch54: 0054-str_replace-fix.patch
+Patch55: 0055-dracut-logger-bail-out-early-if-we-don-t-have-to-log.patch
+Patch56: 0056-dracut-create-dev-besides-proc-sys-and-so.patch
+Patch57: 0057-99fs-lib-export-FSTAB_FILE-before-fsck-call.patch
+Patch58: 0058-dracut-functions-inst_rules-add-missing.patch
+Patch59: 0059-90mdraid-check-precisely-for-supported-contaiers.patch
+Patch60: 0060-90mdraid-more-thorough-64-md-raid.rules-edit.patch
+Patch61: 0061-90mdraid-adjust-dev-md-loops.patch
+Patch64: 0064-order-mdadm-and-lvm-timeout-operations.patch
+Patch65: 0065-90mdraid-mdraid_start.sh-fix-path-to-md-sysfs.patch
 
 BuildArch: noarch
 BuildRequires: dash bash
@@ -179,11 +198,31 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch34 -p1
 %patch37 -p1
 %patch38 -p1
-#%patch39 -p1
 %patch40 -p1
 %patch41 -p1
 %patch42 -p1
 %patch43 -p1
+%patch44 -p1
+%patch45 -p1
+%patch46 -p1
+%patch47 -p1
+%patch48 -p1
+%patch49 -p1
+%patch50 -p1
+%patch51 -p1
+%patch52 -p1
+%patch53 -p1
+%patch54 -p1
+%patch55 -p1
+%patch56 -p1
+%patch57 -p1
+%patch58 -p1
+%patch59 -p1
+%patch60 -p1
+%patch61 -p1
+%patch64 -p1
+%patch65 -p1
+
 chmod a+x modules.d/*/*.sh
 find . -name *.orig -print0 | xargs -0 rm -f
 %build
@@ -324,6 +363,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Oct 04 2011 Harald Hoyer <harald@redhat.com> 013-13
+- fixed mdraid container handling
+Resolves: rhbz#743240
+
+* Thu Sep 22 2011 Harald Hoyer <harald@redhat.com> 013-13
+- fixed mdraid issues
+- fixed btrfsck
+Resolves: rhbz#735602
+
 * Wed Sep 21 2011 Harald Hoyer <harald@redhat.com> 013-12
 - removed patch backup files
 - reintroduced /dev/live

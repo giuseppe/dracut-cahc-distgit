@@ -1,30 +1,17 @@
-From 9d0755c2d1a5eb13413caa80f69d7ad39589d304 Mon Sep 17 00:00:00 2001
+From 16457c869d3fac6a94e204f1edac1ad9fffae55a Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 20 Sep 2011 11:16:53 +0200
 Subject: [PATCH] mount securityfs in a seperate dracut module
 
 ---
- dracut.spec                            |    1 +
  modules.d/96securityfs/module-setup.sh |   15 +++++++++++++++
  modules.d/96securityfs/securityfs.sh   |   10 ++++++++++
  modules.d/98integrity/module-setup.sh  |    2 +-
  modules.d/99base/init                  |    6 ------
- 5 files changed, 27 insertions(+), 7 deletions(-)
+ 4 files changed, 26 insertions(+), 7 deletions(-)
  create mode 100755 modules.d/96securityfs/module-setup.sh
  create mode 100755 modules.d/96securityfs/securityfs.sh
 
-diff --git a/dracut.spec b/dracut.spec
-index 76f4fe1..f9848ed 100644
---- a/dracut.spec
-+++ b/dracut.spec
-@@ -247,6 +247,7 @@ rm -rf $RPM_BUILD_ROOT
- %{_datadir}/dracut/modules.d/95zfcp
- %{_datadir}/dracut/modules.d/95terminfo
- %{_datadir}/dracut/modules.d/95udev-rules
-+%{_datadir}/dracut/modules.d/96securityfs
- %{_datadir}/dracut/modules.d/97biosdevname
- %{_datadir}/dracut/modules.d/97masterkey
- %{_datadir}/dracut/modules.d/98ecryptfs
 diff --git a/modules.d/96securityfs/module-setup.sh b/modules.d/96securityfs/module-setup.sh
 new file mode 100755
 index 0000000..fbe3aa3
