@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 15%{?dist}
+Release: 16%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -25,11 +25,23 @@ Source0: http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-%{version}.tar
 
 Patch2: 0002-90dmsquash-live-dmsquash-live-root-include-fs_lib.sh.patch
 Patch3: 0003-fix-live-crash-with-livenet-installed.patch
+Patch6: 0006-dracut-functions-s-emergency-shutdown-shutdown-emerg.patch
+Patch9: 0009-dracut-functions-speed-up-inst_dir.patch
+Patch12: 0012-dracut-functions-new-function-inst_any-d-dest-f1-f2-.patch
+Patch17: 0017-dracut-functions-fix-inst_dir-for-non-absolute-dirs.patch
 Patch18: 0018-90mdraid-65-md-incremental-imsm.rules-incremental-ru.patch
+Patch22: 0022-build-initramfs-unclear-_mpargs-in-instmods.patch
 Patch24: 0024-99base-init-save-and-restore-environment-given-from-.patch
 Patch26: 0026-dracut-functions-hmac-checksum-files-can-be-symlinks.patch
 Patch27: 0027-95udev-rules-add-input_id.patch
+Patch28: 0028-inst_simple-inst_dir-make-fast-case-faster.patch
+Patch29: 0029-filter_kernel_modules-is-a-specialized-filter_kernel.patch
+Patch30: 0030-install_kmod_with_fw-make-fast-case-faster.patch
+Patch31: 0031-instmods-get-filenames-from-stdin-if-no-args-use-it.patch
+Patch32: 0032-instmods-sanity-for-_mpargs.patch
+Patch33: 0033-instmods-factor-out-egrep-of-FATAL-Module-.-not-foun.patch
 Patch34: 0034-99base-init-do-not-fail-when-importing-the-original-.patch
+Patch35: 0035-dracut-cp-with-sparse.patch
 Patch37: 0037-dmsquash-live-root-use-blkid-to-determine-fstype-of-.patch
 Patch38: 0038-dmsquash-live-root-load-filesystem-modules-before-mo.patch
 Patch40: 0040-99base-init-remove-dev-root-helper-symlink.patch
@@ -54,9 +66,18 @@ Patch58: 0058-dracut-functions-inst_rules-add-missing.patch
 Patch59: 0059-90mdraid-check-precisely-for-supported-contaiers.patch
 Patch60: 0060-90mdraid-more-thorough-64-md-raid.rules-edit.patch
 Patch61: 0061-90mdraid-adjust-dev-md-loops.patch
+Patch62: 0062-dracut-PATCH-Parameter-expansion-occurs-before-comma.patch
 Patch64: 0064-order-mdadm-and-lvm-timeout-operations.patch
 Patch65: 0065-90mdraid-mdraid_start.sh-fix-path-to-md-sysfs.patch
 Patch66: 0066-90mdraid-module-setup.sh-fixed-sed-arguments.patch
+Patch70: 0070-convert_abs_rel-fixups.patch
+Patch74: 0074-dracut-functions-conv-normalize-minor-corrections.patch
+Patch90: 0090-90livenet-check-for-wget.patch
+Patch91: 0091-dracut-logger-re-set-debugging.patch
+Patch92: 0092-dracut-functions-inst_dir-handle-relative-symlinks.patch
+Patch93: 0093-90livenet-module-setup.sh-silence-check-for-wget.patch
+Patch95: 0095-90livenet-do-not-install-by-default.patch
+Patch96: 0096-dracut-functions-do-not-install-files-from-current-d.patch
 
 BuildArch: noarch
 BuildRequires: dash bash
@@ -192,11 +213,23 @@ This package contains tools to assemble the local initrd and host configuration.
 %setup -q -n %{name}-%{version}
 %patch2 -p1
 %patch3 -p1
+%patch6 -p1
+%patch9 -p1
+%patch12 -p1
+%patch17 -p1
 %patch18 -p1
+%patch22 -p1
 %patch24 -p1
 %patch26 -p1
 %patch27 -p1
+%patch28 -p1
+%patch29 -p1
+%patch30 -p1
+%patch31 -p1
+%patch32 -p1
+%patch33 -p1
 %patch34 -p1
+%patch35 -p1
 %patch37 -p1
 %patch38 -p1
 %patch40 -p1
@@ -221,12 +254,21 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch59 -p1
 %patch60 -p1
 %patch61 -p1
+%patch62 -p1
 %patch64 -p1
 %patch65 -p1
 %patch66 -p1
+%patch70 -p1
+%patch74 -p1
+%patch90 -p1
+%patch91 -p1
+%patch92 -p1
+%patch93 -p1
+%patch95 -p1
+%patch96 -p1
 
 chmod a+x modules.d/*/*.sh
-find . -name *.orig -print0 | xargs -0 rm -f
+find . -name '*.orig' -print0 | xargs -0 rm -f
 %build
 make
 
@@ -365,6 +407,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Fri Oct 21 2011 Harald Hoyer <harald@redhat.com> 013-16
+- fixed livenet module wget bug
+Resolves: rhbz#747632
+- fixed relative symlink bugs
+- speedup image creation
+- protect against files in current directory
+
 * Tue Oct 04 2011 Harald Hoyer <harald@redhat.com> 013-15
 - fixed mdraid container handling
 Resolves: rhbz#743240
