@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 17%{?dist}
+Release: 18%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -79,6 +79,7 @@ Patch92: 0092-dracut-functions-inst_dir-handle-relative-symlinks.patch
 Patch93: 0093-90livenet-module-setup.sh-silence-check-for-wget.patch
 Patch95: 0095-90livenet-do-not-install-by-default.patch
 Patch96: 0096-dracut-functions-do-not-install-files-from-current-d.patch
+Patch97: 0001-inst_script-should-call-inst_simple-750603.patch
 
 BuildArch: noarch
 BuildRequires: dash bash
@@ -268,6 +269,7 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch93 -p1
 %patch95 -p1
 %patch96 -p1
+%patch97 -p1
 
 chmod a+x modules.d/*/*.sh
 find . -name '*.orig' -print0 | xargs -0 rm -f
@@ -409,6 +411,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Nov 01 2011 Tom Callaway <spot@fedoraproject.org> 013-18
+- do not try to run inst_binary on a shell script if we know 
+  it is a shell script, this fails. call inst_simple instead.
+  Thanks to Brian C. Lane. 
+Resolves: rhbz#750603
+
 * Tue Nov 01 2011 Harald Hoyer <harald@redhat.com> 013-17
 - Do not drop backslashes, when reading the kernel command line
 Resolves: rhbz#748663
