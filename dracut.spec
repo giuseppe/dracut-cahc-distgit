@@ -8,7 +8,7 @@
 
 Name: dracut
 Version: 013
-Release: 16%{?dist}
+Release: 17%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel} > 6
@@ -72,6 +72,7 @@ Patch65: 0065-90mdraid-mdraid_start.sh-fix-path-to-md-sysfs.patch
 Patch66: 0066-90mdraid-module-setup.sh-fixed-sed-arguments.patch
 Patch70: 0070-convert_abs_rel-fixups.patch
 Patch74: 0074-dracut-functions-conv-normalize-minor-corrections.patch
+Patch81: 0081-dracut-lib.sh-fix-dropped-backslashes-in-CMDLINE.patch
 Patch90: 0090-90livenet-check-for-wget.patch
 Patch91: 0091-dracut-logger-re-set-debugging.patch
 Patch92: 0092-dracut-functions-inst_dir-handle-relative-symlinks.patch
@@ -260,6 +261,7 @@ This package contains tools to assemble the local initrd and host configuration.
 %patch66 -p1
 %patch70 -p1
 %patch74 -p1
+%patch81 -p1
 %patch90 -p1
 %patch91 -p1
 %patch92 -p1
@@ -407,6 +409,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Nov 01 2011 Harald Hoyer <harald@redhat.com> 013-17
+- Do not drop backslashes, when reading the kernel command line
+Resolves: rhbz#748663
+
 * Fri Oct 21 2011 Harald Hoyer <harald@redhat.com> 013-16
 - fixed livenet module wget bug
 Resolves: rhbz#747632
