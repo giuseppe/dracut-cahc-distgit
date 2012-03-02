@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 017
-Release: 17.git20120229.2%{?dist}
+Release: 22.git20120302%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -40,6 +40,11 @@ Patch13: 0013-TODO-update.patch
 Patch14: 0014-98usrmount-mount-usr.sh-ignore-comments-in-fstab.patch
 Patch15: 0015-98usrmount-mount-usr.sh-check-if-we-have-NEWROOT-etc.patch
 Patch16: 0016-30convertfs-convertfs.sh-correct-check-for-usr-bin.patch
+Patch17: 0017-90crypt-parse-crypt.sh-simplify-rd.luks.uuid-testing.patch
+Patch18: 0018-dracut-functions.sh-install_kmod_with_fw-delay-.kern.patch
+Patch19: 0019-Fix-correct-nfs-path.patch
+Patch20: 0020-move-emergency_shell-to-dracut-lib.sh.patch
+Patch21: 0021-url-lib-make-nfs-support-optional.patch
 
 
 BuildArch: noarch
@@ -343,6 +348,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Fri Mar 02 2012 Harald Hoyer <harald@redhat.com> 017-22.git20120302
+- nfs path fixes for live image over nfs
+  root=live:nfs://10.10.10.10:/srv/all/install.img ip=dhcp rd.neednet
+
+* Thu Mar 01 2012 Harald Hoyer <harald@redhat.com> 017-19.git20120301
+- fixed include of some kernel modules
+
 * Wed Feb 29 2012 Harald Hoyer <harald@redhat.com> 017-17.git20120229
 - update to latest git
 - fixes for convertfs (/usr-move)
