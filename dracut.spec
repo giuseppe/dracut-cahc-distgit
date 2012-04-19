@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 12.git20120416%{?dist}
+Release: 23.git20120419%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -33,8 +33,19 @@ Patch6: 0006-rootfs-block-avoid-remount-when-options-don-t-change.patch
 Patch7: 0007-Debian-multiarch-support.patch
 Patch8: 0008-dracut.sh-log-installed-modules-to-initdir-lib-dracu.patch
 Patch9: 0009-lvm-disable-lvmetad.patch
-Patch10: 0010-virtfs-root-filesystem-support.patch
-Patch11: 0011-udev-rules-remove-01-ignore.rules.patch
+Patch10: 0010-udev-rules-remove-01-ignore.rules.patch
+Patch11: 0011-lsinitrd-support-symlinks.patch
+Patch12: 0012-dracut.cmdline.7.asc-document-resume-option.patch
+Patch13: 0013-dracut.spec-do-not-include-IMA-and-selinux-modules-w.patch
+Patch14: 0014-Do-not-run-plymouth-hook-if-the-binary-is-missing.patch
+Patch15: 0015-man-Fix-add-fstab-option-in-man-page.patch
+Patch16: 0016-base-init.sh-mount-tmpfs-with-strictatime.patch
+Patch17: 0017-99shutdown-shutdown.sh-export-PATH.patch
+Patch18: 0018-Makefile-do-not-install-systemd-service-in-reboot.patch
+Patch19: 0019-network-module-setup.sh-include-all-kernel-drivers-n.patch
+Patch20: 0020-add-pre-pivot-cleanup-hook.patch
+Patch21: 0021-move-cleanup-scripts-to-pre-pivot-cleanup-hook.patch
+Patch22: 0022-network-parse-ip-opts.sh-remove-check-for-netroot.patch
 
 
 BuildArch: noarch
@@ -199,6 +210,14 @@ rm -fr $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/02fips-aesni
 # remove gentoo specific modules
 rm -fr $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/50gensplash
 
+%if %{defined _unitdir}
+# with systemd IMA and selinux modules do not make sense
+rm -fr $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/96securityfs
+rm -fr $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/97masterkey
+rm -fr $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/98integrity
+rm -fr $RPM_BUILD_ROOT/%{dracutlibdir}/modules.d/98selinux
+%endif
+
 mkdir -p $RPM_BUILD_ROOT/boot/dracut
 mkdir -p $RPM_BUILD_ROOT/var/lib/dracut/overlay
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log
@@ -282,14 +301,15 @@ rm -rf $RPM_BUILD_ROOT
 %{dracutlibdir}/modules.d/95zfcp
 %{dracutlibdir}/modules.d/95terminfo
 %{dracutlibdir}/modules.d/95udev-rules
-%{dracutlibdir}/modules.d/95virtfs
+%if %{undefined _unitdir}
 %{dracutlibdir}/modules.d/96securityfs
-%{dracutlibdir}/modules.d/97biosdevname
 %{dracutlibdir}/modules.d/97masterkey
-%{dracutlibdir}/modules.d/98ecryptfs
-%{dracutlibdir}/modules.d/98integrity
-%{dracutlibdir}/modules.d/98pollcdrom
 %{dracutlibdir}/modules.d/98selinux
+%{dracutlibdir}/modules.d/98integrity
+%endif
+%{dracutlibdir}/modules.d/97biosdevname
+%{dracutlibdir}/modules.d/98ecryptfs
+%{dracutlibdir}/modules.d/98pollcdrom
 %{dracutlibdir}/modules.d/98syslog
 %{dracutlibdir}/modules.d/98usrmount
 %{dracutlibdir}/modules.d/99base
@@ -341,6 +361,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu Apr 19 2012 Harald Hoyer <harald@redhat.com> 018-23.git20120419
+- fixed vnc installation
+- do not ignore ram devices in udev
+- lsinitrd support for symlinks
+- manpage fixes
+- do not include IMA and selinux dracut modules (systemd does that)
+- removed dracut shutdown service from reboot
+- include all phy network kernel modules
+- cleanups now after pre-pivot hook
+
 * Mon Apr 16 2012 Harald Hoyer <harald@redhat.com> 018-12.git20120416
 - new upstream version, which fixes various anaconda loader issues
 
