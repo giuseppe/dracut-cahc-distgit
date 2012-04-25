@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 23.git20120419%{?dist}
+Release: 26.git20120424%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -46,6 +46,9 @@ Patch19: 0019-network-module-setup.sh-include-all-kernel-drivers-n.patch
 Patch20: 0020-add-pre-pivot-cleanup-hook.patch
 Patch21: 0021-move-cleanup-scripts-to-pre-pivot-cleanup-hook.patch
 Patch22: 0022-network-parse-ip-opts.sh-remove-check-for-netroot.patch
+Patch23: 0023-ifcfg-write-DNS1-.-for-nameserver-args-RHBZ-815369.patch
+Patch24: 0024-url-lib-don-t-add-existing-handlers-multiple-times.patch
+Patch25: 0025-url-lib-don-t-use-progress-bar-if-TERM-dumb-RHBZ-814.patch
 
 
 BuildArch: noarch
@@ -361,6 +364,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Apr 24 2012 Harald Hoyer <harald@redhat.com> 018-26.git20120424
+- fixed progress bar for TERM=dumb
+Resolves: rhbz#814713
+- add DNS to ifcfg for NM takeover 
+Resolves: rhbz#815369
+
 * Thu Apr 19 2012 Harald Hoyer <harald@redhat.com> 018-23.git20120419
 - fixed vnc installation
 - do not ignore ram devices in udev
