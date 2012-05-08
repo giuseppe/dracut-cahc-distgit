@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 26.git20120424%{?dist}
+Release: 31.git20120504%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -49,6 +49,11 @@ Patch22: 0022-network-parse-ip-opts.sh-remove-check-for-netroot.patch
 Patch23: 0023-ifcfg-write-DNS1-.-for-nameserver-args-RHBZ-815369.patch
 Patch24: 0024-url-lib-don-t-add-existing-handlers-multiple-times.patch
 Patch25: 0025-url-lib-don-t-use-progress-bar-if-TERM-dumb-RHBZ-814.patch
+Patch26: 0026-iscsi-module-setup.sh-fix-host-only-mount-checks.patch
+Patch27: 0027-multipath-module-setup.sh-fix-host-only-mount-checks.patch
+Patch28: 0028-fix-_getcmdline-arg-duplicating-bug-with-etc-cmdline.patch
+Patch29: 0029-ifcfg-fix-resolv.conf.patch
+Patch30: 0030-TEST-15-BTRFSRAID-add-one-more-partition-to-the-btrf.patch
 
 
 BuildArch: noarch
@@ -364,6 +369,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Fri May 04 2012 Harald Hoyer <harald@redhat.com> 018-31.git20120504
+- fix anaconda installer bug
+Resolves: rhbz#818707
+
 * Tue Apr 24 2012 Harald Hoyer <harald@redhat.com> 018-26.git20120424
 - fixed progress bar for TERM=dumb
 Resolves: rhbz#814713
