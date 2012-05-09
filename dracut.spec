@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 31.git20120504%{?dist}
+Release: 32.git20120509%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -54,6 +54,7 @@ Patch27: 0027-multipath-module-setup.sh-fix-host-only-mount-checks.patch
 Patch28: 0028-fix-_getcmdline-arg-duplicating-bug-with-etc-cmdline.patch
 Patch29: 0029-ifcfg-fix-resolv.conf.patch
 Patch30: 0030-TEST-15-BTRFSRAID-add-one-more-partition-to-the-btrf.patch
+Patch31: 0031-ifcfg-write-ifcfg.sh-use-PREFIX-for-prefix-netmask-f.patch
 
 
 BuildArch: noarch
@@ -369,6 +370,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Wed May 09 2012 Harald Hoyer <harald@redhat.com> 018-32.git20120509
+- use PREFIX for netmask prefixes
+Resolves: rhbz#820185
+
 * Fri May 04 2012 Harald Hoyer <harald@redhat.com> 018-31.git20120504
 - fix anaconda installer bug
 Resolves: rhbz#818707
