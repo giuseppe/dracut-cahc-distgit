@@ -6,7 +6,7 @@ Subject: [PATCH] Fail to boot if mediacheck fails (#817419)
 The return value of checkisomd5 was being ignored.
 ---
  modules.d/90dmsquash-live/dmsquash-live-root.sh |    2 +-
- 1 Datei geändert, 1 Zeile hinzugefügt(+), 1 Zeile entfernt(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/modules.d/90dmsquash-live/dmsquash-live-root.sh b/modules.d/90dmsquash-live/dmsquash-live-root.sh
 index 2aaec28..fdbd6f5 100755

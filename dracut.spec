@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 33.git20120510%{?dist}
+Release: 35.git20120510%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -56,6 +56,8 @@ Patch29: 0029-ifcfg-fix-resolv.conf.patch
 Patch30: 0030-TEST-15-BTRFSRAID-add-one-more-partition-to-the-btrf.patch
 Patch31: 0031-ifcfg-write-ifcfg.sh-use-PREFIX-for-prefix-netmask-f.patch
 Patch32: 0032-Fail-to-boot-if-mediacheck-fails-817419.patch
+Patch33: 0033-ifcfg-write-ifcfg.sh-add-s390-specific-configuration.patch
+Patch34: 0034-Makefile-call-git2spec.pl-with-LANG-C.patch
 
 
 BuildArch: noarch
@@ -371,6 +373,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu May 10 2012 Harald Hoyer <harald@redhat.com> 018-35.git20120510
+- fix s390 ifcfg configuration
+Resolves: rhbz#811521
+
 * Thu May 10 2012 Harald Hoyer <harald@redhat.com> 018-33.git20120510
 - fix mediacheck
 Resolves: rhbz#817419
