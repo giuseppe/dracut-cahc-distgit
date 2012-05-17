@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 35.git20120510%{?dist}
+Release: 36.git20120510%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -58,7 +58,7 @@ Patch31: 0031-ifcfg-write-ifcfg.sh-use-PREFIX-for-prefix-netmask-f.patch
 Patch32: 0032-Fail-to-boot-if-mediacheck-fails-817419.patch
 Patch33: 0033-ifcfg-write-ifcfg.sh-add-s390-specific-configuration.patch
 Patch34: 0034-Makefile-call-git2spec.pl-with-LANG-C.patch
-
+Patch35: 0062-ARM-make-sure-that-we-get-the-storage-modules-into-t.patch
 
 BuildArch: noarch
 BuildRequires: dash bash git
@@ -373,6 +373,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu May 17 2012 Dennis Gilmore <dennis@ausil.us> 018-36.git20120510
+- add patch for arm storage modules
+
 * Thu May 10 2012 Harald Hoyer <harald@redhat.com> 018-35.git20120510
 - fix s390 ifcfg configuration
 Resolves: rhbz#811521
