@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 36.git20120510%{?dist}
+Release: 40.git20120522%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -58,7 +58,12 @@ Patch31: 0031-ifcfg-write-ifcfg.sh-use-PREFIX-for-prefix-netmask-f.patch
 Patch32: 0032-Fail-to-boot-if-mediacheck-fails-817419.patch
 Patch33: 0033-ifcfg-write-ifcfg.sh-add-s390-specific-configuration.patch
 Patch34: 0034-Makefile-call-git2spec.pl-with-LANG-C.patch
-Patch35: 0062-ARM-make-sure-that-we-get-the-storage-modules-into-t.patch
+Patch35: 0035-ARM-make-sure-that-we-get-the-storage-modules-into-t.patch
+Patch36: 0036-Use-the-right-argument-for-dasd-module-options.patch
+Patch37: 0037-Translate-dasd-arg-contents-into-proper-dasd.conf.patch
+Patch38: 0038-Normalize-dasd-argument-content-for-dasd.conf.patch
+Patch39: 0039-ifcfg-write-ifcfg.sh-fixed-IFS-resetting.patch
+
 
 BuildArch: noarch
 BuildRequires: dash bash git
@@ -373,6 +378,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue May 22 2012 Harald Hoyer <harald@redhat.com> 018-40.git20120522
+- fixed s390 dasd handling
+- fixed DNS bug for s390
+
 * Thu May 17 2012 Dennis Gilmore <dennis@ausil.us> 018-36.git20120510
 - add patch for arm storage modules
 
