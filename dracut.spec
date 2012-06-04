@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 40.git20120522%{?dist}
+Release: 51.git20120604%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -63,6 +63,17 @@ Patch36: 0036-Use-the-right-argument-for-dasd-module-options.patch
 Patch37: 0037-Translate-dasd-arg-contents-into-proper-dasd.conf.patch
 Patch38: 0038-Normalize-dasd-argument-content-for-dasd.conf.patch
 Patch39: 0039-ifcfg-write-ifcfg.sh-fixed-IFS-resetting.patch
+Patch40: 0040-Relax-the-rules-for-kdump-we-don-t-specify-netroot-i.patch
+Patch41: 0041-url-lib-url-lib.sh-disable-curl-progress-bar.patch
+Patch42: 0042-network-ifup.sh-do-not-default-to-dhcp-for-interface.patch
+Patch43: 0043-network-do-not-arping-with-qeth-layer3-interfaces.patch
+Patch44: 0044-dracut-shutdown.service-do-not-unpack-old-initramfs-.patch
+Patch45: 0045-crypt-add-rd.luks.allow-discards-and-honor-options-i.patch
+Patch46: 0046-dasd_mod-parse-dasd-mod.sh-fixed-dasd_mod-param-gene.patch
+Patch47: 0047-fix-return-value-of-some-installkernel-functions.patch
+Patch48: 0048-dracut.sh-do-not-rely-on-the-presence-of-lib64-check.patch
+Patch49: 0049-Don-t-set-an-already-set-attribute-826357.patch
+Patch50: 0050-add-filesystem-options-to-fsck_single.patch
 
 
 BuildArch: noarch
@@ -378,6 +389,23 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Mon Jun 04 2012 Harald Hoyer <harald@redhat.com> 018-51.git20120604
+- fix network rules for kdump
+Resolves: rhbz#822750
+- disable curl progress bar
+Resolves: rhbz#817301 rhbz#824883
+- do not default to dhcp for interfaces without ip=
+- do not arping with qeth layer3 interfaces
+Resolves: rhbz#825783
+- do not unpack the initramfs, if the old initramfs still exists
+- add rd.luks.allow-discards and honor options in crypttab
+- fixed dasd_mod param generation
+- fix return value of some installkernel() functions
+- do not rely on the presence of lib64, check with ldd
+- dasd: don't set an already set attribute
+Resolves: rhbz#826357
+- add filesystem options to fsck_single()
+
 * Tue May 22 2012 Harald Hoyer <harald@redhat.com> 018-40.git20120522
 - fixed s390 dasd handling
 - fixed DNS bug for s390
