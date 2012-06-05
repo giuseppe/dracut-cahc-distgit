@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 52.git20120605%{?dist}
+Release: 53.git20120605%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -390,6 +390,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Jun 05 2012 Dennis Gilmore <dennis@ausil.us> 018-53.git20120605
+- include omapdrm in the arm modules to include
+
 * Tue Jun 05 2012 Harald Hoyer <harald@redhat.com> 018-52.git20120605
 - change rd.dasd to dasd_mod kernel parameter
 

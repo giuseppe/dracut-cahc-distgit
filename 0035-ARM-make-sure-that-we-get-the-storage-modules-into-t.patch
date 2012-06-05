@@ -17,7 +17,7 @@ index 26f4784..fd8b92c 100755
          hostonly='' instmods usb_storage sdhci sdhci-pci
  
 +        # arm specific modules
-+        hostonly='' instmods sdhci_esdhc_imx mmci sdhci_tegra mvsdio omap sdhci_dove ahci_platform pata_imx sata_mv
++        hostonly='' instmods sdhci_esdhc_imx mmci sdhci_tegra mvsdio omap sdhci_dove ahci_platform pata_imx sata_mv omapdrm
 +
          # install keyboard support
          hostonly='' instmods atkbd i8042 usbhid hid-apple hid-sunplus hid-cherry hid-logitech hid-logitech-dj hid-microsoft ehci-hcd ohci-hcd uhci-hcd
