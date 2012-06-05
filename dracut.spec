@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 51.git20120604%{?dist}
+Release: 52.git20120605%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -74,6 +74,7 @@ Patch47: 0047-fix-return-value-of-some-installkernel-functions.patch
 Patch48: 0048-dracut.sh-do-not-rely-on-the-presence-of-lib64-check.patch
 Patch49: 0049-Don-t-set-an-already-set-attribute-826357.patch
 Patch50: 0050-add-filesystem-options-to-fsck_single.patch
+Patch51: 0051-dasd_mod-change-rd.dasd-to-dasd_mod-kernel-parameter.patch
 
 
 BuildArch: noarch
@@ -389,6 +390,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Jun 05 2012 Harald Hoyer <harald@redhat.com> 018-52.git20120605
+- change rd.dasd to dasd_mod kernel parameter
+
 * Mon Jun 04 2012 Harald Hoyer <harald@redhat.com> 018-51.git20120604
 - fix network rules for kdump
 Resolves: rhbz#822750
