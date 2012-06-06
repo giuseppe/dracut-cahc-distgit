@@ -1,0 +1,59 @@
+From 7d6493ec506832156352a30b8c6a85446d2f6142 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 29 May 2012 17:38:18 +0200
+Subject: [PATCH] network: do not arping with qeth layer3 interfaces
+
+https://bugzilla.redhat.com/show_bug.cgi?id=825783
+---
+ modules.d/40network/dhclient-script.sh |   13 ++++++++++---
+ modules.d/40network/net-lib.sh         |   10 +++++++++-
+ 2 files changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/modules.d/40network/dhclient-script.sh b/modules.d/40network/dhclient-script.sh
+index 52e4900..2f05549 100755
+--- a/modules.d/40network/dhclient-script.sh
++++ b/modules.d/40network/dhclient-script.sh
+@@ -66,10 +66,17 @@ case $reason in
+         ;;
+     BOUND)
+         echo "dhcp: BOND setting $netif"
+-        if ! arping -q -D -c 2 -I $netif $new_ip_address ; then
+-            warn "Duplicate address detected for $new_ip_address while doing dhcp. retrying"
+-            exit 1
++        unset layer2
++        if [ -f /sys/class/net/$netif/device/layer2 ]; then
++            read layer2 < /sys/class/net/$netif/device/layer2
+         fi
++        if [ "$layer2" != "0" ]; then
++            if ! arping -q -D -c 2 -I $netif $new_ip_address ; then
++                warn "Duplicate address detected for $new_ip_address while doing dhcp. retrying"
++                exit 1
++            fi
++        fi
++        unset layer2
+         setup_interface
+         set | while read line; do
+             [ "${line#new_}" = "$line" ] && continue
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index c0f73da..1acd549 100644
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -99,9 +99,17 @@ setup_net() {
+     else
+         dest="$gw_ip"
+     fi
+-    if [ -n "$dest" ] && ! arping -q -f -w 60 -I $netif $dest ; then
++
++    unset layer2
++    if [ -f /sys/class/net/$netif/device/layer2 ]; then
++        read layer2 < /sys/class/net/$netif/device/layer2
++    fi
++
++    if [ "$layer2" != "0" ] && [ -n "$dest" ] && ! arping -q -f -w 60 -I $netif $dest ; then
+         info "Resolving $dest via ARP on $netif failed"
+     fi
++    unset layer2
++
+     > /tmp/net.$netif.did-setup
+ }
+ 

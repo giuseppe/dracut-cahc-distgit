@@ -1,0 +1,125 @@
+From d1d8f11ea7a97491c46a8f406ed55bf74a29c460 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 31 May 2012 12:57:23 +0200
+Subject: [PATCH] add filesystem options to fsck_single()
+
+if we have e.g. special btrfs options for "/" and "/usr", we want to use
+those for the test mount to determine if the filesystem is corrupted.
+---
+ modules.d/95fstab-sys/mount-sys.sh     |    2 +-
+ modules.d/95rootfs-block/mount-root.sh |    2 +-
+ modules.d/98usrmount/mount-usr.sh      |    5 +++--
+ modules.d/99base/mount-hook.sh         |    2 +-
+ modules.d/99fs-lib/fs-lib.sh           |    9 +++++----
+ 5 files changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/modules.d/95fstab-sys/mount-sys.sh b/modules.d/95fstab-sys/mount-sys.sh
+index 895eb58..a1e5ab1 100755
+--- a/modules.d/95fstab-sys/mount-sys.sh
++++ b/modules.d/95fstab-sys/mount-sys.sh
+@@ -12,7 +12,7 @@ fstab_mount() {
+     while read _dev _mp _fs _opts _dump _pass _rest; do
+         [ -z "${_dev%%#*}" ] && continue # Skip comment lines
+         if [ "$_pass" -gt 0 ] && ! strstr "$_opts" _netdev; then
+-            fsck_single "$_dev" "$_fs"
++            fsck_single "$_dev" "$_fs" "$_opts"
+         fi
+         _fs=$(det_fs "$_dev" "$_fs")
+         info "Mounting $_dev"
+diff --git a/modules.d/95rootfs-block/mount-root.sh b/modules.d/95rootfs-block/mount-root.sh
+index aef99ae..2cae526 100755
+--- a/modules.d/95rootfs-block/mount-root.sh
++++ b/modules.d/95rootfs-block/mount-root.sh
+@@ -105,7 +105,7 @@ mount_root() {
+     ran_fsck=0
+     if [ -z "$fastboot" -a "$READONLY" != "yes" ] && ! strstr "${rflags},${rootopts}" _netdev; then
+         umount "$NEWROOT"
+-        fsck_single "${root#block:}" "$rootfs" "$fsckoptions"
++        fsck_single "${root#block:}" "$rootfs" "$rflags" "$fsckoptions"
+         _ret=$?
+         [ $_ret -ne 255 ] && echo $_ret >/run/initramfs/root-fsck
+         ran_fsck=1
+diff --git a/modules.d/98usrmount/mount-usr.sh b/modules.d/98usrmount/mount-usr.sh
+index 39f75b9..92638d1 100755
+--- a/modules.d/98usrmount/mount-usr.sh
++++ b/modules.d/98usrmount/mount-usr.sh
+@@ -9,6 +9,7 @@ fsck_usr()
+ {
+     local _dev=$1
+     local _fs=$2
++    local _fsopts=$3
+     local _fsckoptions
+ 
+     if [ -f "$NEWROOT"/fsckoptions ]; then
+@@ -31,7 +32,7 @@ fsck_usr()
+         _fsckoptions="$AUTOFSCK_OPT $_fsckoptions"
+     fi
+ 
+-    fsck_single "$_dev" "$_fs" "$_fsckoptions"
++    fsck_single "$_dev" "$_fs" "$_fsopts" "$_fsckoptions"
+ }
+ 
+ mount_usr()
+@@ -60,7 +61,7 @@ mount_usr()
+     if [ "x$_usr_found" != "x" ]; then
+         # we have to mount /usr
+         if [ "0" != "${_passno:-0}" ]; then
+-            fsck_usr "$_dev" "$_fs"
++            fsck_usr "$_dev" "$_fs" "$_opts"
+         else
+             :
+         fi
+diff --git a/modules.d/99base/mount-hook.sh b/modules.d/99base/mount-hook.sh
+index 99b17dd..dcf1415 100755
+--- a/modules.d/99base/mount-hook.sh
++++ b/modules.d/99base/mount-hook.sh
+@@ -113,7 +113,7 @@ mount_root() {
+     # printf '%s %s %s %s 1 1 \n' "$esc_root" "$NEWROOT" "$rootfs" "$rflags" >/etc/fstab
+ 
+     if [ -z "$fastboot" -a "$READONLY" != "yes" ] && ! strstr "${rflags},${rootopts}" _netdev; then
+-        fsck_single "${root#block:}" "$rootfs" "$fsckoptions"
++        fsck_single "${root#block:}" "$rootfs" "$rflags" "$fsckoptions"
+         _ret=$?
+         [ $_ret -ne 255 ] && echo $_ret >/run/initramfs/root-fsck
+     fi
+diff --git a/modules.d/99fs-lib/fs-lib.sh b/modules.d/99fs-lib/fs-lib.sh
+index f9dbbf9..75bee92 100755
+--- a/modules.d/99fs-lib/fs-lib.sh
++++ b/modules.d/99fs-lib/fs-lib.sh
+@@ -89,7 +89,7 @@ fsck_drv_xfs() {
+     mkdir -p /tmp/.xfs
+ 
+     info "trying to mount $_dev"
+-    if mount -t xfs "$_dev" "/tmp/.xfs" >/dev/null 2>&1; then
++    if mount -t xfs ${_fsopts+-o $_fsopts} "$_dev" "/tmp/.xfs" >/dev/null 2>&1; then
+         _ret=0
+         info "xfs: $_dev is clean"
+         umount "$_dev" >/dev/null 2>&1
+@@ -119,7 +119,7 @@ fsck_drv_btrfs() {
+     mkdir -p /tmp/.btrfs
+ 
+     info "trying to mount $_dev"
+-    if mount -t btrfs "$_dev" "/tmp/.btrfs" >/dev/null 2>&1; then
++    if mount -t btrfs ${_fsopts+-o $_fsopts} "$_dev" "/tmp/.btrfs" >/dev/null 2>&1; then
+         _ret=0
+         info "btrfs: $_dev is clean"
+         umount "$_dev" >/dev/null 2>&1
+@@ -177,7 +177,7 @@ fsck_drv_std() {
+ 
+ # checks single filesystem, relying on specific "driver"; we don't rely on
+ # automatic checking based on fstab, so empty one is passed;
+-# takes 3 arguments - device, filesystem, additional fsck options;
++# takes 4 arguments - device, filesystem, filesystem options, additional fsck options;
+ # first 2 arguments are mandatory (fs may be auto or "")
+ # returns 255 if filesystem wasn't checked at all (e.g. due to lack of
+ # necessary tools or insufficient options)
+@@ -185,7 +185,8 @@ fsck_single() {
+     local FSTAB_FILE=/etc/fstab.empty
+     local _dev="$1"
+     local _fs="${2:-auto}"
+-    local _fop="$3"
++    local _fsopts="$3"
++    local _fop="$4"
+     local _drv
+ 
+     [ $# -lt 2 ] && return 255
