@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 53.git20120605%{?dist}
+Release: 55.git20120611%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -75,6 +75,9 @@ Patch48: 0048-dracut.sh-do-not-rely-on-the-presence-of-lib64-check.patch
 Patch49: 0049-Don-t-set-an-already-set-attribute-826357.patch
 Patch50: 0050-add-filesystem-options-to-fsck_single.patch
 Patch51: 0051-dasd_mod-change-rd.dasd-to-dasd_mod-kernel-parameter.patch
+Patch52: 0052-dracut.spec-remove-typo-from-BuildRequires-for-suse.patch
+Patch53: 0053-kernel-modules-module-setup.sh-include-omapdrm-in-th.patch
+Patch54: 0054-network-ifup.sh-default-to-dhcp-for-BOOTIF.patch
 
 
 BuildArch: noarch
@@ -92,7 +95,7 @@ BuildRequires: docbook-style-xsl docbook-dtds libxslt
 %endif
 
 %if 0%{?suse_version}
--BuildRequires: docbook-xsl-stylesheets libxslt
+BuildRequires: docbook-xsl-stylesheets libxslt
 %endif
 
 BuildRequires: asciidoc
@@ -390,6 +393,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Mon Jun 11 2012 Harald Hoyer <harald@redhat.com> 018-55.git20120611
+- default to dhcp for BOOTIF
+
 * Tue Jun 05 2012 Dennis Gilmore <dennis@ausil.us> 018-53.git20120605
 - include omapdrm in the arm modules to include
 

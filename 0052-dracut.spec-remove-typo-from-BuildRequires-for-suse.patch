@@ -1,0 +1,22 @@
+From 9cec52027c0af88b41f4058b50dc25ae47354c99 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 6 Jun 2012 10:24:07 +0200
+Subject: [PATCH] dracut.spec: remove typo from BuildRequires for suse
+
+---
+ dracut.spec |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut.spec b/dracut.spec
+index b5218d9..38da76d 100644
+--- a/dracut.spec
++++ b/dracut.spec
+@@ -40,7 +40,7 @@ BuildRequires: docbook-style-xsl docbook-dtds libxslt
+ %endif
+ 
+ %if 0%{?suse_version}
+--BuildRequires: docbook-xsl-stylesheets libxslt
++BuildRequires: docbook-xsl-stylesheets libxslt
+ %endif
+ 
+ BuildRequires: asciidoc
