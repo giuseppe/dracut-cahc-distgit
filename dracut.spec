@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 018
-Release: 55.git20120611%{?dist}
+Release: 65.git20120612%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -78,6 +78,16 @@ Patch51: 0051-dasd_mod-change-rd.dasd-to-dasd_mod-kernel-parameter.patch
 Patch52: 0052-dracut.spec-remove-typo-from-BuildRequires-for-suse.patch
 Patch53: 0053-kernel-modules-module-setup.sh-include-omapdrm-in-th.patch
 Patch54: 0054-network-ifup.sh-default-to-dhcp-for-BOOTIF.patch
+Patch55: 0055-Revert-network-ifup.sh-default-to-dhcp-for-BOOTIF.patch
+Patch56: 0056-Revert-network-ifup.sh-do-not-default-to-dhcp-for-in.patch
+Patch57: 0057-resolve-conflict-between-cms-network-rules-and-defau.patch
+Patch58: 0058-Add-vlan-support-in-network-module.patch
+Patch59: 0059-Add-doc-for-vlan-cmdline.patch
+Patch60: 0060-Add-doc-for-bond-cmdline.patch
+Patch61: 0061-Add-doc-for-birdge-cmdline.patch
+Patch62: 0062-Handle-multiple-underlying-devices-of-a-bridge.patch
+Patch63: 0063-url-lib-url-lib.sh-use-silent-mode-for-curl-if-TERM-.patch
+Patch64: 0064-dracut-functions-fixed-return-status-of-instmods.patch
 
 
 BuildArch: noarch
@@ -393,6 +403,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Jun 12 2012 Harald Hoyer <harald@redhat.com> 018-65.git20120612
+- revert to "ip=dhcp" by default
+
 * Mon Jun 11 2012 Harald Hoyer <harald@redhat.com> 018-55.git20120611
 - default to dhcp for BOOTIF
 

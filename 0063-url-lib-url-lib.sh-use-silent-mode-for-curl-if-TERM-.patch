@@ -1,0 +1,29 @@
+From 0e104d73ef6f67c7515088ec65337302ff4f5fb0 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 12 Jun 2012 15:00:08 +0200
+Subject: [PATCH] url-lib/url-lib.sh: use silent mode for curl if TERM=dumb
+
+---
+ modules.d/45url-lib/url-lib.sh |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/modules.d/45url-lib/url-lib.sh b/modules.d/45url-lib/url-lib.sh
+index e9ece70..ef351ff 100755
+--- a/modules.d/45url-lib/url-lib.sh
++++ b/modules.d/45url-lib/url-lib.sh
+@@ -54,8 +54,15 @@ add_url_handler() {
+ 
+ export CURL_HOME="/run/initramfs/url-lib"
+ mkdir -p $CURL_HOME
++
++# we do not want --progress-bar as it slows down curl significantly
+ curl_args="--location --retry 3 --fail --show-error"
+ 
++# technically "dumb" can handle the progress bar, but the only thing I've ever
++# seen using TERM=dumb is s390 CMS, and it's too dumb for --progress-bar or
++# the standard output
++[ "$TERM" = "dumb" ] && curl_args="$curl_args --silent"
++
+ curl_fetch_url() {
+     local url="$1" outloc="$2"
+     echo "$url" > /proc/self/fd/0
