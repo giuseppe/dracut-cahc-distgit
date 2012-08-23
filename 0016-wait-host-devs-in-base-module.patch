@@ -1,0 +1,129 @@
+From c4bb88715c14c7696257f38447ef1fb0e69f9874 Mon Sep 17 00:00:00 2001
+From: "dyoung@redhat.com" <dyoung@redhat.com>
+Date: Thu, 23 Aug 2012 11:02:22 +0800
+Subject: [PATCH] wait host devs in base module
+
+each dev in host_devs[] should be waited in initqueue to make sure they
+are oneline before initqueue finish.
+
+Add a new wait_host_devs.sh in base module to make this a generic thing.
+Because all the devs in fstab lines are also added to host_devs, so no need
+do same wait in fstab-sys module anymore.
+
+[v2->v3]: do not add slave devices to host_devs
+          wait for persistent dev name in initramfs
+
+Signed-off-by: Dave Young <dyoung@redhat.com>
+---
+ dracut.sh                               | 16 ++++++++++++++++
+ modules.d/95fstab-sys/module-setup.sh   |  1 -
+ modules.d/95fstab-sys/wait-mount-dev.sh | 22 ----------------------
+ modules.d/99base/module-setup.sh        |  1 +
+ modules.d/99base/wait-host-devs.sh      | 20 ++++++++++++++++++++
+ 5 files changed, 37 insertions(+), 23 deletions(-)
+ delete mode 100644 modules.d/95fstab-sys/wait-mount-dev.sh
+ create mode 100644 modules.d/99base/wait-host-devs.sh
+
+diff --git a/dracut.sh b/dracut.sh
+index dc2c300..2b0b085 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -903,6 +903,22 @@ done
+ 
+ dinfo "*** Including modules done ***"
+ 
++get_persistent_dev() {
++    local i _tmp
++    local _dev=${1##*/}
++
++    for i in /dev/disk/by-id/*; do
++        _tmp=$(readlink $i)
++        [ "${_tmp##*/}" = "$_dev" ] && echo $i && return
++    done
++}
++
++## save host_devs which we need bring up
++for _dev in ${host_devs[@]}; do
++    _pdev=$(get_persistent_dev $_dev)
++    [ -n "$_pdev" ] && echo $_pdev >> $initdir/etc/host_devs
++done
++
+ ## final stuff that has to happen
+ if [[ $no_kernel != yes ]]; then
+ 
+diff --git a/modules.d/95fstab-sys/module-setup.sh b/modules.d/95fstab-sys/module-setup.sh
+index 8468448..ca66005 100755
+--- a/modules.d/95fstab-sys/module-setup.sh
++++ b/modules.d/95fstab-sys/module-setup.sh
+@@ -13,5 +13,4 @@ depends() {
+ install() {
+     [ -f /etc/fstab.sys ] && inst_simple /etc/fstab.sys
+     inst_hook pre-pivot 00 "$moddir/mount-sys.sh"
+-    inst_hook cmdline 00 "$moddir/wait-mount-dev.sh"
+ }
+diff --git a/modules.d/95fstab-sys/wait-mount-dev.sh b/modules.d/95fstab-sys/wait-mount-dev.sh
+deleted file mode 100644
+index 99fc16c..0000000
+--- a/modules.d/95fstab-sys/wait-mount-dev.sh
++++ /dev/null
+@@ -1,22 +0,0 @@
+-#!/bin/sh
+-# -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+-# ex: ts=8 sw=4 sts=4 et filetype=sh
+-
+-type getarg >/dev/null 2>&1 || . /lib/dracut-lib.sh
+-type det_fs >/dev/null 2>&1 || . /lib/fs-lib.sh
+-
+-fstab_wait_dev() {
+-    local _dev _mp _fs _opts _dump _pass _rest
+-    test -e "$1" || return 1
+-    while read _dev _mp _fs _opts _dump _pass _rest; do
+-        [ -z "${_dev%%#*}" ] && continue # Skip comment lines
+-        case "$_dev" in
+-        /dev/?*)
+-            wait_for_dev $_dev;;
+-        *) ;;
+-        esac
+-    done < $1
+-    return 0
+-}
+-
+-[ -f /etc/fstab ] && fstab_wait_dev /etc/fstab
+diff --git a/modules.d/99base/module-setup.sh b/modules.d/99base/module-setup.sh
+index 22ab277..196f6cf 100755
+--- a/modules.d/99base/module-setup.sh
++++ b/modules.d/99base/module-setup.sh
+@@ -41,6 +41,7 @@ install() {
+     dracut_install switch_root || dfatal "Failed to install switch_root"
+ 
+     inst_simple "$moddir/dracut-lib.sh" "/lib/dracut-lib.sh"
++    inst_hook cmdline 00 "$moddir/wait-host-devs.sh"
+     inst_hook cmdline 10 "$moddir/parse-root-opts.sh"
+     mkdir -p "${initdir}/var"
+     [ -x /lib/systemd/systemd-timestamp ] && inst /lib/systemd/systemd-timestamp
+diff --git a/modules.d/99base/wait-host-devs.sh b/modules.d/99base/wait-host-devs.sh
+new file mode 100644
+index 0000000..ce84922
+--- /dev/null
++++ b/modules.d/99base/wait-host-devs.sh
+@@ -0,0 +1,20 @@
++#!/bin/sh
++# -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
++# ex: ts=8 sw=4 sts=4 et filetype=sh
++
++type getarg >/dev/null 2>&1 || . /lib/dracut-lib.sh
++
++wait_host_devs() {
++    local _dev
++
++    while read _dev; do
++        case "$_dev" in
++        /dev/?*)
++            wait_for_dev $_dev
++            ;;
++        *) ;;
++        esac
++    done < $1
++}
++
++[ -f /etc/host_devs ] && wait_host_devs /etc/host_devs

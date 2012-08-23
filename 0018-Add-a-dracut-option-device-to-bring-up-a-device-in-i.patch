@@ -1,0 +1,63 @@
+From 52f1b04183a6a1e0cfbb7e5b46c8d371fdadea5b Mon Sep 17 00:00:00 2001
+From: "dyoung@redhat.com" <dyoung@redhat.com>
+Date: Thu, 23 Aug 2012 11:02:24 +0800
+Subject: [PATCH] Add a dracut option --device to bring up a device in
+ initramfs
+
+Kdump support dump to raw device which could be on top of complex storage
+such as multipath and iscsi which are standalone dracut modules.
+
+Add a --device option to dracut which will add the device to host_devs so
+dracut can add the dependent modules automaticlly and enable them in initramfs.
+
+--device will accept device node name as the param.
+
+Signed-off-by: Dave Young <dyoung@redhat.com>
+Tested-by: Chao Wang <chaowang@redhat.com>
+---
+ dracut.8.asc | 3 +++
+ dracut.sh    | 3 +++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/dracut.8.asc b/dracut.8.asc
+index 0902b3b..203f9cd 100644
+--- a/dracut.8.asc
++++ b/dracut.8.asc
+@@ -321,6 +321,9 @@ provide a valid _/etc/fstab_.
+     Mount _<device>_ on _<mountpoint>_ with _<filesystem type>_ and _<filesystem
+     options>_ in the initramfs
+ 
++**--device** _<device>_ ::
++    Bring up _<device>_ in initramfs, _<device>_ should be the device name
++
+ **-i, --include** _<SOURCE>_ _<TARGET>_::
+     include the files in the SOURCE directory into the
+     TARGET directory in the final initramfs. If SOURCE is a file, it will be
+diff --git a/dracut.sh b/dracut.sh
+index 2b0b085..a6f6193 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -133,6 +133,7 @@ Creates initial ramdisk images for preloading modules
+   --mount "[DEV] [MP] [FSTYPE] [FSOPTS]"
+                         Mount device [DEV] on mountpoint [MP] with filesystem
+                         [FSTYPE] and options [FSOPTS] in the initramfs
++  --device "[DEV]"      Bring up [DEV] in initramfs
+   -i, --include [SOURCE] [TARGET]
+                         Include the files in the SOURCE directory into the
+                          Target directory in the final initramfs.
+@@ -261,6 +262,7 @@ TEMP=$(unset POSIXLY_CORRECT; getopt \
+     --long fscks: \
+     --long add-fstab: \
+     --long mount: \
++    --long device: \
+     --long nofscks: \
+     --long ro-mnt \
+     --long kmoddir: \
+@@ -327,6 +329,7 @@ while :; do
+         --fscks)       push fscks_l              "$2"; shift;;
+         --add-fstab)   push add_fstab_l          "$2"; shift;;
+         --mount)       push fstab_lines          "$2"; shift;;
++        --device)      push host_devs            "$2"; shift;;
+         --nofscks)     nofscks_l="yes";;
+         --ro-mnt)      ro_mnt_l="yes";;
+         -k|--kmoddir)  drivers_dir_l="$2"; shift;;
