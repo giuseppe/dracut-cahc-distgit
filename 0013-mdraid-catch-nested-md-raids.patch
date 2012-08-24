@@ -1,0 +1,25 @@
+From 5746f04994745ac4ad01b4ae26f6c368ac725fb3 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 22 Aug 2012 13:01:53 +0200
+Subject: [PATCH] mdraid: catch nested md raids
+
+Thanks to Ian Dall!
+---
+ modules.d/90mdraid/65-md-incremental-imsm.rules | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/90mdraid/65-md-incremental-imsm.rules b/modules.d/90mdraid/65-md-incremental-imsm.rules
+index 6dd696a..d66dd01 100644
+--- a/modules.d/90mdraid/65-md-incremental-imsm.rules
++++ b/modules.d/90mdraid/65-md-incremental-imsm.rules
+@@ -5,7 +5,9 @@
+ ACTION!="add|change", GOTO="md_end"
+ SUBSYSTEM!="block", GOTO="md_end"
+ ENV{rd_NO_MD}=="?*", GOTO="md_end"
+-KERNEL=="md*", GOTO="md_end"
++KERNEL=="md*", ENV{ID_FS_TYPE}!="linux_raid_member", GOTO="md_end"
++KERNEL=="md*", ACTION!="change", GOTO="md_end"
++
+ # Also don't process disks that are slated to be a multipath device
+ ENV{DM_MULTIPATH_DEVICE_PATH}=="?*", GOTO="md_end"
+ 

@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 023
-Release: 13.git20120821%{?dist}
+Release: 20.git20120823%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -41,6 +41,13 @@ Patch9: 0009-install-dracut-install.c-Ensure-deps-are-resolved-wh.patch
 Patch10: 0010-install-dracut-install.c-Deal-gracefully-with-paths-.patch
 Patch11: 0011-install-dracut-install.c-No-need-to-compare-the-NULL.patch
 Patch12: 0012-udev-rules-Pre-usrmove-systemd-installs-might-not-fi.patch
+Patch13: 0013-mdraid-catch-nested-md-raids.patch
+Patch14: 0014-znet-add-some-more-kernel-drivers.patch
+Patch15: 0015-network-add-ping-and-ping6.patch
+Patch16: 0016-wait-host-devs-in-base-module.patch
+Patch17: 0017-Add-for_each_host_dev_and_slaves-for-device-only-che.patch
+Patch18: 0018-Add-a-dracut-option-device-to-bring-up-a-device-in-i.patch
+Patch19: 0019-moved-the-etc-host_devs-write-out-to-99base.patch
 
 
 BuildRequires: dash bash git
@@ -374,6 +381,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu Aug 23 2012 Harald Hoyer <harald@redhat.com> 023-20.git20120823
+- assemble nested md raids
+- add z-series kernel modules
+- add ping and ping6
+- add "--devices" and wait for those devs to appear
+
 * Tue Aug 21 2012 Harald Hoyer <harald@redhat.com> 023-13.git20120821
 - reintroduce rd.neednet, which reenables anaconda networking
 - fix some dracut-install corner cases
