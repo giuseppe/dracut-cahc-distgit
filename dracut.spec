@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 023
-Release: 20.git20120823%{?dist}
+Release: 21.git20120823%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -48,6 +48,10 @@ Patch16: 0016-wait-host-devs-in-base-module.patch
 Patch17: 0017-Add-for_each_host_dev_and_slaves-for-device-only-che.patch
 Patch18: 0018-Add-a-dracut-option-device-to-bring-up-a-device-in-i.patch
 Patch19: 0019-moved-the-etc-host_devs-write-out-to-99base.patch
+# Fix updates.img handling - submitted to upstream by wwoods
+Patch20: dracut-023-updates.patch
+# Fix splitsep handling of backslashes - submitted to upstream by wwoods
+Patch21: dracut-023-splitsep.patch
 
 
 BuildRequires: dash bash git
@@ -381,6 +385,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu Aug 30 2012 Adam Williamson <awilliam@redhat.com> 023-21.git20120823
+- add patches for updates.img and splitsep from wwoods (alpha-critical)
+
 * Thu Aug 23 2012 Harald Hoyer <harald@redhat.com> 023-20.git20120823
 - assemble nested md raids
 - add z-series kernel modules
