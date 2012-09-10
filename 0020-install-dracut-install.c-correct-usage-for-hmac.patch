@@ -1,0 +1,22 @@
+From 353e7a7ec33baed5a3dff0f66198d73da419b07c Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 23 Aug 2012 15:02:37 +0200
+Subject: [PATCH] install/dracut-install.c: correct usage() for hmac
+
+---
+ install/dracut-install.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/install/dracut-install.c b/install/dracut-install.c
+index c95b7c2..0571c2a 100644
+--- a/install/dracut-install.c
++++ b/install/dracut-install.c
+@@ -521,7 +521,7 @@ Install SOURCE to DEST in DESTROOTDIR with all needed dependencies.\n\
+   -d --dir            SOURCE is a directory\n\
+   -l --ldd            Also install shebang executables and libraries\n\
+   -R --resolvelazy    Only install shebang executables and libraries for all SOURCE files\n\
+-  -f --fips           Also install all '.SOURCE.hmac' files\n\
++  -H --fips           Also install all '.SOURCE.hmac' files\n\
+   -v --verbose        Show more output\n\
+      --debug          Show debug output\n\
+      --version        Show package version\n\

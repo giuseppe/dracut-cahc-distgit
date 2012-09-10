@@ -1,0 +1,22 @@
+From 8a7f561ee50c096fc8bb9e959da447023e6973ce Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 4 Sep 2012 09:49:45 +0200
+Subject: [PATCH] crypt: do not run systemd crypt generator
+
+"systemctl daemon-reload" does it already for us
+---
+ modules.d/90crypt/crypt-run-generator.sh | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/modules.d/90crypt/crypt-run-generator.sh b/modules.d/90crypt/crypt-run-generator.sh
+index f2f2da1..224e511 100755
+--- a/modules.d/90crypt/crypt-run-generator.sh
++++ b/modules.d/90crypt/crypt-run-generator.sh
+@@ -12,7 +12,6 @@ if [ -f /etc/crypttab ]; then
+ fi
+ 
+ echo "$luks $dev" >> /etc/crypttab
+-/lib/systemd/system-generators/systemd-cryptsetup-generator
+ systemctl daemon-reload
+ systemctl start cryptsetup.target
+ exit 0

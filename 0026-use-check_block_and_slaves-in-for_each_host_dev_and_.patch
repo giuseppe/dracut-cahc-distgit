@@ -1,0 +1,27 @@
+From a999414eaf2e136e8bb08065bd53e51f4d544a9b Mon Sep 17 00:00:00 2001
+From: Dave Young <dyoung@redhat.com>
+Date: Tue, 28 Aug 2012 10:05:49 +0800
+Subject: [PATCH] use check_block_and_slaves in for_each_host_dev_and_slaves
+
+for_each_host_dev_and_slaves currently is used in some module check()
+functions and it's not necessary iterate all slaves. So use
+check_block_and_slaves instead of check_block_and_slaves_all is fine.
+
+Signed-off-by: Dave Young <dyoung@redhat.com>
+---
+ dracut-functions.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index d089b7f..2399a1d 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -468,7 +468,7 @@ for_each_host_dev_and_slaves()
+     local _dev
+     for _dev in ${host_devs[@]}; do
+         [[ -b "$_dev" ]] || continue
+-        check_block_and_slaves_all $_func $(get_maj_min $_dev) && return 0
++        check_block_and_slaves $_func $(get_maj_min $_dev) && return 0
+     done
+     return 1
+ }

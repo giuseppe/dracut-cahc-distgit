@@ -1,6 +1,7 @@
+From 44f77ac1b06997404ffc67958bdcaaf392d0bcfd Mon Sep 17 00:00:00 2001
 From: Will Woods <wwoods@redhat.com>
-Date: Wed, 29 Aug 2012 22:58:15 +0200
-Subject: [PATCH liveupdates] apply-live-updates.sh: handle updates for /run
+Date: Wed, 29 Aug 2012 18:58:15 -0400
+Subject: [PATCH] apply-live-updates.sh: handle updates for /run
 
 /run will get mounted at $NEWROOT/run after switch_root, but it's not
 there yet. bind-mount it in place so updates for /run actually land in
@@ -34,10 +35,3 @@ index 61da4bf..d620f2c 100755
      )
 +    umount $NEWROOT/run
  fi
--- 
-1.7.11.4
-
---
-To unsubscribe from this list: send the line "unsubscribe initramfs" in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

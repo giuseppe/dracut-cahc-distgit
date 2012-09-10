@@ -1,5 +1,6 @@
+From 32b2fb8a276ce1107a7784b96fab56a1b4dc05a1 Mon Sep 17 00:00:00 2001
 From: Will Woods <wwoods@redhat.com>
-Date: Thu, 23 Aug 2012 20:56:01 +0200
+Date: Thu, 23 Aug 2012 16:56:01 -0400
 Subject: [PATCH] make splitsep preserve backslashes (RHBZ#851295)
 
 splitsep() would drop escapes from its inputs. For example:
@@ -38,10 +39,3 @@ index 381b4dd..60b4cb1 100755
      debug_on
      return 0
  }
--- 
-1.7.11.4
-
---
-To unsubscribe from this list: send the line "unsubscribe initramfs" in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
