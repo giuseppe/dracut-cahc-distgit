@@ -1,0 +1,44 @@
+From ba111df2b99f9f1dc5c51442ad92bcefbf16bd91 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 10 Sep 2012 15:49:58 +0200
+Subject: [PATCH] nfs: install all nfs submodules
+
+---
+ modules.d/95nfs/module-setup.sh | 2 +-
+ test/TEST-50-MULTINIC/test.sh   | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/modules.d/95nfs/module-setup.sh b/modules.d/95nfs/module-setup.sh
+index ecef635..8a12ec7 100755
+--- a/modules.d/95nfs/module-setup.sh
++++ b/modules.d/95nfs/module-setup.sh
+@@ -25,7 +25,7 @@ depends() {
+ }
+ 
+ installkernel() {
+-    instmods nfs sunrpc ipv6
++    instmods nfs sunrpc ipv6 nfsv2 nfsv3 nfsv4 nfs_acl nfs_layout_nfsv41_files
+ }
+ 
+ install() {
+diff --git a/test/TEST-50-MULTINIC/test.sh b/test/TEST-50-MULTINIC/test.sh
+index 3771a14..066ad80 100755
+--- a/test/TEST-50-MULTINIC/test.sh
++++ b/test/TEST-50-MULTINIC/test.sh
+@@ -246,14 +246,14 @@ test_setup() {
+     # Make server's dracut image
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+         -m "dash udev-rules base rootfs-block debug kernel-modules watchdog" \
+-        -d "af_packet piix ide-gd_mod ata_piix ext3 sd_mod e1000 i6300esbwdt" \
++        -d "af_packet piix ide-gd_mod ata_piix ext3 sd_mod nfsv2 nfsv3 nfsv4 nfs_acl nfs_layout_nfsv41_files nfsd e1000 i6300esbwdt" \
+         -f $TESTDIR/initramfs.server $KVERSION || return 1
+ 
+     # Make client's dracut image
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+         -o "plymouth" \
+         -a "debug" \
+-        -d "af_packet piix sd_mod sr_mod ata_piix ide-gd_mod e1000 nfs sunrpc i6300esbwdt" \
++        -d "af_packet piix sd_mod sr_mod ata_piix ide-gd_mod e1000 nfsv2 nfsv3 nfsv4 nfs_acl nfs_layout_nfsv41_files sunrpc i6300esbwdt" \
+         -f $TESTDIR/initramfs.testing $KVERSION || return 1
+ }
+ 

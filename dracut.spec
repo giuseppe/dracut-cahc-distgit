@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 023
-Release: 21.git20120823%{?dist}
+Release: 39.git20120910%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -48,10 +48,25 @@ Patch16: 0016-wait-host-devs-in-base-module.patch
 Patch17: 0017-Add-for_each_host_dev_and_slaves-for-device-only-che.patch
 Patch18: 0018-Add-a-dracut-option-device-to-bring-up-a-device-in-i.patch
 Patch19: 0019-moved-the-etc-host_devs-write-out-to-99base.patch
-# Fix updates.img handling - submitted to upstream by wwoods
-Patch20: dracut-023-updates.patch
-# Fix splitsep handling of backslashes - submitted to upstream by wwoods
-Patch21: dracut-023-splitsep.patch
+Patch20: 0020-install-dracut-install.c-correct-usage-for-hmac.patch
+Patch21: 0021-dracut-install-FIPS-workaround-for-fipscheck-dir.patch
+Patch22: 0022-Require-fipscheck-and-libssl-in-FIPS-module.patch
+Patch23: 0023-make-splitsep-preserve-backslashes-RHBZ-851295.patch
+Patch24: 0024-crypt-do-not-run-systemd-crypt-generator.patch
+Patch25: 0025-FIPS-workaround-for-fipscheck-dir.patch
+Patch26: 0026-use-check_block_and_slaves-in-for_each_host_dev_and_.patch
+Patch27: 0027-dracut-Override-rd.md-settings-if-rd.md.uuid-is-prov.patch
+Patch28: 0028-dmsquash-live-dmsquash-live-root.sh-Physically-write.patch
+Patch29: 0029-unquote-nbd-port.patch
+Patch30: 0030-ifcfg-write-ifcfg.sh-add-IPV6INIT-yes-for-IPv6.patch
+Patch31: 0031-kernel-modules-module-setup.sh-add-yenta_socket-to-t.patch
+Patch32: 0032-network-fix-ip-ibft-regression.patch
+Patch33: 0033-hide-setsid-help-output-in-emergency_shell.patch
+Patch34: 0034-mdraid-parse-md.sh-fixed-commit-cc4037d12012244b51a1.patch
+Patch35: 0035-apply-live-updates.sh-handle-updates-for-run.patch
+Patch36: 0036-iscsi-parse-iscsiroot.sh-delay-loading-of-iscsi-modu.patch
+Patch37: 0037-nfs-install-all-nfs-submodules.patch
+Patch38: 0038-move-get_persistent_dev-to-dracut-functions.sh.patch
 
 
 BuildRequires: dash bash git
@@ -385,6 +400,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Mon Sep 10 2012 Harald Hoyer <harald@redhat.com> 023-39.git20120910
+- fixed FIPS
+- nbd port fix
+- set IPV6INIT in ifcfg
+- apply live updates for /run as well
+- install all nfs modules
+
 * Thu Aug 30 2012 Adam Williamson <awilliam@redhat.com> 023-21.git20120823
 - add patches for updates.img and splitsep from wwoods (alpha-critical)
 

@@ -1,0 +1,26 @@
+From ca121b1a5c70c0ca15a1c797e5af5df4592c6e80 Mon Sep 17 00:00:00 2001
+From: Wim Muskee <wimmuskee@gmail.com>
+Date: Sat, 25 Aug 2012 13:42:12 +0200
+Subject: [PATCH] unquote nbd port
+
+Name based connects fail because of the quotes around the $nbdport.
+For name based connects, the -N option also gets included. For
+instance nbd-client 192.168.0.1 '-N ltsp' /dev/nbd0.
+I believe the quotes are not necessary for actual port numbers.
+---
+ modules.d/95nbd/nbdroot.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/95nbd/nbdroot.sh b/modules.d/95nbd/nbdroot.sh
+index 7656120..4d06425 100755
+--- a/modules.d/95nbd/nbdroot.sh
++++ b/modules.d/95nbd/nbdroot.sh
+@@ -95,7 +95,7 @@ while [ ! -b /dev/nbd0 ]; do
+     i=$(( $i + 1))
+ done
+ 
+-nbd-client $preopts "$nbdserver" "$nbdport" /dev/nbd0 $opts || exit 1
++nbd-client $preopts "$nbdserver" $nbdport /dev/nbd0 $opts || exit 1
+ 
+ # If we didn't get a root= on the command line, then we need to
+ # add the udev rules for mounting the nbd0 device
