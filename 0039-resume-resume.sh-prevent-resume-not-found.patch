@@ -1,0 +1,29 @@
+From 0e32ce32194b2a031cf7a09798fdf0c322cf2f38 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 18 Sep 2012 13:37:35 +0200
+Subject: [PATCH] resume/resume.sh: prevent "resume: not found"
+
+Problem lies in modules.d/95resume:
+
+[ -x $(command -v resume) ] && command resume $a_splash "$resume"
+
+``command -v resume'' prints nothing and ``test -x'' returns 0.
+
+Thanks to Consus!
+---
+ modules.d/95resume/resume.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/95resume/resume.sh b/modules.d/95resume/resume.sh
+index 408ce46..6d69b61 100755
+--- a/modules.d/95resume/resume.sh
++++ b/modules.d/95resume/resume.sh
+@@ -14,7 +14,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
+             a_splash="-P splash=n"
+         ;;
+     esac
+-    [ -x $(command -v resume) ] && command resume $a_splash "$resume"
++    [ -x "$(command -v resume)" ] && command resume $a_splash "$resume"
+ 
+     # parsing the output of ls is Bad, but until there is a better way...
+     ls -lH "$resume" | (

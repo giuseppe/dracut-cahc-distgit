@@ -1,0 +1,68 @@
+From d9a7ea5b438125ac1c8cf0d19c5f0b38fd21bbe9 Mon Sep 17 00:00:00 2001
+From: Dave Young <dyoung@redhat.com>
+Date: Mon, 17 Sep 2012 18:01:03 +0800
+Subject: [PATCH] ismounted fix
+
+ismounted handles both find-by-dev and find-by-mnt, but there's two issues:
+1. for find-by-dev, it use readlink to get the canonical dev name, but
+   lvm is different with other devices, the canonical name for lvm devices
+   are symlinks like /dev/mapper/vg-lv00
+2. for nfs mounting, just use [ -b $dev ] is not enough, it need being handled
+   seperately.
+
+Per Karel Zak's suggestion, findmnt util is suitable for this purpose, it
+handles these cases well, so just use findmnt instead of implement all the
+logic by ourselves. Thanks, Karel.
+
+Signed-off-by: Dave Young <dyoung@redhat.com>
+---
+ modules.d/99base/dracut-lib.sh   | 19 +------------------
+ modules.d/99base/module-setup.sh |  2 +-
+ 2 files changed, 2 insertions(+), 19 deletions(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index fbe6f91..6fd4e0a 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -452,27 +452,10 @@ udevproperty() {
+     fi
+ }
+ 
+-find_mount() {
+-    local dev mnt etc wanted_dev
+-    wanted_dev="$(readlink -e -q $1)"
+-    while read dev mnt etc; do
+-        [ "$dev" = "$wanted_dev" ] && echo "$dev" && return 0
+-    done < /proc/mounts
+-    return 1
+-}
+-
+ # usage: ismounted <mountpoint>
+ # usage: ismounted /dev/<device>
+ ismounted() {
+-    if [ -b "$1" ]; then
+-        find_mount "$1" > /dev/null && return 0
+-        return 1
+-    fi
+-
+-    while read a m a; do
+-        [ "$m" = "$1" ] && return 0
+-    done < /proc/mounts
+-    return 1
++    findmnt "$1" > /dev/null
+ }
+ 
+ wait_for_if_up() {
+diff --git a/modules.d/99base/module-setup.sh b/modules.d/99base/module-setup.sh
+index 115b544..6cc4ad2 100755
+--- a/modules.d/99base/module-setup.sh
++++ b/modules.d/99base/module-setup.sh
+@@ -13,7 +13,7 @@ depends() {
+ 
+ install() {
+     local _d
+-    dracut_install mount mknod mkdir pidof sleep chroot \
++    dracut_install mount mknod mkdir pidof sleep chroot findmnt\
+         sed ls flock cp mv dmesg rm ln rmmod mkfifo umount readlink setsid
+     inst $(command -v modprobe) /sbin/modprobe
+ 

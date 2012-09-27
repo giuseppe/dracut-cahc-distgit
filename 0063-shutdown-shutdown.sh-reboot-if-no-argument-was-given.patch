@@ -1,0 +1,54 @@
+From d65638dacb57aaa681f05b63b3ea49cef9f80d2f Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 27 Sep 2012 12:10:14 +0200
+Subject: [PATCH] shutdown/shutdown.sh: reboot, if no argument was given
+
+---
+ modules.d/99shutdown/shutdown.sh | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
+
+diff --git a/modules.d/99shutdown/shutdown.sh b/modules.d/99shutdown/shutdown.sh
+index e1da91b..74b6be8 100755
+--- a/modules.d/99shutdown/shutdown.sh
++++ b/modules.d/99shutdown/shutdown.sh
+@@ -6,6 +6,7 @@
+ #
+ # Copyright 2011, Red Hat, Inc.
+ # Harald Hoyer <harald@redhat.com>
++ACTION="$1"
+ 
+ export TERM=linux
+ export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+@@ -40,8 +41,8 @@ _check_shutdown() {
+     local __s=1
+     for __f in $hookdir/shutdown/*.sh; do
+         [ -e "$__f" ] || continue
+-        ( . "$__f" $1 ) 
+-        if [ $? -eq 0 ]; then 
++        ( . "$__f" $1 )
++        if [ $? -eq 0 ]; then
+             rm -f $__f
+             __s=0
+         fi
+@@ -49,14 +50,16 @@ _check_shutdown() {
+     return $__s
+ }
+ 
+-_cnt=0
+ while _check_shutdown; do
+ :
+ done
+ _check_shutdown final
+ 
+ getarg 'rd.break=shutdown' && emergency_shell --shutdown shutdown "Break before shutdown"
+-[ "$1" = "reboot" ] && reboot -f -d -n
+-[ "$1" = "poweroff" ] && poweroff -f -d -n
+-[ "$1" = "halt" ] && halt -f -d -n
+-[ "$1" = "kexec" ] && kexec -e
++[ "$ACTION" = "reboot" ] && reboot -f -d -n
++[ "$ACTION" = "poweroff" ] && poweroff -f -d -n
++[ "$ACTION" = "halt" ] && halt -f -d -n
++[ "$ACTION" = "kexec" ] && kexec -e
++
++warn "Shutdown called without an argument. Rebooting!"
++reboot -f -d -n

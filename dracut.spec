@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 023
-Release: 39.git20120910%{?dist}
+Release: 65.git20120927%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -67,6 +67,32 @@ Patch35: 0035-apply-live-updates.sh-handle-updates-for-run.patch
 Patch36: 0036-iscsi-parse-iscsiroot.sh-delay-loading-of-iscsi-modu.patch
 Patch37: 0037-nfs-install-all-nfs-submodules.patch
 Patch38: 0038-move-get_persistent_dev-to-dracut-functions.sh.patch
+Patch39: 0039-resume-resume.sh-prevent-resume-not-found.patch
+Patch40: 0040-bye-bye-iscsi_wait_scan-.-officially-gone-for-kernel.patch
+Patch41: 0041-45url-lib-url-lib.sh-give-info-what-URL-curl-failed-.patch
+Patch42: 0042-ismounted-fix.patch
+Patch43: 0043-dash-compat-use-2-1-rather-than.patch
+Patch44: 0044-fallback-to-old-ismounted-if-findmnt-is-not-installe.patch
+Patch45: 0045-dracut-logger.sh-don-t-check-for-lvl-0-in-dlog_init.patch
+Patch46: 0046-use-by-uuid-firstly-in-get_persistent_dev.patch
+Patch47: 0047-systemd-initrd-switch-root.target-run-switch-root.ta.patch
+Patch48: 0048-crypt-install-etc-crypttab-only-in-host-only-mode.patch
+Patch49: 0049-udev-rules-module-setup.sh-add-udev-groups.patch
+Patch50: 0050-TEST-03-USR-MOUNT-create-root.sh-load-btrfs-module-m.patch
+Patch51: 0051-TEST-10-RAID-test.sh-add-rd.auto-1.patch
+Patch52: 0052-i18n-10-console.rules-do-the-console-init-only-one-t.patch
+Patch53: 0053-url-lib-module-setup.sh-also-install-libs-for-https.patch
+Patch54: 0054-busybox-fix-installation-from-sbin-busybox.patch
+Patch55: 0055-busybox-module-setup.sh-generate-nice-relative-symli.patch
+Patch56: 0056-install-dracut-install.c-support-find_binary-for-src.patch
+Patch57: 0057-dracut.cmdline.7.asc-fixed-rd.luks.allow-discards-fo.patch
+Patch58: 0058-crypt-crypt-run-generator.sh-add-allow-discards-to-o.patch
+Patch59: 0059-TEST-16-DMSQUASH-reenable-test.patch
+Patch60: 0060-dm-module-setup.sh-instmods-dm_mod.patch
+Patch61: 0061-dracut.sh-create-the-initramfs-non-world-readable.patch
+Patch62: 0062-network-ifup.sh-setup-nameserver-for-every-interface.patch
+Patch63: 0063-shutdown-shutdown.sh-reboot-if-no-argument-was-given.patch
+Patch64: 0064-TODO-update.patch
 
 
 BuildRequires: dash bash git
@@ -400,6 +426,20 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu Sep 27 2012 Harald Hoyer <harald@redhat.com> 023-65.git20120927
+- no more iscsi_wait_scan
+- curl: give info what URL failed, support https
+- use findmnt
+- systemd: wait for cryptroot
+- only install crypttab in host-only mode
+- add udev groups
+- fixed busybox install
+- fixed rd.luks.allow-discards manpage and handling
+- force install dm_mod
+- do not create the initramfs world reabable
+- add nameserver even for dhcp
+- fallback to reboot if shutdown was called without a parameter
+
 * Mon Sep 10 2012 Harald Hoyer <harald@redhat.com> 023-39.git20120910
 - fixed FIPS
 - nbd port fix

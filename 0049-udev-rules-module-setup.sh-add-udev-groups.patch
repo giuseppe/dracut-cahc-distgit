@@ -1,0 +1,35 @@
+From 500d8e600291b69204c67e84282ff0cd90d2f80d Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 24 Sep 2012 13:30:46 +0200
+Subject: [PATCH] udev-rules/module-setup.sh: add udev groups
+
+---
+ modules.d/95udev-rules/module-setup.sh | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/modules.d/95udev-rules/module-setup.sh b/modules.d/95udev-rules/module-setup.sh
+index 5e1cce5..00f9923 100755
+--- a/modules.d/95udev-rules/module-setup.sh
++++ b/modules.d/95udev-rules/module-setup.sh
+@@ -37,6 +37,21 @@ install() {
+     inst_dir /run/udev
+     inst_dir /run/udev/rules.d
+ 
++    {
++        for i in cdrom tape dialout floppy; do
++            if ! egrep -q "^$i:" "$initdir/etc/group" 2>/dev/null; then
++                if ! egrep "^$i:" /etc/group 2>/dev/null; then
++                        case $i in 
++                            cdrom)   echo "$i:x:11:";;
++                            dialout) echo "$i:x:18:";;
++                            floppy)  echo "$i:x:19:";;
++                            tape)    echo "$i:x:33:";;
++                        esac
++                fi
++            fi
++        done
++    } >> "$initdir/etc/group"
++
+     dracut_install -o \
+         ${udevdir}/ata_id \
+         ${udevdir}/cdrom_id \

@@ -1,0 +1,27 @@
+From 69ba546721d9faee2a29498df4c6ec6676a30c5c Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 27 Sep 2012 12:28:46 +0200
+Subject: [PATCH] TODO: update
+
+---
+ TODO | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/TODO b/TODO
+index 9481df7..84939ab 100644
+--- a/TODO
++++ b/TODO
+@@ -14,6 +14,13 @@ INITRAMFS TODO
+ - put mount hook in main initqueue loop / careful about resume!
+ - the hard-coded list of udev rules that we care about is kind of lame.
+ - panic fallback
++- bridging/bonding without "netroot=" https://bugzilla.redhat.com/show_bug.cgi?id=822750
++- progress indication for fsck https://bugzilla.redhat.com/show_bug.cgi?id=827118
++- domain, searchdomain https://bugzilla.redhat.com/show_bug.cgi?id=840778
++- disable write-ifcfg https://bugzilla.redhat.com/show_bug.cgi?id=840784
++- check for /var to be mounted in convertfs https://bugzilla.redhat.com/show_bug.cgi?id=848172
++- probably fix "--include" https://bugzilla.redhat.com/show_bug.cgi?id=849338
++- iscsi livecd boot
+ 
+ GENERATOR TODO
+ 
