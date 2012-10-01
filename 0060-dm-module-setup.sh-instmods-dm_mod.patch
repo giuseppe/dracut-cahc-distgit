@@ -1,0 +1,21 @@
+From 194e074764756a2ee4d7164aa422dddae51b3576 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 26 Sep 2012 15:05:34 +0200
+Subject: [PATCH] dm/module-setup.sh: instmods dm_mod
+
+---
+ modules.d/90dm/module-setup.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules.d/90dm/module-setup.sh b/modules.d/90dm/module-setup.sh
+index 8bc2ea4..6ec9af4 100755
+--- a/modules.d/90dm/module-setup.sh
++++ b/modules.d/90dm/module-setup.sh
+@@ -13,6 +13,7 @@ depends() {
+ 
+ installkernel() {
+     instmods =drivers/md
++    instmods dm_mod
+ }
+ 
+ install() {

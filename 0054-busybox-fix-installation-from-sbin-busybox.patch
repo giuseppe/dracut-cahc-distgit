@@ -1,0 +1,31 @@
+From 69eba8c40a5e34569ae67f8970cc72b28b8d8a72 Mon Sep 17 00:00:00 2001
+From: Daniel Drake <dsd@laptop.org>
+Date: Tue, 25 Sep 2012 18:42:28 -0400
+Subject: [PATCH] busybox: fix installation from /sbin/busybox
+
+"inst busybox" no longer seems to work when busybox is at
+/sbin/busybox. Reproduced on Fedora 18 (dracut-023-39.git20120910).
+
+Use type -P to find the full path to busybox to solve this problem.
+---
+ modules.d/05busybox/module-setup.sh | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/modules.d/05busybox/module-setup.sh b/modules.d/05busybox/module-setup.sh
+index 2e9ead8..e0ef178 100755
+--- a/modules.d/05busybox/module-setup.sh
++++ b/modules.d/05busybox/module-setup.sh
+@@ -13,9 +13,10 @@ depends() {
+ }
+ 
+ install() {
+-    local _i _progs _path
+-    inst busybox /usr/bin/busybox
+-    for _i in `/sbin/busybox | sed -ne '1,/Currently/!{s/,//g; s/busybox//g; p}'`
++    local _i _progs _path _busybox
++    _busybox=$(type -P busybox)
++    inst $_busybox /usr/bin/busybox
++    for _i in `$_busybox | sed -ne '1,/Currently/!{s/,//g; s/busybox//g; p}'`
+     do
+         _progs="$_progs $_i"
+     done

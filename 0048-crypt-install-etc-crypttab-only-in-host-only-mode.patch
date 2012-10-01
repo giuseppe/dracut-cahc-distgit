@@ -1,0 +1,22 @@
+From 3d12d7a2cc5d4fc76ac87514dae2ab27bac8208c Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 24 Sep 2012 13:15:08 +0200
+Subject: [PATCH] crypt: install /etc/crypttab only in host-only mode
+
+---
+ modules.d/90crypt/module-setup.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/90crypt/module-setup.sh b/modules.d/90crypt/module-setup.sh
+index 485cbe0..5c1c71b 100755
+--- a/modules.d/90crypt/module-setup.sh
++++ b/modules.d/90crypt/module-setup.sh
+@@ -47,7 +47,7 @@ install() {
+     inst_hook cmdline 10 "$moddir/parse-keydev.sh"
+     inst_hook cmdline 30 "$moddir/parse-crypt.sh"
+     inst_hook cleanup 30 "$moddir/crypt-cleanup.sh"
+-    inst_simple /etc/crypttab
++    [[ $hostonly ]]  && inst_simple /etc/crypttab
+     inst_simple "$moddir/crypt-lib.sh" "/lib/dracut-crypt-lib.sh"
+ 
+     dracut_install -o \

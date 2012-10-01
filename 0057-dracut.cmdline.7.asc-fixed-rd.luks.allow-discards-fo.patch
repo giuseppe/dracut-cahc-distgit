@@ -1,0 +1,22 @@
+From f7235c223dcdfdfa345ed63c156165840e66b068 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 26 Sep 2012 11:48:41 +0200
+Subject: [PATCH] dracut.cmdline.7.asc: fixed rd.luks.allow-discards format
+
+---
+ dracut.cmdline.7.asc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut.cmdline.7.asc b/dracut.cmdline.7.asc
+index c376d79..910006d 100644
+--- a/dracut.cmdline.7.asc
++++ b/dracut.cmdline.7.asc
+@@ -219,7 +219,7 @@ crypto LUKS
+     LUKS UUID, so you don't have to specify the full UUID.
+     This parameter can be specified multiple times.
+ 
+-**rd.luks.allow-discards::
++**rd.luks.allow-discards**::
+     Allow  using  of discards (TRIM) requests on all LUKS partitions.
+ 
+ **rd.luks.crypttab=0**::

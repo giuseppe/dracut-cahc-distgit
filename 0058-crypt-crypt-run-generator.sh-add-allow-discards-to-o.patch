@@ -1,0 +1,34 @@
+From 372202007163a3294f3198dfb0eb9882e89b6e0e Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 26 Sep 2012 11:49:28 +0200
+Subject: [PATCH] crypt/crypt-run-generator.sh: add allow-discards to options
+ in crypttab
+
+---
+ modules.d/90crypt/crypt-run-generator.sh | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/90crypt/crypt-run-generator.sh b/modules.d/90crypt/crypt-run-generator.sh
+index 224e511..3264b29 100755
+--- a/modules.d/90crypt/crypt-run-generator.sh
++++ b/modules.d/90crypt/crypt-run-generator.sh
+@@ -11,7 +11,18 @@ if [ -f /etc/crypttab ]; then
+     done < /etc/crypttab
+ fi
+ 
+-echo "$luks $dev" >> /etc/crypttab
++# parse for allow-discards
++if strstr "$(cryptsetup --help)" "allow-discards"; then
++    if discarduuids=$(getargs "rd.luks.allow-discards"); then
++        if strstr " $discarduuids " " ${luks##luks-}"; then
++	    allowdiscards="allow-discards"
++	fi
++    elif getargbool rd.luks.allow-discards; then
++	allowdiscards="allow-discards"
++    fi
++fi
++
++echo "$luks $dev none $allowdiscards" >> /etc/crypttab
+ systemctl daemon-reload
+ systemctl start cryptsetup.target
+ exit 0

@@ -1,0 +1,17 @@
+From a0508937fc0d4fecf693301cca0ffe9e82ebb944 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 24 Sep 2012 15:12:20 +0200
+Subject: [PATCH] i18n/10-console.rules: do the console init only one time
+
+---
+ modules.d/10i18n/10-console.rules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/10i18n/10-console.rules b/modules.d/10i18n/10-console.rules
+index 385dff0..640b1db 100644
+--- a/modules.d/10i18n/10-console.rules
++++ b/modules.d/10i18n/10-console.rules
+@@ -1,2 +1,2 @@
+ # Console initialization - keyboard, font, etc.
+-KERNEL=="tty0",		RUN+="/sbin/initqueue --unique --name console_init_$name /lib/udev/console_init $root/$name"
++KERNEL=="tty0",		RUN+="/sbin/initqueue --onetime --unique --name console_init_$name /lib/udev/console_init $root/$name"
