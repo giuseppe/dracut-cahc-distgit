@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 5.git20121019%{?dist}
+Release: 10.git20121121%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -34,6 +34,7 @@ Patch2: 0002-dracut.conf.d-fedora.conf.example-s-kernelcmdline-ke.patch
 Patch3: 0003-40network-ifup.sh-do_static-and-do_ipv6auto-return-0.patch
 Patch4: 0004-dracut.sh-only-warn-not-error-if-we-don-t-strip.patch
 
+Patch6: 0006-dracut.sh-do-not-strip-signed-kernel-modules.patch
 
 BuildRequires: dash bash git
 
@@ -366,6 +367,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Wed Nov 21 2012 Harald Hoyer <harald@redhat.com> 024-10.git20121121
+- do not strip signed kernel modules
+Resolves: rhbz#873796
+
 * Fri Oct 19 2012 Harald Hoyer <harald@redhat.com> 024-5.git20121019
 - only 'warn' not 'error', if we don't strip the initramfs
 
