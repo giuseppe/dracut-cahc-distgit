@@ -1,8 +1,8 @@
-From 8bf25df6408af65a95318b967b6ca64ead643f0e Mon Sep 17 00:00:00 2001
+From 50e350a6c5c549c4b11682df86d6773f4255d60d Mon Sep 17 00:00:00 2001
 From: WANG Chao <chaowang@redhat.com>
 Date: Thu, 18 Oct 2012 16:43:28 +0800
-Subject: [PATCH] 40network/ifup.sh: do_static() and do_ipv6auto return 0 if
- no errors.
+Subject: [PATCH] 40network/ifup.sh: do_static() and do_ipv6auto return 0 if no
+ errors.
 
 Commit a0be1ed removes some lines from do_static() and do_ipv6auto().
 

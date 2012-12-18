@@ -1,4 +1,4 @@
-From e743cfdd4bab527fa39e773be7dd48c8325c8eee Mon Sep 17 00:00:00 2001
+From 16b501e2975a1aed9e87895e4daad16827de4109 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 19 Oct 2012 11:10:03 +0200
 Subject: [PATCH] dracut.conf.d/fedora.conf.example:

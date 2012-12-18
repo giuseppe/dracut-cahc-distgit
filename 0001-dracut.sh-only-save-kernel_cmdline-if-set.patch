@@ -1,4 +1,4 @@
-From 636e5cd2d53c8165a0dc5f857af643fd15faea9d Mon Sep 17 00:00:00 2001
+From d316776f2fd9e7d499a8054c6292362ae9e234c0 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 19 Oct 2012 11:09:38 +0200
 Subject: [PATCH] dracut.sh: only save $kernel_cmdline, if set
