@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 15.git20121218%{?dist}
+Release: 16.git20121220%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -43,6 +43,7 @@ Patch11: 0011-add-swapoff-to-initramfs-to-fix-shutdown-reboot.patch
 Patch12: 0012-dracut.spec-add-iputils-and-iproute-requirement-for-.patch
 Patch13: 0013-nfs-nfsroot-cleanup.sh-mount-bind-instead-of-move.patch
 Patch14: 0014-iscsi-iscsiroot.sh-reload-rules-after-adding-99-iscs.patch
+Patch15: 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
 
 
 BuildRequires: dash bash git
@@ -378,6 +379,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu Dec 20 2012 Harald Hoyer <harald@redhat.com> 024-16.git20121220
+- fixed mediacheck
+Resolves: rhbz#874486
+
 * Tue Dec 18 2012 Harald Hoyer <harald@redhat.com> 024-15.git20121218
 - fixed mediacheck
 Resolves: rhbz#874486
