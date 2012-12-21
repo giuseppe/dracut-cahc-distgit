@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 16.git20121220%{?dist}
+Release: 17.git20121220%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -379,6 +379,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu Dec 20 2012 Adam Williamson <awilliam@redhat.com> 024-17.git20121220
+- fixed 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
+
 * Thu Dec 20 2012 Harald Hoyer <harald@redhat.com> 024-16.git20121220
 - fixed mediacheck
 Resolves: rhbz#874486
