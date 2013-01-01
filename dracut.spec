@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 10.git20121121%{?dist}
+Release: 17.git20121220%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -33,8 +33,18 @@ Patch1: 0001-dracut.sh-only-save-kernel_cmdline-if-set.patch
 Patch2: 0002-dracut.conf.d-fedora.conf.example-s-kernelcmdline-ke.patch
 Patch3: 0003-40network-ifup.sh-do_static-and-do_ipv6auto-return-0.patch
 Patch4: 0004-dracut.sh-only-warn-not-error-if-we-don-t-strip.patch
+Patch5: 0005-dracut.sh-do-not-strip-signed-kernel-modules.patch
+Patch6: 0006-i18n-parse-i18n.sh-fix-locale.conf-caused-by-4dbc1d1.patch
+Patch7: 0007-network-fixed-MAC-address-assignment.patch
+Patch8: 0008-dmsquash-live-add-systemd-checkisomd5-service.patch
+Patch9: 0009-crypt-crypt-run-generator.sh-do-not-timeout-for-LUKS.patch
+Patch10: 0010-systemd-dracut-cmdline.service-run-before-systemd-vc.patch
+Patch11: 0011-add-swapoff-to-initramfs-to-fix-shutdown-reboot.patch
+Patch12: 0012-dracut.spec-add-iputils-and-iproute-requirement-for-.patch
+Patch13: 0013-nfs-nfsroot-cleanup.sh-mount-bind-instead-of-move.patch
+Patch14: 0014-iscsi-iscsiroot.sh-reload-rules-after-adding-99-iscs.patch
+Patch15: 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
 
-Patch6: 0006-dracut.sh-do-not-strip-signed-kernel-modules.patch
 
 BuildRequires: dash bash git
 
@@ -112,6 +122,8 @@ NFS, iSCSI, NBD, FCoE with the dracut-network package.
 %package network
 Summary: dracut modules to build a dracut initramfs with network support
 Requires: %{name} = %{version}-%{release}
+Requires: iputils
+Requires: iproute
 Obsoletes: dracut-generic < 008
 Provides:  dracut-generic = %{version}-%{release}
 
@@ -367,6 +379,21 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Thu Dec 20 2012 Adam Williamson <awilliam@redhat.com> 024-17.git20121220
+- fixed 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
+
+* Thu Dec 20 2012 Harald Hoyer <harald@redhat.com> 024-16.git20121220
+- fixed mediacheck
+Resolves: rhbz#874486
+
+* Tue Dec 18 2012 Harald Hoyer <harald@redhat.com> 024-15.git20121218
+- fixed mediacheck
+Resolves: rhbz#874486
+- fixed mount move of rpc_pipefs
+Resolves: rhbz#860525
+- add "timeout=0" to /etc/crypttab in the initramfs
+Resolves: rhbz#881670
+
 * Wed Nov 21 2012 Harald Hoyer <harald@redhat.com> 024-10.git20121121
 - do not strip signed kernel modules
 Resolves: rhbz#873796
