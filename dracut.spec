@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 17.git20121220%{?dist}
+Release: 18.git20130102%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -44,6 +44,8 @@ Patch12: 0012-dracut.spec-add-iputils-and-iproute-requirement-for-.patch
 Patch13: 0013-nfs-nfsroot-cleanup.sh-mount-bind-instead-of-move.patch
 Patch14: 0014-iscsi-iscsiroot.sh-reload-rules-after-adding-99-iscs.patch
 Patch15: 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
+Patch16: 0016-kernel-modules-create-etc-modprobe.d-if-it-does-not-.patch
+Patch17: 0017-usrmount-mount-usr.sh-filter-subvol-from-root-rflags.patch
 
 
 BuildRequires: dash bash git
@@ -379,6 +381,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Wed Jan 02 2013 Harald Hoyer <harald@redhat.com> 024-18.git20130102
+- fixed rd.driver.* kernel command line arguments by creating
+  /etc/modprobe.d
+Resolves: rhbz#873220
+- fixed btrfs subvol mounting for /usr, if root is also on a subvol
+Resolves: rhbz#890577
+
 * Thu Dec 20 2012 Adam Williamson <awilliam@redhat.com> 024-17.git20121220
 - fixed 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
 
