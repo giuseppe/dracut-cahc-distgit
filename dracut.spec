@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 18.git20130102%{?dist}
+Release: 23.git20130118%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -46,6 +46,11 @@ Patch14: 0014-iscsi-iscsiroot.sh-reload-rules-after-adding-99-iscs.patch
 Patch15: 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
 Patch16: 0016-kernel-modules-create-etc-modprobe.d-if-it-does-not-.patch
 Patch17: 0017-usrmount-mount-usr.sh-filter-subvol-from-root-rflags.patch
+Patch18: 0018-dracut-functions.sh-add-pre-shutdown-hook.patch
+Patch19: 0019-dracut-lib.sh-force-hide-plymouth-in-shutdown-emerge.patch
+Patch20: 0020-shutdown-source-pre-shutdown-hook-and-force-quit-ply.patch
+Patch21: 0021-mdraid-add-mdmon-offroot-.service-and-takeover-mdmon.patch
+Patch22: 0022-shutdown-kill-all-processes-and-report-remaining-one.patch
 
 
 BuildRequires: dash bash git
@@ -381,6 +386,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Mon Jan 21 2013 Harald Hoyer <harald@redhat.com> 024-23.git20130118
+- fix disassembling of IMSM raids
+
 * Wed Jan 02 2013 Harald Hoyer <harald@redhat.com> 024-18.git20130102
 - fixed rd.driver.* kernel command line arguments by creating
   /etc/modprobe.d
