@@ -1,0 +1,22 @@
+From 04cbc2beb6006959f65af5810fdb922892b5ebb1 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 18 Jan 2013 10:59:39 +0100
+Subject: [PATCH] dracut-functions.sh: add pre-shutdown hook
+
+---
+ dracut-functions.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index f1c797c..0b65df2 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -106,7 +106,7 @@ fi
+     hookdirs="cmdline pre-udev pre-trigger netroot "
+     hookdirs+="initqueue initqueue/settled initqueue/online initqueue/finished initqueue/timeout "
+     hookdirs+="pre-mount pre-pivot cleanup mount "
+-    hookdirs+="emergency shutdown-emergency shutdown "
++    hookdirs+="emergency shutdown-emergency pre-shutdown shutdown "
+     export hookdirs
+ }
+ 

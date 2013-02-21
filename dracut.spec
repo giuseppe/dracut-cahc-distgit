@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 18.git20130102%{?dist}
+Release: 25.git20130205%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -46,6 +46,13 @@ Patch14: 0014-iscsi-iscsiroot.sh-reload-rules-after-adding-99-iscs.patch
 Patch15: 0015-dmsquash-live-fixed-checkisomd5-service-call.patch
 Patch16: 0016-kernel-modules-create-etc-modprobe.d-if-it-does-not-.patch
 Patch17: 0017-usrmount-mount-usr.sh-filter-subvol-from-root-rflags.patch
+Patch18: 0018-dracut-functions.sh-add-pre-shutdown-hook.patch
+Patch19: 0019-dracut-lib.sh-force-hide-plymouth-in-shutdown-emerge.patch
+Patch20: 0020-shutdown-source-pre-shutdown-hook-and-force-quit-ply.patch
+Patch21: 0021-mdraid-add-mdmon-offroot-.service-and-takeover-mdmon.patch
+Patch22: 0022-shutdown-kill-all-processes-and-report-remaining-one.patch
+Patch23: 0023-mdmon-renamed-mdmon-offroot-.service-to-mdmon-.servi.patch
+Patch24: 0024-shutdown-call-losetup-D-on-shutdown.patch
 
 
 BuildRequires: dash bash git
@@ -113,6 +120,8 @@ Requires: util-linux-ng >= 2.21
 Conflicts: initscripts < 8.63-1
 Conflicts: plymouth < 0.8.0-0.2009.29.09.19.1
 %endif
+
+Conflicts: mdadm < 3.2.6-14
 
 %description
 dracut contains tools to create a bootable initramfs for 2.6 Linux kernels.
@@ -381,6 +390,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Feb 05 2013 Harald Hoyer <harald@redhat.com> 024-25.git20130205
+- call "losetup -D" on shutdown
+- use new mdadm@.service instead of mdadm-offroot@.service
+
+* Mon Jan 21 2013 Harald Hoyer <harald@redhat.com> 024-23.git20130118
+- fix disassembling of IMSM raids
+
 * Wed Jan 02 2013 Harald Hoyer <harald@redhat.com> 024-18.git20130102
 - fixed rd.driver.* kernel command line arguments by creating
   /etc/modprobe.d
