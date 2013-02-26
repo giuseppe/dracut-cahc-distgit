@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 25.git20130205%{?dist}
+Release: 28.git20130226%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -53,6 +53,9 @@ Patch21: 0021-mdraid-add-mdmon-offroot-.service-and-takeover-mdmon.patch
 Patch22: 0022-shutdown-kill-all-processes-and-report-remaining-one.patch
 Patch23: 0023-mdmon-renamed-mdmon-offroot-.service-to-mdmon-.servi.patch
 Patch24: 0024-shutdown-call-losetup-D-on-shutdown.patch
+Patch25: 0025-url-lib-url-lib.sh-turn-off-curl-globbing.patch
+Patch26: 0026-url-lib-url-lib.sh-add-proxy-support-for-curl.patch
+Patch27: 0027-url-lib-url-lib.sh-remove-bashism.patch
 
 
 BuildRequires: dash bash git
@@ -390,6 +393,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Tue Feb 26 2013 Harald Hoyer <harald@redhat.com> 024-28.git20130226
+- turn off globbing for curl
+Resolves: rhbz#907497
+- add proxy support for curl
+Resolves: rhbz#854029
+
+
 * Tue Feb 05 2013 Harald Hoyer <harald@redhat.com> 024-25.git20130205
 - call "losetup -D" on shutdown
 - use new mdadm@.service instead of mdadm-offroot@.service

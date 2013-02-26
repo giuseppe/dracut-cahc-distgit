@@ -1,0 +1,23 @@
+From 6f7f2d539963d298d7cb91f037db1b0a230e339b Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 19 Feb 2013 16:13:49 +0100
+Subject: [PATCH] url-lib/url-lib.sh: remove bashism
+
+remove the forgotten bashism "+="
+---
+ modules.d/45url-lib/url-lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/45url-lib/url-lib.sh b/modules.d/45url-lib/url-lib.sh
+index 9ab8b4e..3236c78 100755
+--- a/modules.d/45url-lib/url-lib.sh
++++ b/modules.d/45url-lib/url-lib.sh
+@@ -58,7 +58,7 @@ curl_args="--location --retry 3 --fail --show-error"
+ getargbool 0 rd.noverifyssl && curl_args+=" --insecure"
+ 
+ proxy=$(getarg proxy=)
+-[ -n "$proxy" ] && curl_args+="$curl_args --proxy $proxy"
++[ -n "$proxy" ] && curl_args="$curl_args --proxy $proxy"
+ 
+ curl_fetch_url() {
+     local url="$1" outloc="$2"
