@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 024
-Release: 28.git20130226%{?dist}
+Release: 29.git20130227%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -56,6 +56,7 @@ Patch24: 0024-shutdown-call-losetup-D-on-shutdown.patch
 Patch25: 0025-url-lib-url-lib.sh-turn-off-curl-globbing.patch
 Patch26: 0026-url-lib-url-lib.sh-add-proxy-support-for-curl.patch
 Patch27: 0027-url-lib-url-lib.sh-remove-bashism.patch
+Patch28: 0028-url-lib.sh-fix-curl-globoff-arg.patch
 
 
 BuildRequires: dash bash git
@@ -393,6 +394,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /var/lib/dracut/overlay
 
 %changelog
+* Wed Feb 27 2013 Harald Hoyer <harald@redhat.com> 024-29.git20130227
+- turn off globbing for curl
+Resolves: rhbz#907497
+
 * Tue Feb 26 2013 Harald Hoyer <harald@redhat.com> 024-28.git20130226
 - turn off globbing for curl
 Resolves: rhbz#907497
