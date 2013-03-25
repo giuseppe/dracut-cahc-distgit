@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 026
-Release: 33.git20130313%{?dist}
+Release: 72.git20130320%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -61,12 +61,53 @@ Patch29: 0029-systemd-remove-upstream-renamed-old-service-files.patch
 Patch30: 0030-kernel-modules-move-usb-storage-out-of-fixed-drivers.patch
 Patch31: 0031-dracut.sh-Add-noimageifnotneeded-parameter.patch
 Patch32: 0032-shutdown-shutdown.sh-mount-move-all-basic-mounts-out.patch
+Patch33: 0033-Don-t-write-DHCPV6C-yes-for-each-dhcp-ipv4-configura.patch
+Patch34: 0034-Write-BOOTPROTO-ibft-for-ip-ibft-to-ifcfg-files.patch
+Patch35: 0035-TODO-remove-completed-items.patch
+Patch36: 0036-51-dracut-rescue-postinst.sh-fixed-new-kernel-pkg-ca.patch
+Patch37: 0037-dracut-install-handle-more-ldd-errors.patch
+Patch38: 0038-dracut.spec-fix-requirements.patch
+Patch39: 0039-ifcfg-write-ifcfg.sh-fixed-typo.patch
+Patch40: 0040-iscsi-iscsiroot.sh-do-not-mount-manually-in-systemd-.patch
+Patch41: 0041-nfs-nfsroot.sh-only-cat-etc-fstab-if-existant.patch
+Patch42: 0042-udev-rules-module-setup.sh-do-not-install-run.patch
+Patch43: 0043-systemd-switch-to-new-initrd.target.patch
+Patch44: 0044-systemd-do-not-use-systemd-version-until-fixed.patch
+Patch45: 0045-fix-typo-in-dracut.conf.5.asc.patch
+Patch46: 0046-fixed-testsuite.patch
+Patch47: 0047-dracut.spec-bump-systemd-version-requirement.patch
+Patch48: 0048-sosreport.sh-use-o-short-monotonic-for-the-journal-o.patch
+Patch49: 0049-dracut-bash-completion.sh-add-kver-kernel-version-co.patch
+Patch50: 0050-TEST-16-DMSQUASH-use-current-releasever.patch
+Patch51: 0051-dracut.conf.5.asc-remove-duplicated-install_items.patch
+Patch52: 0052-dmsquash-live-force-load-squashfs-kernel-module.patch
+Patch53: 0053-sosreport-mkdir-run-initramfs-if-it-does-not-exist-y.patch
+Patch54: 0054-kernel-modules-module-setup.sh-install-all-host-file.patch
+Patch55: 0055-kernel-modules-module-setup.sh-don-t-fail-hard-on-a-.patch
+Patch56: 0056-Makefile-use-D_FILE_OFFSET_BITS-64-to-build-dracut-i.patch
+Patch57: 0057-drm-module-setup.sh-redirect-grep-to-dev-null.patch
+Patch58: 0058-systemd-add-more-ordering.patch
+Patch59: 0059-add-dracut.bootup.7-man-page.patch
+Patch60: 0060-fs-lib-fs-lib.sh-write_fs_tab-start-initrd-root-fs.t.patch
+Patch61: 0061-nbd-nbdroot.sh-fix-root-blockdev-case.patch
+Patch62: 0062-network-netroot.sh-do-not-unset-root.patch
+Patch63: 0063-TEST-40-NBD-test.sh-kill_server-after-test_run.patch
+Patch64: 0064-51-dracut-rescue-postinst.sh-add-extra-checks.patch
+Patch65: 0065-51-dracut-rescue-postinst.sh-Rename-image-and-grub-e.patch
+Patch66: 0066-51-dracut-rescue-postinst.sh-51-dracut-rescue.instal.patch
+Patch67: 0067-dracut.sh-remove-temporary-cpio-output-in-trap.patch
+Patch68: 0068-dracut.spec-use-pkg-config-for-bashcompletiondir.patch
+Patch69: 0069-dracut.spec-use-configure.patch
+Patch70: 0070-dracut.sh-turn-off-host-only-mode-if-essential-syste.patch
+Patch71: 0071-dracut.sh-turn-off-hostonly-mode-if-udev-database-is.patch
 
 
 BuildRequires: dash bash git
 
 %if 0%{?fedora} || 0%{?rhel}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: bash-completion
+BuildRequires: pkgconfig
 %endif
 %if 0%{?suse_version}
 BuildRoot: %{_tmppath}/%{name}-%{version}-build
@@ -119,7 +160,7 @@ Requires: kbd kbd-misc
 
 %if 0%{?fedora} || 0%{?rhel} > 6
 Requires: util-linux >= 2.21
-Requires: systemd >= 198-4
+Requires: systemd >= 198-5
 Conflicts: grubby < 8.23
 %else
 Requires: udev > 166
@@ -225,19 +266,17 @@ git am -p1 %{patches}
 %endif
 
 %build
-make all
+%configure --systemdsystemunitdir=%{_unitdir} --bashcompletiondir=$(pkg-config --variable=completionsdir bash-completion) --libdir=%{_prefix}/lib
+
+make %{?_smp_mflags}
 
 %install
 %if 0%{?fedora} || 0%{?rhel}
 rm -rf $RPM_BUILD_ROOT
 %endif
-make install DESTDIR=$RPM_BUILD_ROOT \
-     libdir=%{_prefix}/lib \
-     bindir=%{_bindir} \
-%if %{defined _unitdir}
-     systemdsystemunitdir=%{_unitdir} \
-%endif
-     sysconfdir=/etc mandir=%{_mandir}
+make %{?_smp_mflags} install \
+     DESTDIR=$RPM_BUILD_ROOT \
+     libdir=%{_prefix}/lib
 
 echo "DRACUT_VERSION=%{version}-%{release}" > $RPM_BUILD_ROOT/%{dracutlibdir}/dracut-version.sh
 
@@ -337,6 +376,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %{_mandir}/man7/dracut.kernel.7*
 %{_mandir}/man7/dracut.cmdline.7*
+%{_mandir}/man7/dracut.bootup.7*
 %{_mandir}/man5/dracut.conf.5*
 %if %{defined _unitdir}
 %{dracutlibdir}/modules.d/00systemd-bootchart
@@ -450,6 +490,34 @@ rm -rf $RPM_BUILD_ROOT
 %{dracutlibdir}/dracut.conf.d/02-norescue.conf
 
 %changelog
+* Wed Mar 20 2013 Harald Hoyer <harald@redhat.com> 026-72.git20130320
+- fix rescue image naming
+Resolves: rhbz#923439
+- turn off host-only mode if essential system filesystems not mounted
+- turn off host-only mode if udev database is not accessible
+
+* Tue Mar 19 2013 Harald Hoyer <harald@redhat.com> 026-62.git20130319
+- fix dracut service ordering
+Resolves: rhbz#922991
+
+* Mon Mar 18 2013 Harald Hoyer <harald@redhat.com> 026-56.git20130318
+- don't fail hard on kernel modules install
+Resolves: rhbz#922565
+
+* Mon Mar 18 2013 Harald Hoyer <harald@redhat.com> 026-55.git20130318
+- install all host filesystem drivers
+Resolves: rhbz#922565
+
+* Sat Mar 16 2013 Harald Hoyer <harald@redhat.com> 026-54.git20130316
+- fix for squashfs
+Resolves: rhbz#922248
+- documentation fixes
+- sosreport, mkdir /run/initramfs
+
+* Fri Mar 15 2013 Harald Hoyer <harald@redhat.com> 026-48.git20130315
+- use new initrd.target from systemd
+- fixed rescue generation
+
 * Wed Mar 13 2013 Harald Hoyer <harald@redhat.com> 026-33.git20130313
 - add module-load.d modules to the initramfs
 - add sysctl.d to the initramfs
