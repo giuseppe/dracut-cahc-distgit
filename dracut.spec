@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 027
-Release: 10.git20130405%{?dist}
+Release: 19.git20130410%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -38,6 +38,15 @@ Patch6: 0006-Add-missing-options-to-manpage-and-help-output.patch
 Patch7: 0007-TEST-50-MULTINIC-fixup-test-suite.patch
 Patch8: 0008-TESTSUITE-s-i6300esbwdt-i6300esb-ib700wdt-g.patch
 Patch9: 0009-TEST-99-RPM-ignore-rescue-images.patch
+Patch10: 0010-nfs-module-setup.sh-combine-egreps-for-etc-passwd-an.patch
+Patch11: 0011-dracut-functions.sh-make-use-of-findmnt.patch
+Patch12: 0012-crypt-module-setup.sh-filter-etc-crypttab-in-host-on.patch
+Patch13: 0013-ifup.sh-Add-support-for-bridge-over-team-and-vlan-ta.patch
+Patch14: 0014-network-support-multiple-bonding-interfaces.patch
+Patch15: 0015-Wait-for-logical-interface-to-be-up.patch
+Patch16: 0016-Let-user-specify-the-action-after-fail.patch
+Patch17: 0017-ifup.sh-Add-support-for-bridge-over-a-vlan-tagged-in.patch
+Patch18: 0018-crypt-module-setup.sh-also-handle-UUID-while-filteri.patch
 
 
 BuildRequires: dash bash git
@@ -447,6 +456,18 @@ rm -rf $RPM_BUILD_ROOT
 %{dracutlibdir}/dracut.conf.d/02-norescue.conf
 
 %changelog
+* Wed Apr 10 2013 Harald Hoyer <harald@redhat.com> 027-19.git20130410
+- also handle UUID= entries in crypttab in host-only mode
+Resolves:rhbz#919752
+
+* Tue Apr 09 2013 Harald Hoyer <harald@redhat.com> 027-17.git20130409
+- only include needed /etc/crypttab entries
+Resolves:rhbz#919752
+- add support for bridge over team and vlan
+- support multiple bonding interfaces
+- add "action_on_fail=" kernel command line parameter
+- add support for bridge over a vlan tagged interface
+
 * Fri Apr 05 2013 Harald Hoyer <harald@redhat.com> 027-10.git20130405
 - fix crypto password timeout on the dracut side
 
