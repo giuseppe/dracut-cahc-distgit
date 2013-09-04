@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 032
-Release: 19%{?dist}
+Release: 23%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -47,6 +47,10 @@ Patch15: 0015-dmraid-mdraid-improve-hostonly-recognition.patch
 Patch16: 0016-dracut-functions.sh-get_devpath_block-make-local-var.patch
 Patch17: 0017-resume-debian-s-resume-is-in-usr-lib-uswsusp.patch
 Patch18: 0018-dracut-logger.sh-check-is-journald.socket-is-active.patch
+Patch19: 0019-dracut-functions.sh-for_each_module_dir-skip-empty-m.patch
+Patch20: 0020-iscsi-parse-iscsi-parameter-even-if-rootok-1.patch
+Patch21: 0021-net-lib-ibft_to_cmdline-fixes.patch
+Patch22: 0022-Rewrite-rootok-and-netroot-logic.patch
 
 
 BuildRequires: bash git
@@ -464,6 +468,13 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Sep 04 2013 Harald Hoyer <harald@redhat.com> 032-23
+- do not fail on empty dracut module directories
+Resolves: rhbz#1003153
+- parse cmdline parameter, even if rootok=1
+Resolves: rhbz#978330
+- fixed ibft_to_cmdline()
+
 * Thu Aug 29 2013 Harald Hoyer <harald@redhat.com> 032-19
 - fixed curl error with zero size kickstart file
 Resolves: rhbz#989133
