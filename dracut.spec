@@ -9,8 +9,8 @@
 %endif
 
 Name: dracut
-Version: 032
-Release: 23%{?dist}
+Version: 033
+Release: 1%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -481,6 +481,8 @@ Resolves: rhbz#989133
 - fixed systemd-cat failure, when systemd is installed
   but not actually running
 Resolves: rhbz#1002021
+- do not fail on empty dracut module directories
+Resolves: rhbz#1003153
 
 * Tue Aug 20 2013 Harald Hoyer <harald@redhat.com> 032-1
 - fix for kdump in FIPS mode
