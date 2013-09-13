@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -30,6 +30,7 @@ URL: https://dracut.wiki.kernel.org/
 # http://git.kernel.org/?p=boot/dracut/dracut.git;a=snapshot;h=%{version};sf=tgz
 Source0: http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-%{version}.tar.bz2
 Patch1: 0001-dracut.sh-harden-host_modalias-reading.patch
+Patch2: 0002-ifup-do-not-dhcp-on-network-interface-of-secondary-s.patch
 
 
 BuildRequires: bash git
@@ -447,6 +448,9 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Sep 13 2013 Harald Hoyer <harald@redhat.com> 033-3
+- do not dhcp members of team, bond, etc.
+
 * Fri Sep 13 2013 Harald Hoyer <harald@redhat.com> 033-2
 - harden against weird ppc kernel driver
 Resolves: rhbz#1007891
