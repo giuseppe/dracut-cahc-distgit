@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 3%{?dist}
+Release: 4%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -274,6 +274,10 @@ echo 'hostonly="no"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-generic-i
 echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-rescue.conf
 %endif
 
+%if 0%{?rhel} >= 6
+> $RPM_BUILD_ROOT/etc/system-fips
+%endif
+
 # create compat symlink
 mkdir -p $RPM_BUILD_ROOT/sbin
 ln -s /usr/bin/dracut $RPM_BUILD_ROOT/sbin/dracut
@@ -418,6 +422,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %{dracutlibdir}/dracut.conf.d/40-fips.conf
 %endif
 
+%if 0%{?rhel} >= 6
+%config(missingok) /etc/system-fips
+%endif
+
 %files fips-aesni
 %defattr(-,root,root,0755)
 %doc COPYING
@@ -448,6 +456,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Oct 01 2013 Harald Hoyer <harald@redhat.com> 033-4
+- add /etc/system-fips
+Resolves: rhbz#1014284
+
 * Fri Sep 13 2013 Harald Hoyer <harald@redhat.com> 033-3
 - do not dhcp members of team, bond, etc.
 
