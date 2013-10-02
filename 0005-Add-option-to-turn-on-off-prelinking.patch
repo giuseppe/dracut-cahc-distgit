@@ -1,0 +1,118 @@
+From f4a942783afae314afda3b0adcd33fc3ab2cd12c Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 17 Sep 2013 12:23:20 -0500
+Subject: [PATCH] Add option to turn on/off prelinking
+
+--prelink, --noprelink
+
+do_prelink=[yes|no]
+---
+ dracut.8.asc      |  6 ++++++
+ dracut.conf.5.asc |  3 +++
+ dracut.sh         | 34 ++++++++++++++++++++++------------
+ 3 files changed, 31 insertions(+), 12 deletions(-)
+
+diff --git a/dracut.8.asc b/dracut.8.asc
+index ee9d8de..76fc75c 100644
+--- a/dracut.8.asc
++++ b/dracut.8.asc
+@@ -269,6 +269,12 @@ example:
+ **--nostrip**::
+     do not strip binaries in the initramfs
+ 
++**--prelink**::
++    prelink binaries in the initramfs (default)
++
++**--noprelink**::
++    do not prelink binaries in the initramfs
++
+ **--hardlink**::
+     hardlink files in the initramfs (default)
+ 
+diff --git a/dracut.conf.5.asc b/dracut.conf.5.asc
+index a32516c..63991d4 100644
+--- a/dracut.conf.5.asc
++++ b/dracut.conf.5.asc
+@@ -67,6 +67,9 @@ Configuration files must have the extension .conf; other extensions are ignored.
+ *do_strip=*"__{yes|no}__"::
+     Strip binaries in the initramfs (default=yes)
+ 
++*do_prelink=*"__{yes|no}__"::
++    Prelink binaries in the initramfs (default=yes)
++
+ *hostonly=*"__{yes|no}__"::
+     Host-Only mode: Install only what is needed for booting the local host
+     instead of a generic host and generate host-specific configuration.
+diff --git a/dracut.sh b/dracut.sh
+index 196b3ad..177e66d 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -97,6 +97,8 @@ Creates initial ramdisk images for preloading modules
+   --kernel-cmdline [PARAMETERS] Specify default kernel command line parameters
+   --strip               Strip binaries in the initramfs
+   --nostrip             Do not strip binaries in the initramfs
++  --prelink             Prelink binaries in the initramfs
++  --noprelink           Do not prelink binaries in the initramfs
+   --hardlink            Hardlink files in the initramfs
+   --nohardlink          Do not hardlink files in the initramfs
+   --prefix [DIR]        Prefix initramfs files with [DIR]
+@@ -315,6 +317,8 @@ TEMP=$(unset POSIXLY_CORRECT; getopt \
+     --long kernel-cmdline: \
+     --long strip \
+     --long nostrip \
++    --long prelink \
++    --long noprelink \
+     --long hardlink \
+     --long nohardlink \
+     --long noprefix \
+@@ -394,6 +398,8 @@ while :; do
+         --no-early-microcode) early_microcode_l="no";;
+         --strip)       do_strip_l="yes";;
+         --nostrip)     do_strip_l="no";;
++        --prelink)     do_prelink_l="yes";;
++        --noprelink)   do_prelink_l="no";;
+         --hardlink)    do_hardlink_l="yes";;
+         --nohardlink)  do_hardlink_l="no";;
+         --noprefix)    prefix_l="/";;
+@@ -651,6 +657,8 @@ stdloglvl=$((stdloglvl + verbosity_mod_l))
+ [[ $drivers_dir_l ]] && drivers_dir=$drivers_dir_l
+ [[ $do_strip_l ]] && do_strip=$do_strip_l
+ [[ $do_strip ]] || do_strip=yes
++[[ $do_prelink_l ]] && do_prelink=$do_prelink_l
++[[ $do_prelink ]] || do_prelink=yes
+ [[ $do_hardlink_l ]] && do_hardlink=$do_hardlink_l
+ [[ $do_hardlink ]] || do_hardlink=yes
+ [[ $prefix_l ]] && prefix=$prefix_l
+@@ -1251,18 +1259,20 @@ if [[ $kernel_only != yes ]]; then
+     fi
+ fi
+ 
+-PRELINK_BIN="$(command -v prelink)"
+-if [[ $UID = 0 ]] && [[ $PRELINK_BIN ]]; then
+-    if [[ $DRACUT_FIPS_MODE ]]; then
+-        dinfo "*** Installing prelink files ***"
+-        inst_multiple -o prelink /etc/prelink.conf /etc/prelink.conf.d/*.conf /etc/prelink.cache
+-    else
+-        dinfo "*** Pre-linking files ***"
+-        inst_multiple -o prelink /etc/prelink.conf /etc/prelink.conf.d/*.conf
+-        chroot "$initdir" "$PRELINK_BIN" -a
+-        rm -f -- "$initdir/$PRELINK_BIN"
+-        rm -fr -- "$initdir"/etc/prelink.*
+-        dinfo "*** Pre-linking files done ***"
++if [[ $do_prelink == yes ]]; then
++    PRELINK_BIN="$(command -v prelink)"
++    if [[ $UID = 0 ]] && [[ $PRELINK_BIN ]]; then
++        if [[ $DRACUT_FIPS_MODE ]]; then
++            dinfo "*** Installing prelink files ***"
++            inst_multiple -o prelink /etc/prelink.conf /etc/prelink.conf.d/*.conf /etc/prelink.cache
++        else
++            dinfo "*** Pre-linking files ***"
++            inst_multiple -o prelink /etc/prelink.conf /etc/prelink.conf.d/*.conf
++            chroot "$initdir" "$PRELINK_BIN" -a
++            rm -f -- "$initdir/$PRELINK_BIN"
++            rm -fr -- "$initdir"/etc/prelink.*
++            dinfo "*** Pre-linking files done ***"
++        fi
+     fi
+ fi
+ 

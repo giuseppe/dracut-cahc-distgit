@@ -1,0 +1,44 @@
+From d8b04dc1840047a7533d19f577f30f19d42e2d33 Mon Sep 17 00:00:00 2001
+From: Thomas Renninger <trenn@suse.de>
+Date: Fri, 27 Sep 2013 20:10:38 +0200
+Subject: [PATCH] dracut: Do not create early_cpio if no suitable microcode
+ exist in hostonly case
+
+Intel microcodes only exist for very specific family/model/stepping CPUs.
+If no microcode gets added, there is no need to create an empty
+(only directories) cpio later that gets glued to the initrd.
+
+This also fixes:
+
+*** Constructing GenuineIntel.bin ****
+cat: /lib/firmware/intel-ucode/06-3c-03: No such file or directory
+
+in hostonly mode if there is no suitable microcode for the CPU.
+
+Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Signed-off-by: Thomas Renninger <trenn@suse.de>
+---
+ dracut.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/dracut.sh b/dracut.sh
+index b3b8088..e43227e 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -1326,12 +1326,15 @@ if [[ $early_microcode = yes ]]; then
+                 dinfo "*** Constructing ${ucode_dest[$idx]} ****"
+                 if [[ $hostonly ]]; then
+                     _src=$(get_ucode_file)
++                    if ! [[ -r $_fwdir/$_fw/$_src ]];then
++                        break;
++                    fi
+                 fi
+                 cat $_fwdir/$_fw/$_src > $_dest_dir/${ucode_dest[$idx]}
++                create_early_cpio="yes"
+             fi
+         done
+     done
+-    create_early_cpio="yes"
+ fi
+ 
+ rm -f -- "$outfile"

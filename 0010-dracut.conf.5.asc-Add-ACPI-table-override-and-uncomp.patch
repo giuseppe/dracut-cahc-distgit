@@ -1,0 +1,37 @@
+From 4e93c3f7079305114779a4bf2adefdbd429a9701 Mon Sep 17 00:00:00 2001
+From: Thomas Renninger <trenn@suse.de>
+Date: Fri, 27 Sep 2013 20:10:40 +0200
+Subject: [PATCH] dracut.conf.5.asc: Add ACPI table override and uncompressed
+ cpio doc
+
+Signed-off-by: Thomas Renninger <trenn@suse.de>
+---
+ dracut.conf.5.asc | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/dracut.conf.5.asc b/dracut.conf.5.asc
+index 63991d4..c9c854a 100644
+--- a/dracut.conf.5.asc
++++ b/dracut.conf.5.asc
+@@ -125,6 +125,21 @@ If chrooted to another root other than the real root device, use --fstab and pro
+ *no_kernel=*"{yes|no}"::
+     Do not install kernel drivers and firmware files (default=no)
+ 
++*acpi_override=*"{yes|no}"::
++    [WARNING] ONLY USE THIS IF YOU KNOW WHAT YOU ARE DOING! +
++    Override BIOS provided ACPI tables. For further documentation read
++    Documentation/acpi/initrd_table_override.txt in the kernel sources.
++    Search for ACPI table files (must have .aml suffix) in acpi_table_dir=
++    directory (see below) and add them to a separate uncompressed cpio
++    archive. This cpio archive gets glued (concatenated, uncompressed one
++    must be the first one) to the compressed cpio archive. The first,
++    uncompressed cpio archive is for data which the kernel must be able
++    to access very early (and cannot make use of uncompress alogrithms yet)
++    like microcode or ACPI tables (default=no).
++
++*acpi_table_dir=*"__<dir>__"::
++    Directory to search for ACPI tables if acpi_override= is set to yes.
++
+ *early_microcode=*"{yes|no}"::
+     Combine early microcode with ramdisk (default=no)
+ 

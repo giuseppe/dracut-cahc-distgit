@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 4%{?dist}
+Release: 14%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -31,6 +31,17 @@ URL: https://dracut.wiki.kernel.org/
 Source0: http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-%{version}.tar.bz2
 Patch1: 0001-dracut.sh-harden-host_modalias-reading.patch
 Patch2: 0002-ifup-do-not-dhcp-on-network-interface-of-secondary-s.patch
+Patch3: 0003-dracut.sh-also-search-uevent-s-for-MODALIAS.patch
+Patch4: 0004-dracut.sh-we-don-t-need-to-read-the-modalias-files.patch
+Patch5: 0005-Add-option-to-turn-on-off-prelinking.patch
+Patch6: 0006-add-etc-system-fips-for-dracut-fips-subpackage.patch
+Patch7: 0007-dracut-Generlize-microcode-early-cpio-usage.patch
+Patch8: 0008-dracut-Do-not-create-early_cpio-if-no-suitable-micro.patch
+Patch9: 0009-dracut-Implement-ACPI-table-overriding.patch
+Patch10: 0010-dracut.conf.5.asc-Add-ACPI-table-override-and-uncomp.patch
+Patch11: 0011-dracut-bash-completion.sh-add-prelink-noprelink.patch
+Patch12: 0012-dracut.sh-bail-out-early-if-destination-dir-is-not-w.patch
+Patch13: 0013-dracut-logger.sh-do-not-log-to-syslog-kmsg-journal-f.patch
 
 
 BuildRequires: bash git
@@ -274,7 +285,7 @@ echo 'hostonly="no"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-generic-i
 echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-rescue.conf
 %endif
 
-%if 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version}
 > $RPM_BUILD_ROOT/etc/system-fips
 %endif
 
@@ -420,9 +431,6 @@ rm -rf -- $RPM_BUILD_ROOT
 %defattr(-,root,root,0755)
 %{dracutlibdir}/modules.d/01fips
 %{dracutlibdir}/dracut.conf.d/40-fips.conf
-%endif
-
-%if 0%{?rhel} >= 6
 %config(missingok) /etc/system-fips
 %endif
 
@@ -456,6 +464,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Oct 02 2013 Harald Hoyer <harald@redhat.com> 033-14
+- hopefully fixed systemd-cat test
+Resolves: rhbz#1002021
+
 * Tue Oct 01 2013 Harald Hoyer <harald@redhat.com> 033-4
 - add /etc/system-fips
 Resolves: rhbz#1014284

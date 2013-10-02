@@ -1,0 +1,64 @@
+From 96cf7270da8f99e3972b18677e7f392a35d6ddd9 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 2 Oct 2013 12:48:11 +0200
+Subject: [PATCH] dracut.sh: bail out early, if destination dir is not
+ writeable
+
+---
+ dracut.sh | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
+
+diff --git a/dracut.sh b/dracut.sh
+index b4b3e13..e135dfc 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -824,9 +824,25 @@ if [[ -d $srcmods ]]; then
+     }
+ fi
+ 
+-if [[ -f $outfile && ! $force && ! $print_cmdline ]]; then
+-    dfatal "Will not override existing initramfs ($outfile) without --force"
+-    exit 1
++if [[ ! $print_cmdline ]]; then
++    if [[ -f $outfile && ! $force ]]; then
++        dfatal "Will not override existing initramfs ($outfile) without --force"
++        exit 1
++    fi
++
++    outdir=${outfile%/*}
++    [[ $outdir ]] || outdir="/"
++
++    if [[ ! -d "$outdir" ]]; then
++        dfatal "Can't write to $outdir: Directory $outdir does not exist or is not accessible."
++        exit 1
++    elif [[ ! -w "$outdir" ]]; then
++        dfatal "No permission to write to $outdir."
++        exit 1
++    elif [[ -f "$outfile" && ! -w "$outfile" ]]; then
++        dfatal "No permission to write $outfile."
++        exit 1
++    fi
+ fi
+ 
+ # Need to be able to have non-root users read stuff (rpcbind etc)
+@@ -1041,20 +1057,6 @@ if [[ $print_cmdline ]]; then
+     exit 0
+ fi
+ 
+-outdir=${outfile%/*}
+-[[ $outdir ]] || outdir="/"
+-
+-if [[ ! -d "$outdir" ]]; then
+-    dfatal "Can't write to $outdir: Directory $outdir does not exist or is not accessible."
+-    exit 1
+-elif [[ ! -w "$outdir" ]]; then
+-    dfatal "No permission to write to $outdir."
+-    exit 1
+-elif [[ -f "$outfile" && ! -w "$outfile" ]]; then
+-    dfatal "No permission to write $outfile."
+-    exit 1
+-fi
+-
+ # Create some directory structure first
+ [[ $prefix ]] && mkdir -m 0755 -p "${initdir}${prefix}"
+ 

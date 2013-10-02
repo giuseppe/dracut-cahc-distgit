@@ -1,0 +1,32 @@
+From 78d5cf7cb4e10d9e08ba5e89fe130fe5d7714b95 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 2 Oct 2013 12:36:25 +0200
+Subject: [PATCH] add /etc/system-fips for dracut-fips subpackage
+
+---
+ dracut.spec | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/dracut.spec b/dracut.spec
+index 87340d7..b1cf9fe 100644
+--- a/dracut.spec
++++ b/dracut.spec
+@@ -271,6 +271,10 @@ echo 'hostonly="no"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-generic-i
+ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/02-rescue.conf
+ %endif
+ 
++%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version}
++> $RPM_BUILD_ROOT/etc/system-fips
++%endif
++
+ # create compat symlink
+ mkdir -p $RPM_BUILD_ROOT/sbin
+ ln -s /usr/bin/dracut $RPM_BUILD_ROOT/sbin/dracut
+@@ -413,6 +417,7 @@ rm -rf -- $RPM_BUILD_ROOT
+ %defattr(-,root,root,0755)
+ %{dracutlibdir}/modules.d/01fips
+ %{dracutlibdir}/dracut.conf.d/40-fips.conf
++%config(missingok) /etc/system-fips
+ %endif
+ 
+ %files fips-aesni

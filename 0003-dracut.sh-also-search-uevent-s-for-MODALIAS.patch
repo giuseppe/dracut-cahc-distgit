@@ -1,0 +1,28 @@
+From fc68c87afa4fbe4c40abe4326df8cc7cfc9ac23d Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 13 Sep 2013 17:34:18 +0200
+Subject: [PATCH] dracut.sh: also search uevent's for MODALIAS
+
+---
+ dracut.sh | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/dracut.sh b/dracut.sh
+index fd27846..ce39151 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -923,6 +923,14 @@ if [[ $hostonly ]]; then
+     while read m; do
+         modalias="$(<"$m")" && [[ $modalias ]] && host_modalias["$modalias"]=1
+     done < "$initdir/.modalias"
++    find  /sys/devices/ -name uevent -print > "$initdir/.modalias"
++    while read m; do
++        while read line; do
++            [[ "$line" != MODALIAS\=* ]] && continue
++            modalias="${line##MODALIAS=}" && [[ $modalias ]] && host_modalias["$modalias"]=1
++        done < "$m"
++    done < "$initdir/.modalias"
++
+     rm -f -- "$initdir/.modalias"
+ 
+     # check /proc/modules

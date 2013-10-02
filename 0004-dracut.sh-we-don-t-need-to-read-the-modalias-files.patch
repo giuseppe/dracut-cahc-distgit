@@ -1,0 +1,32 @@
+From 3b9aaaab429903ace447fa9ab585592c3343c6f0 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 13 Sep 2013 17:51:29 +0200
+Subject: [PATCH] dracut.sh: we don't need to read the modalias files
+
+udev does only parse the uevent MODALIAS line, so whatever is in the
+modalias files would not trigger any module load.
+---
+ dracut.sh | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/dracut.sh b/dracut.sh
+index ce39151..196b3ad 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -919,15 +919,12 @@ if [[ $hostonly ]]; then
+     fi
+     # record all host modaliases
+     declare -A host_modalias
+-    find  /sys/devices/ -name modalias -print > "$initdir/.modalias"
+-    while read m; do
+-        modalias="$(<"$m")" && [[ $modalias ]] && host_modalias["$modalias"]=1
+-    done < "$initdir/.modalias"
+     find  /sys/devices/ -name uevent -print > "$initdir/.modalias"
+     while read m; do
+         while read line; do
+             [[ "$line" != MODALIAS\=* ]] && continue
+             modalias="${line##MODALIAS=}" && [[ $modalias ]] && host_modalias["$modalias"]=1
++            break
+         done < "$m"
+     done < "$initdir/.modalias"
+ 
