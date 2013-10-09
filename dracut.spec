@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 14%{?dist}
+Release: 26%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -42,6 +42,18 @@ Patch10: 0010-dracut.conf.5.asc-Add-ACPI-table-override-and-uncomp.patch
 Patch11: 0011-dracut-bash-completion.sh-add-prelink-noprelink.patch
 Patch12: 0012-dracut.sh-bail-out-early-if-destination-dir-is-not-w.patch
 Patch13: 0013-dracut-logger.sh-do-not-log-to-syslog-kmsg-journal-f.patch
+Patch14: 0014-lvm-mdraid-Fix-LVM-on-MD-activation.patch
+Patch15: 0015-bcache-optionally-install-the-tools-and-rules.patch
+Patch16: 0016-dracut-functions.sh-inst_rules-do-not-install-rules-.patch
+Patch17: 0017-mdraid-module-setup.sh-install-configs-from-etc-mdad.patch
+Patch18: 0018-mdraid-module-setup.sh-fixes-for-mdadm-3.2.6.patch
+Patch19: 0019-fcoe-add-FCoE-UEFI-boot-device-support.patch
+Patch20: 0020-rootfs-block-add-support-for-the-rootfallback-kernel.patch
+Patch21: 0021-btrfs-use-inst_hook-to-install-the-timeout-hook.patch
+Patch22: 0022-lvm-install-thin-utils-for-non-hostonly.patch
+Patch23: 0023-dracut.sh-do-not-bail-out-if-kernel-modules-dir-is-m.patch
+Patch24: 0024-dmsquash-live-add-dev-mapper-live-base.patch
+Patch25: 0025-Doc-cleanup-extend-and-split-and-reuse.patch
 
 
 BuildRequires: bash git
@@ -330,6 +342,7 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 %{_mandir}/man7/dracut.kernel.7*
 %{_mandir}/man7/dracut.cmdline.7*
+%{_mandir}/man7/dracut.modules.7*
 %{_mandir}/man7/dracut.bootup.7*
 %{_mandir}/man5/dracut.conf.5*
 %if %{defined _unitdir}
@@ -464,6 +477,19 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Oct 09 2013 Harald Hoyer <harald@redhat.com> 033-26
+- create /dev/mapper/live-base for anaconda
+Resolves: rhbz#1009710
+- support "rootfallback=<root fallback device>"
+Resolves: rhbz#727333
+- add UEFI FCoE boot support
+Resolves: rhbz#732059
+- Make udev db records for MD devices persistent
+  so LVM on MD autoactivation works correctly
+Resolves: rhbz#1017031
+- support mdadm-3.2.6+ and mdadm-3.3+
+- install lvm thin utils for non-hostonly also
+
 * Wed Oct 02 2013 Harald Hoyer <harald@redhat.com> 033-14
 - hopefully fixed systemd-cat test
 Resolves: rhbz#1002021

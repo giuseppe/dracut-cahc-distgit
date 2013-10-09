@@ -1,0 +1,94 @@
+From 85c8246d7ba0adbff98478b1f3f9ba1bea0937dc Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 7 Oct 2013 15:06:22 +0200
+Subject: [PATCH] rootfs-block: add support for the rootfallback= kernel
+ cmdline option
+
+---
+ dracut.cmdline.7.asc                     |  6 +++++
+ modules.d/95rootfs-block/module-setup.sh |  3 ++-
+ modules.d/95rootfs-block/rootfallback.sh | 46 ++++++++++++++++++++++++++++++++
+ 3 files changed, 54 insertions(+), 1 deletion(-)
+ create mode 100755 modules.d/95rootfs-block/rootfallback.sh
+
+diff --git a/dracut.cmdline.7.asc b/dracut.cmdline.7.asc
+index 09c47e8..4b2ab03 100644
+--- a/dracut.cmdline.7.asc
++++ b/dracut.cmdline.7.asc
+@@ -69,6 +69,12 @@ rootfstype=ext3
+     force mounting _/_ and _/usr_ (if it is a separate device) read-write.
+     See also ro option.
+ 
++**rootfallback=**_<path to blockdevice>_::
++    specify the block device to use as the root filesystem, if the normal root cannot be found.
++    This can only be a simple block device with a simple file system, for which the filesystem
++    driver is either compiled in, or added manually to the initramfs.
++    This parameter can be specified multiple times.
++
+ **rd.auto** **rd.auto=1**::
+     enable autoassembly of special devices like cryptoLUKS, dmraid, mdraid or lvm.
+     Default is off as of dracut version >= 024.
+diff --git a/modules.d/95rootfs-block/module-setup.sh b/modules.d/95rootfs-block/module-setup.sh
+index f066a79..7e714eb 100755
+--- a/modules.d/95rootfs-block/module-setup.sh
++++ b/modules.d/95rootfs-block/module-setup.sh
+@@ -44,5 +44,6 @@ install() {
+         inst_hook pre-udev 30 "$moddir/block-genrules.sh"
+         inst_hook mount 99 "$moddir/mount-root.sh"
+     fi
+-}
+ 
++    inst_hook initqueue/timeout 99 "$moddir/rootfallback.sh"
++}
+diff --git a/modules.d/95rootfs-block/rootfallback.sh b/modules.d/95rootfs-block/rootfallback.sh
+new file mode 100755
+index 0000000..246ce9a
+--- /dev/null
++++ b/modules.d/95rootfs-block/rootfallback.sh
+@@ -0,0 +1,46 @@
++#!/bin/sh
++# -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
++# ex: ts=8 sw=4 sts=4 et filetype=sh
++
++type getarg >/dev/null 2>&1 || . /lib/dracut-lib.sh
++
++for root in $(getargs rootfallback=); do
++    case "$root" in
++        block:LABEL=*|LABEL=*)
++            root="${root#block:}"
++            root="$(echo $root | sed 's,/,\\x2f,g')"
++            root="/dev/disk/by-label/${root#LABEL=}"
++            ;;
++        block:UUID=*|UUID=*)
++            root="${root#block:}"
++            root="${root#UUID=}"
++            root="$(echo $root | tr "[:upper:]" "[:lower:]")"
++            root="/dev/disk/by-uuid/${root#UUID=}"
++            ;;
++        block:PARTUUID=*|PARTUUID=*)
++            root="${root#block:}"
++            root="${root#PARTUUID=}"
++            root="$(echo $root | tr "[:upper:]" "[:lower:]")"
++            root="/dev/disk/by-partuuid/${root}"
++            ;;
++        block:PARTLABEL=*|PARTLABEL=*)
++            root="${root#block:}"
++            root="/dev/disk/by-partlabel/${root#PARTLABEL=}"
++            ;;
++    esac
++
++    if ! [ -b "$root" ]; then
++        warn "Could not find rootfallback $root"
++        continue
++    fi
++
++    if mount "$root" /sysroot; then
++        info "Mounted rootfallback $root"
++        exit 0
++    else
++        warn "Failed to mount rootfallback $root"
++        exit 1
++    fi
++done
++
++[ -e "$job" ] && rm -f "$job"
