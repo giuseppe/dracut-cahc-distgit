@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 26%{?dist}
+Release: 30%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -54,6 +54,10 @@ Patch22: 0022-lvm-install-thin-utils-for-non-hostonly.patch
 Patch23: 0023-dracut.sh-do-not-bail-out-if-kernel-modules-dir-is-m.patch
 Patch24: 0024-dmsquash-live-add-dev-mapper-live-base.patch
 Patch25: 0025-Doc-cleanup-extend-and-split-and-reuse.patch
+Patch26: 0026-lvm-fix-thin-recognition.patch
+Patch27: 0027-dracut-functions.sh-check_block_and_slaves-skip-LVM-.patch
+Patch28: 0028-Add-lzo-lz4-compression-and-read-INITRD_COMPRESS.patch
+Patch29: 0029-git2spec.pl-remove-.git-date-from-release-string.patch
 
 
 BuildRequires: bash git
@@ -477,6 +481,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Oct 18 2013 Harald Hoyer <harald@redhat.com> 033-30
+- fixed LVM with thin provisioning
+Resolves: rhbz#1020855
+
 * Wed Oct 09 2013 Harald Hoyer <harald@redhat.com> 033-26
 - create /dev/mapper/live-base for anaconda
 Resolves: rhbz#1009710

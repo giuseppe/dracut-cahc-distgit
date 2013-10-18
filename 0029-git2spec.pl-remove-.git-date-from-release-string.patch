@@ -1,0 +1,23 @@
+From 239a2e91fb97a5ac3c4efdcfc31810f13b26d051 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 18 Oct 2013 15:34:44 +0200
+Subject: [PATCH] git2spec.pl: remove ".git$(date)" from release string
+
+---
+ git2spec.pl | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/git2spec.pl b/git2spec.pl
+index 0d8adb4..b844295 100755
+--- a/git2spec.pl
++++ b/git2spec.pl
+@@ -20,8 +20,7 @@ chomp($tag);
+ my @patches=&create_patches($tag, $pdir);
+ my $num=$#patches + 2;
+ $tag=~s/[^0-9]+?([0-9]+)/$1/;
+-my $release="$num.git$datestr";
+-$release="1" if $num == 1;
++my $release="$num";
+ 
+ while(<>) {
+     if (/^Version:/) {
