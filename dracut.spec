@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 30%{?dist}
+Release: 32%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -58,6 +58,8 @@ Patch26: 0026-lvm-fix-thin-recognition.patch
 Patch27: 0027-dracut-functions.sh-check_block_and_slaves-skip-LVM-.patch
 Patch28: 0028-Add-lzo-lz4-compression-and-read-INITRD_COMPRESS.patch
 Patch29: 0029-git2spec.pl-remove-.git-date-from-release-string.patch
+Patch30: 0030-kernel-modules-ARM-add-mmc_block-usb_storage-to-stat.patch
+Patch31: 0031-lvm-always-install-thin-utils-for-lvm.patch
 
 
 BuildRequires: bash git
@@ -481,6 +483,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Oct 21 2013 Harald Hoyer <harald@redhat.com> 033-32
+- fixed LVM with thin provisioning
+Resolves: rhbz#1020855
+
 * Fri Oct 18 2013 Harald Hoyer <harald@redhat.com> 033-30
 - fixed LVM with thin provisioning
 Resolves: rhbz#1020855
