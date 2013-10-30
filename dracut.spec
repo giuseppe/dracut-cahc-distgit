@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 32%{?dist}
+Release: 39%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -60,6 +60,12 @@ Patch28: 0028-Add-lzo-lz4-compression-and-read-INITRD_COMPRESS.patch
 Patch29: 0029-git2spec.pl-remove-.git-date-from-release-string.patch
 Patch30: 0030-kernel-modules-ARM-add-mmc_block-usb_storage-to-stat.patch
 Patch31: 0031-lvm-always-install-thin-utils-for-lvm.patch
+Patch32: 0032-dracut.spec-move-sbin-dracut-to-usr-sbin-dracut.patch
+Patch33: 0033-usrmount-module-setup.sh-fixed-typo.patch
+Patch34: 0034-Handle-crypto-modules-with-and-without-modaliases.patch
+Patch36: 0036-resume-fix-swap-detection-in-hostonly.patch
+Patch37: 0037-resume-remove-resume-genrules.sh.patch
+Patch38: 0038-iscsi-nbd-do-not-try-to-mount-the-whole-disk-if-root.patch
 
 
 BuildRequires: bash git
@@ -308,8 +314,8 @@ echo 'dracut_rescue_image="yes"' > $RPM_BUILD_ROOT%{dracutlibdir}/dracut.conf.d/
 %endif
 
 # create compat symlink
-mkdir -p $RPM_BUILD_ROOT/sbin
-ln -s /usr/bin/dracut $RPM_BUILD_ROOT/sbin/dracut
+mkdir -p $RPM_BUILD_ROOT%{_sbindir}
+ln -sr $RPM_BUILD_ROOT%{_bindir}/dracut $RPM_BUILD_ROOT%{_sbindir}/dracut
 
 %clean
 rm -rf -- $RPM_BUILD_ROOT
@@ -319,7 +325,7 @@ rm -rf -- $RPM_BUILD_ROOT
 %doc README HACKING TODO COPYING AUTHORS NEWS dracut.html dracut.png dracut.svg
 %{_bindir}/dracut
 # compat symlink
-/sbin/dracut
+%{_sbindir}/dracut
 %{_datadir}/bash-completion/completions/dracut
 %{_datadir}/bash-completion/completions/lsinitrd
 %if 0%{?fedora} > 12 || 0%{?rhel} >= 6 || 0%{?suse_version} > 9999
@@ -483,6 +489,15 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Oct 30 2013 Harald Hoyer <harald@redhat.com> 033-39
+- fixed booting with rd.iscsi.firmware and without root=
+Resolves: rhbz#1024858
+- fixed resuming
+- fix swap detection in hostonly
+- fixed missing modules in hostonly, which have no modalias
+Resolves: rhbz#1015284
+- moved dracut to /usr/sbin
+
 * Mon Oct 21 2013 Harald Hoyer <harald@redhat.com> 033-32
 - fixed LVM with thin provisioning
 Resolves: rhbz#1020855
