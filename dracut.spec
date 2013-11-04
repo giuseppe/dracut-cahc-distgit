@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 39%{?dist}
+Release: 40%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -63,9 +63,11 @@ Patch31: 0031-lvm-always-install-thin-utils-for-lvm.patch
 Patch32: 0032-dracut.spec-move-sbin-dracut-to-usr-sbin-dracut.patch
 Patch33: 0033-usrmount-module-setup.sh-fixed-typo.patch
 Patch34: 0034-Handle-crypto-modules-with-and-without-modaliases.patch
+Patch35: 0035-fips-include-crct10dif_generic.patch
 Patch36: 0036-resume-fix-swap-detection-in-hostonly.patch
 Patch37: 0037-resume-remove-resume-genrules.sh.patch
 Patch38: 0038-iscsi-nbd-do-not-try-to-mount-the-whole-disk-if-root.patch
+Patch39: 0039-fips-also-install-etc-system-fips-in-the-initramfs.patch
 
 
 BuildRequires: bash git
@@ -489,6 +491,12 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Nov 04 2013 Harald Hoyer <harald@redhat.com> 033-40
+- fips: include crct10dif_generic
+Resolves: rhbz#1024455
+- add /etc/system-fips in the initramfs
+Resolves: rhbz#1014284
+
 * Wed Oct 30 2013 Harald Hoyer <harald@redhat.com> 033-39
 - fixed booting with rd.iscsi.firmware and without root=
 Resolves: rhbz#1024858
