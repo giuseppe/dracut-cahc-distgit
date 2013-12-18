@@ -1,0 +1,36 @@
+From 5cda22c36f06deb99ea54ee24487bd052724e397 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 11 Nov 2013 16:57:09 +0100
+Subject: [PATCH] iscsi,nbd: do not fail in hostonly mode
+
+---
+ modules.d/95iscsi/module-setup.sh | 2 +-
+ modules.d/95nbd/module-setup.sh   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/95iscsi/module-setup.sh b/modules.d/95iscsi/module-setup.sh
+index 502e834..c6901c0 100755
+--- a/modules.d/95iscsi/module-setup.sh
++++ b/modules.d/95iscsi/module-setup.sh
+@@ -23,7 +23,7 @@ check() {
+ 
+     [[ $hostonly ]] || [[ $mount_needs ]] && {
+         pushd . >/dev/null
+-        for_each_host_dev_and_slaves is_iscsi || return 1
++        for_each_host_dev_and_slaves is_iscsi || return 255
+         popd >/dev/null
+     }
+     return 0
+diff --git a/modules.d/95nbd/module-setup.sh b/modules.d/95nbd/module-setup.sh
+index 7b78180..3ac00f6 100755
+--- a/modules.d/95nbd/module-setup.sh
++++ b/modules.d/95nbd/module-setup.sh
+@@ -14,7 +14,7 @@ check() {
+ 
+         _rootdev=$(find_root_block_device)
+         [[ -b /dev/block/$_rootdev ]] || return 1
+-        check_block_and_slaves is_nbd "$_rootdev" || return 1
++        check_block_and_slaves is_nbd "$_rootdev" || return 255
+     }
+ 
+     return 0

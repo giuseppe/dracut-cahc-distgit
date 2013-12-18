@@ -1,0 +1,30 @@
+From 8b63ce8afcf368f07f8272e17756c46796dbf7fb Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 14 Nov 2013 10:07:04 +0100
+Subject: [PATCH] kernel-modules: add ohci-pci to the list of forced module
+ installs
+
+---
+ modules.d/90kernel-modules/module-setup.sh | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/modules.d/90kernel-modules/module-setup.sh b/modules.d/90kernel-modules/module-setup.sh
+index 366235c..510b43e 100755
+--- a/modules.d/90kernel-modules/module-setup.sh
++++ b/modules.d/90kernel-modules/module-setup.sh
+@@ -35,9 +35,12 @@ installkernel() {
+             return 0
+         }
+ 
+-        hostonly='' instmods sr_mod sd_mod scsi_dh ata_piix \
+-            ehci-hcd ehci-pci ehci-platform ohci-hcd uhci-hcd xhci-hcd hid_generic \
+-            unix
++        hostonly='' instmods \
++            sr_mod sd_mod scsi_dh ata_piix hid_generic unix \
++            ehci-hcd ehci-pci ehci-platform \
++            ohci-hcd ohci-pci \
++            uhci-hcd \
++            xhci-hcd
+ 
+         instmods yenta_socket scsi_dh_rdac scsi_dh_emc \
+             atkbd i8042 usbhid hid-apple hid-sunplus hid-cherry hid-logitech \

@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 40%{?dist}
+Release: 67%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -68,6 +68,33 @@ Patch36: 0036-resume-fix-swap-detection-in-hostonly.patch
 Patch37: 0037-resume-remove-resume-genrules.sh.patch
 Patch38: 0038-iscsi-nbd-do-not-try-to-mount-the-whole-disk-if-root.patch
 Patch39: 0039-fips-also-install-etc-system-fips-in-the-initramfs.patch
+Patch40: 0040-dracut-functions.sh-Avoid-loading-unnecessary-32-bit.patch
+Patch41: 0041-systemd-do-not-exit-the-initqueue-if-systemd-asks-a-.patch
+Patch42: 0042-kernel-modules-add-ohci-pci-to-the-list-of-forced-mo.patch
+Patch43: 0043-lvm-do-not-run-pvscan-for-lvmetad-update.patch
+Patch44: 0044-fips-fix-RHEV-vmlinuz-check.patch
+Patch45: 0045-dracut.cmdline.7.asc-document-server-ip-of-ip-parame.patch
+Patch46: 0046-dracut.sh-_get_fs_type-if-block-device-exists-return.patch
+Patch47: 0047-network-net-lib.sh-wait_for_if_up-wait-for-state-UP.patch
+Patch48: 0048-network-net-lib.sh-iface_has_link-fixup.patch
+Patch49: 0049-network-ifup.sh-before-doing-dhcp-check-if-the-link-.patch
+Patch50: 0050-base-dracut-lib.sh-wait_for_dev-relax-requirement.patch
+Patch51: 0051-dracut.sh-skip-crypt-swaps-with-password-files.patch
+Patch52: 0052-Fixup-script-permissions.patch
+Patch53: 0053-Remove-shebang-from-shell-completion-files.patch
+Patch54: 0054-i18n-introduce-i18n_install_all-to-install-everythin.patch
+Patch55: 0055-Run-xz-and-lzma-with-multiple-threads.patch
+Patch56: 0056-iscsi-nbd-do-not-fail-in-hostonly-mode.patch
+Patch57: 0057-dracut.sh-fixed-PATH-shortener.patch
+Patch58: 0058-dracut.modules.7.asc-removed-empty-section.patch
+Patch59: 0059-lvm-install-thin-tools-only-when-needed-in-hostonly.patch
+Patch60: 0060-systemd-dracut-initqueue.sh-fixed-waiting-in-the-loo.patch
+Patch61: 0061-base-rdsosreport.sh-add-ip-a-output.patch
+Patch62: 0062-lvm-fixed-lvm-thin-check.patch
+Patch63: 0063-test-TEST-17-LVM-THIN-add-test-case-for-lvm-thin-poo.patch
+Patch64: 0064-test-TEST-17-LVM-THIN-remove-.testdir.patch
+Patch65: 0065-iscsi-do-iscsi_firmware-regardless-of-network.patch
+Patch66: 0066-dracut-lib-wait_for_dev-prevent-systemd-daemon-reloa.patch
 
 
 BuildRequires: bash git
@@ -491,6 +518,16 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Dec 18 2013 Harald Hoyer <harald@redhat.com> 033-67
+- fixed luks timeout
+Resolves: rhbz#949697
+- do not systemctl daemon-reload
+Resolves: rhbz#1023039 rhbz#1028043
+- do not do dhcp on interfaces with no link
+Resolves: rhbz#1029062
+- do iscsistart for iscsi_firmware even without network
+Resolves: rhbz#1031160
+
 * Mon Nov 04 2013 Harald Hoyer <harald@redhat.com> 033-40
 - fips: include crct10dif_generic
 Resolves: rhbz#1024455
