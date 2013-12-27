@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 67%{?dist}
+Release: 68%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -518,6 +518,9 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 033-68
+- Mass rebuild 2013-12-27
+
 * Wed Dec 18 2013 Harald Hoyer <harald@redhat.com> 033-67
 - fixed luks timeout
 Resolves: rhbz#949697
