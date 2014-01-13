@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 68%{?dist}
+Release: 69%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -95,7 +95,7 @@ Patch63: 0063-test-TEST-17-LVM-THIN-add-test-case-for-lvm-thin-poo.patch
 Patch64: 0064-test-TEST-17-LVM-THIN-remove-.testdir.patch
 Patch65: 0065-iscsi-do-iscsi_firmware-regardless-of-network.patch
 Patch66: 0066-dracut-lib-wait_for_dev-prevent-systemd-daemon-reloa.patch
-
+Patch67: 0067-udev-install-seat-rules.patch
 
 BuildRequires: bash git
 
@@ -518,6 +518,11 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jan 13 2014 Ray Strode <rstrode@redhat.com> 033-69
+- Add udev seat rules for plymouth
+Related: #1043689
+Related: #1026571
+
 * Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 033-68
 - Mass rebuild 2013-12-27
 
