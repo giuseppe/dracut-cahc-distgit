@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 82%{?dist}
+Release: 84%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -110,6 +110,9 @@ Patch78: 0078-systemd-module-setup.sh-make-use-of-ln_r.patch
 Patch79: 0079-network-add-rd.bootif-0-to-ignore-BOOTIF.patch
 Patch80: 0080-iscsi-call-iscsistart-b-until-it-succeeds.patch
 Patch81: 0081-base-dracut-lib.sh-halt-the-machine-in-systemd-mode-.patch
+Patch82: 0082-systemd-rootfs-generator.sh-exit-0.patch
+Patch83: 0083-systemd-rootfs-generator.sh-ignore-legacy-root-dev-n.patch
+
 
 BuildRequires: bash git
 
@@ -541,6 +544,7 @@ Resolves: rhbz#1038827
 - add rd.bootif=0 parameter
 Resolves: rhbz#1044623
 - halt the machine, if FIPS fails
+- do not exit != 0 for dracut-rootfs-generator
 
 * Mon Jan 13 2014 Ray Strode <rstrode@redhat.com> 033-69
 - Add udev seat rules for plymouth

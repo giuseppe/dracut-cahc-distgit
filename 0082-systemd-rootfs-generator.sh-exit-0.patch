@@ -1,0 +1,19 @@
+From 607ab52c03b187fd8ac28992ffb2b6b3a4b83ba0 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 17 Jan 2014 12:16:41 +0100
+Subject: [PATCH] systemd/rootfs-generator.sh: exit 0
+
+---
+ modules.d/98systemd/rootfs-generator.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/modules.d/98systemd/rootfs-generator.sh b/modules.d/98systemd/rootfs-generator.sh
+index 3770c6b..555027f 100755
+--- a/modules.d/98systemd/rootfs-generator.sh
++++ b/modules.d/98systemd/rootfs-generator.sh
+@@ -28,3 +28,5 @@ case "$root" in
+ esac
+ 
+ [ "${root%%:*}" = "block" ] && wait_for_dev -n "${root#block:}"
++
++exit 0

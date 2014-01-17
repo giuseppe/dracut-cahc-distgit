@@ -1,0 +1,22 @@
+From 5c088337f76742960f05f4cbac6c867f7a142323 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 17 Jan 2014 13:40:05 +0100
+Subject: [PATCH] systemd/rootfs-generator.sh: ignore legacy root=/dev/nfs
+
+---
+ modules.d/98systemd/rootfs-generator.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/modules.d/98systemd/rootfs-generator.sh b/modules.d/98systemd/rootfs-generator.sh
+index 555027f..9810026 100755
+--- a/modules.d/98systemd/rootfs-generator.sh
++++ b/modules.d/98systemd/rootfs-generator.sh
+@@ -22,6 +22,8 @@ case "$root" in
+         root="${root#block:}"
+         root="block:/dev/disk/by-partlabel/${root#PARTLABEL=}"
+         rootok=1 ;;
++    /dev/nfs) # ignore legacy /dev/nfs
++        ;;
+     /dev/*)
+         root="block:${root}"
+         rootok=1 ;;
