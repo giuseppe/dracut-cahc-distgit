@@ -1,0 +1,43 @@
+From 761263922538d3c00b34dc6fc71a98eb8d8e1aa9 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 17 Jan 2014 11:52:43 +0100
+Subject: [PATCH] dracut-install,dracut: fix ldd output parsing
+
+dracut-install could not handle output like:
+	/lib/$LIB/liblsp.so => /lib/lib64/liblsp.so (0x00007faf00727000)
+
+also unset LD_PRELOAD, so we get a clean environment
+---
+ dracut.sh                | 1 +
+ install/dracut-install.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/dracut.sh b/dracut.sh
+index cf027e7..8d572a3 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -545,6 +545,7 @@ export LC_ALL=C
+ export LANG=C
+ unset NPATH
+ unset LD_LIBRARY_PATH
++unset LD_PRELOAD
+ unset GREP_OPTIONS
+ 
+ export DRACUT_LOG_LEVEL=warning
+diff --git a/install/dracut-install.c b/install/dracut-install.c
+index 6b9c613..c5e4b05 100644
+--- a/install/dracut-install.c
++++ b/install/dracut-install.c
+@@ -391,7 +391,11 @@ static int resolve_deps(const char *src)
+                 if (strstr(buf, destrootdir))
+                         break;
+ 
+-                p = strchr(buf, '/');
++                p = strstr(buf, "=>");
++                if (!p)
++                        p = buf;
++
++                p = strchr(p, '/');
+                 if (p) {
+                         for (q = p; *q && *q != ' ' && *q != '\n'; q++) ;
+                         *q = '\0';

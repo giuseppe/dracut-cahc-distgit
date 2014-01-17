@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 69%{?dist}
+Release: 82%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -95,7 +95,21 @@ Patch63: 0063-test-TEST-17-LVM-THIN-add-test-case-for-lvm-thin-poo.patch
 Patch64: 0064-test-TEST-17-LVM-THIN-remove-.testdir.patch
 Patch65: 0065-iscsi-do-iscsi_firmware-regardless-of-network.patch
 Patch66: 0066-dracut-lib-wait_for_dev-prevent-systemd-daemon-reloa.patch
-Patch67: 0067-udev-install-seat-rules.patch
+Patch67: 0067-kernel-modules-add-more-block-driver.patch
+Patch68: 0068-network-include-usbnet-drivers.patch
+Patch69: 0069-systemd-dracut-initqueue.sh-fstab-is-not-a-directory.patch
+Patch70: 0070-iscsi-iscsiroot.sh-do-not-trust-iscsistart-return-va.patch
+Patch71: 0071-dracut.sh-add-missing-piece-for-option-add-device.patch
+Patch72: 0072-dracut.sh-add-boot-efi-to-device-paths.patch
+Patch73: 0073-documentation-line-wrap.patch
+Patch74: 0074-network-include-all-ethernet-drivers.patch
+Patch75: 0075-dracut-install-dracut-fix-ldd-output-parsing.patch
+Patch76: 0076-systemd-add-71-seat.rules-73-seat-late.rules.patch
+Patch77: 0077-systemd-add-seat-udev-rules-and-mask-loginctl.patch
+Patch78: 0078-systemd-module-setup.sh-make-use-of-ln_r.patch
+Patch79: 0079-network-add-rd.bootif-0-to-ignore-BOOTIF.patch
+Patch80: 0080-iscsi-call-iscsistart-b-until-it-succeeds.patch
+Patch81: 0081-base-dracut-lib.sh-halt-the-machine-in-systemd-mode-.patch
 
 BuildRequires: bash git
 
@@ -518,6 +532,16 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jan 17 2014 Harald Hoyer <harald@redhat.com> 033-84
+- fixed iscsistart for iscsi_firmware
+Related: rhbz#1031160
+- add more drivers
+Resolves: rhbz#1048403
+Resolves: rhbz#1038827
+- add rd.bootif=0 parameter
+Resolves: rhbz#1044623
+- halt the machine, if FIPS fails
+
 * Mon Jan 13 2014 Ray Strode <rstrode@redhat.com> 033-69
 - Add udev seat rules for plymouth
 Related: #1043689

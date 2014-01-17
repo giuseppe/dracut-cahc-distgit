@@ -1,0 +1,41 @@
+From e33b4492dbfd18fe44d3dd3272e59745232c9eca Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 17 Jan 2014 14:37:55 +0100
+Subject: [PATCH] network: add rd.bootif=0 to ignore BOOTIF
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1044623
+---
+ dracut.cmdline.7.asc                 | 6 ++++++
+ modules.d/40network/parse-ip-opts.sh | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/dracut.cmdline.7.asc b/dracut.cmdline.7.asc
+index 8ac5341..963ba07 100644
+--- a/dracut.cmdline.7.asc
++++ b/dracut.cmdline.7.asc
+@@ -484,6 +484,12 @@ interface name. Better name it "bootnet" or "bluesocket".
+     specify network interface to use routing and netroot information from.
+     Required if multiple ip= lines are used.
+ 
++**BOOTIF=**__<MAC>__::
++    specify network interface to use routing and netroot information from.
++
++**rd.bootif=0**::
++    Disable BOOTIF parsing, which is provided by PXE
++
+ **nameserver=**__<IP>__ [**nameserver=**__<IP>__ ...]::
+     specify nameserver(s) to use
+ 
+diff --git a/modules.d/40network/parse-ip-opts.sh b/modules.d/40network/parse-ip-opts.sh
+index 4bf286d..7e73574 100755
+--- a/modules.d/40network/parse-ip-opts.sh
++++ b/modules.d/40network/parse-ip-opts.sh
+@@ -108,7 +108,7 @@ for p in $(getargs ip=); do
+ done
+ 
+ # put BOOTIF in IFACES to make sure it comes up
+-if BOOTIF="$(getarg BOOTIF=)"; then
++if getargbool 1 "rd.bootif" && BOOTIF="$(getarg BOOTIF=)"; then
+     BOOTDEV=$(fix_bootif $BOOTIF)
+     IFACES="$BOOTDEV $IFACES"
+ fi

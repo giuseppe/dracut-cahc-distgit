@@ -1,0 +1,23 @@
+From 497e9e89dcb0196fd0c1b4ebf904eeb8556fc934 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 17 Jan 2014 13:40:42 +0100
+Subject: [PATCH] systemd: add 71-seat.rules 73-seat-late.rules
+
+otherwise plymouth does not work
+---
+ modules.d/98systemd/module-setup.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/98systemd/module-setup.sh b/modules.d/98systemd/module-setup.sh
+index 7b3dfa4..7178d2b 100755
+--- a/modules.d/98systemd/module-setup.sh
++++ b/modules.d/98systemd/module-setup.sh
+@@ -180,7 +180,7 @@ install() {
+ 
+     inst_script "$moddir/rootfs-generator.sh" /lib/systemd/system-generators/dracut-rootfs-generator
+ 
+-    inst_rules 99-systemd.rules
++    inst_rules 71-seat.rules 73-seat-late.rules 99-systemd.rules
+ 
+     for i in \
+         emergency.target \

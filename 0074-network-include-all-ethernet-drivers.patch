@@ -1,0 +1,35 @@
+From 3c67ed50135c8e454d0a4e0f414eca85c014b99a Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 15 Jan 2014 14:35:53 +0100
+Subject: [PATCH] network: include all ethernet drivers
+
+---
+ modules.d/40network/module-setup.sh | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/40network/module-setup.sh b/modules.d/40network/module-setup.sh
+index 508dbab..a5e796f 100755
+--- a/modules.d/40network/module-setup.sh
++++ b/modules.d/40network/module-setup.sh
+@@ -24,7 +24,7 @@ installkernel() {
+ 
+     net_module_filter() {
+         local _net_drivers='eth_type_trans|register_virtio_device|usbnet_open'
+-        local _unwanted_drivers='/(wireless|isdn|uwb)/'
++        local _unwanted_drivers='/(wireless|isdn|uwb|net/ethernet|net/phy|net/team)/'
+         local _ret
+         # subfunctions inherit following FDs
+         local _merge=8 _side2=9
+@@ -64,7 +64,11 @@ installkernel() {
+         | net_module_filter | instmods
+ 
+     #instmods() will take care of hostonly
+-    instmods =drivers/net/phy ecb arc4 bridge stp llc ipv6 bonding 8021q af_packet virtio_net =drivers/net/team
++    instmods \
++        =drivers/net/phy \
++        =drivers/net/team \
++        =drivers/net/ethernet \
++        ecb arc4 bridge stp llc ipv6 bonding 8021q af_packet virtio_net
+ }
+ 
+ install() {

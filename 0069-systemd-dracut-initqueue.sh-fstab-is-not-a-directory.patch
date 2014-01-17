@@ -1,0 +1,22 @@
+From 5b134070e8bff59f4588bb96ae3780645e918c2a Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 7 Jan 2014 16:39:48 +0100
+Subject: [PATCH] systemd/dracut-initqueue.sh: fstab is not a directory
+
+---
+ modules.d/98systemd/dracut-initqueue.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/98systemd/dracut-initqueue.sh b/modules.d/98systemd/dracut-initqueue.sh
+index 1e05dcd..37bc18f 100755
+--- a/modules.d/98systemd/dracut-initqueue.sh
++++ b/modules.d/98systemd/dracut-initqueue.sh
+@@ -67,7 +67,7 @@ while :; do
+ 
+     main_loop=$(($main_loop+1))
+     if [ $main_loop -gt $RDRETRY ]; then
+-        if ! [ -d /sysroot/etc/fstab ] || ! [ -e /sysroot/sbin/init ] ; then
++        if ! [ -f /sysroot/etc/fstab ] || ! [ -e /sysroot/sbin/init ] ; then
+             action_on_fail "Could not boot." && break
+         fi
+         warn "Not all disks have been found."

@@ -1,0 +1,26 @@
+From dcf94be9a3817c9b11b6ac77d4f42835d62d1a05 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 8 Jan 2014 15:38:44 +0100
+Subject: [PATCH] dracut.sh: add /boot/efi to device paths
+
+Add /boot/efi to device paths, so the filesystem driver is included
+and it can be repaired in the initramfs.
+---
+ dracut.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/dracut.sh b/dracut.sh
+index 9a6521e..cf027e7 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -917,7 +917,9 @@ if [[ $hostonly ]]; then
+         "/usr/sbin" \
+         "/usr/lib" \
+         "/usr/lib64" \
+-        "/boot";
++        "/boot" \
++        "/boot/efi" \
++        ;
+     do
+         mp=$(readlink -f "$mp")
+         mountpoint "$mp" >/dev/null 2>&1 || continue
