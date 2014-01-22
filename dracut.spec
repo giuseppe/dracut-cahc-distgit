@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 85%{?dist}
+Release: 86%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -113,6 +113,7 @@ Patch81: 0081-base-dracut-lib.sh-halt-the-machine-in-systemd-mode-.patch
 Patch82: 0082-systemd-rootfs-generator.sh-exit-0.patch
 Patch83: 0083-systemd-rootfs-generator.sh-ignore-legacy-root-dev-n.patch
 Patch84: 0084-dracut-lib.sh-fixed-shebang.patch
+Patch85: 0085-iscsi-more-iscsiroot-fixes.patch
 
 
 BuildRequires: bash git
@@ -536,6 +537,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jan 22 2014 Harald Hoyer <harald@redhat.com> 033-86
+- fixed iscsistart for iscsi_firmware
+Related: rhbz#1031160
+
 * Mon Jan 20 2014 Harald Hoyer <harald@redhat.com> 033-85
 - fixed shebang of dracut-lib.sh
 Related: rhbz#1031160
