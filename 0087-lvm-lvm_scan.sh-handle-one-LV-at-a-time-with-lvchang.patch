@@ -1,0 +1,32 @@
+From 50ef97540f53ea044653ca6c69212e93a01c8f4c Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 24 Jan 2014 16:37:13 +0100
+Subject: [PATCH] lvm:lvm_scan.sh handle one LV at a time with lvchange
+
+---
+ modules.d/90lvm/lvm_scan.sh | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/modules.d/90lvm/lvm_scan.sh b/modules.d/90lvm/lvm_scan.sh
+index 85ecd4d..f87831c 100755
+--- a/modules.d/90lvm/lvm_scan.sh
++++ b/modules.d/90lvm/lvm_scan.sh
+@@ -107,11 +107,13 @@ fi
+ if [ -n "$LVS" ] ; then
+     info "Scanning devices $lvmdevs for LVM logical volumes $LVS"
+     lvm lvscan --ignorelockingfailure 2>&1 | vinfo
+-    if [ -z "$sysinit" ]; then
+-        lvm lvchange --yes -ay --ignorelockingfailure $nopoll --ignoremonitoring $LVS 2>&1 | vinfo
+-    else
+-        lvm lvchange --yes -ay $sysinit $LVS 2>&1 | vinfo
+-    fi
++    for LV in $LVS; do
++        if [ -z "$sysinit" ]; then
++            lvm lvchange --yes -ay --ignorelockingfailure $nopoll --ignoremonitoring $LV 2>&1 | vinfo
++        else
++            lvm lvchange --yes -ay $sysinit $LV 2>&1 | vinfo
++        fi
++    done
+ fi
+ 
+ if [ -z "$LVS" -o -n "$VGS" ]; then

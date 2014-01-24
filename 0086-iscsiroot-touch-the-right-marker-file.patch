@@ -1,0 +1,22 @@
+From 4d5ede17afb3402e1c9b48a8fecb8b4750fe160d Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 24 Jan 2014 16:35:08 +0100
+Subject: [PATCH] iscsiroot: touch the right marker file
+
+---
+ modules.d/95iscsi/iscsiroot.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/95iscsi/iscsiroot.sh b/modules.d/95iscsi/iscsiroot.sh
+index 6868710..60a180d 100755
+--- a/modules.d/95iscsi/iscsiroot.sh
++++ b/modules.d/95iscsi/iscsiroot.sh
+@@ -60,7 +60,7 @@ handle_firmware()
+         fi
+ 
+         if [ -d /sys/class/iscsi_session ]; then
+-            echo 'started' > "/tmp/iscsistarted-iscsi"
++            echo 'started' > "/tmp/iscsistarted-iscsi:"
+             echo 'started' > "/tmp/iscsistarted-firmware"
+         else
+             return 1
