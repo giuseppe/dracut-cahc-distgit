@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 88%{?dist}
+Release: 89%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -539,6 +539,9 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jan 28 2014 Daniel Mach <dmach@redhat.com> - 033-89
+- Mass rebuild 2014-01-24
+
 * Fri Jan 24 2014 Harald Hoyer <harald@redhat.com> 033-88
 - fixed iscsistart for iscsi_firmware
 Related: rhbz#1031160
