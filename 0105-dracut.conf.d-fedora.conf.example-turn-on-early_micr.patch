@@ -1,0 +1,19 @@
+From e81ace610db54972b84a6a2c7062092994557b71 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 30 Jan 2014 16:51:13 +0100
+Subject: [PATCH] dracut.conf.d/fedora.conf.example: turn on early_microcode by
+ default
+
+---
+ dracut.conf.d/fedora.conf.example | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dracut.conf.d/fedora.conf.example b/dracut.conf.d/fedora.conf.example
+index 495e8fb..2364b04 100644
+--- a/dracut.conf.d/fedora.conf.example
++++ b/dracut.conf.d/fedora.conf.example
+@@ -13,3 +13,4 @@ systemdsystemunitdir=/usr/lib/systemd/system
+ systemdsystemconfdir=/etc/systemd/system
+ udevdir=/usr/lib/udev
+ hostonly="yes"
++early_microcode="yes"

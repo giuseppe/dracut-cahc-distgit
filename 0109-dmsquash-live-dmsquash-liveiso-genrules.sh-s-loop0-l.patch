@@ -1,0 +1,25 @@
+From c1c355698174807bf816f022f84303b460ec9e32 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 28 Jan 2014 18:33:36 +0100
+Subject: [PATCH] dmsquash-live/dmsquash-liveiso-genrules.sh:
+ s/loop0/loop-control/
+
+If loop is a kernel module, /dev/loop0 will never show up as a udev
+event, if the loop module is not manually loaded somewhere.
+---
+ modules.d/90dmsquash-live/dmsquash-liveiso-genrules.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/90dmsquash-live/dmsquash-liveiso-genrules.sh b/modules.d/90dmsquash-live/dmsquash-liveiso-genrules.sh
+index 30ea180..0f913d7 100755
+--- a/modules.d/90dmsquash-live/dmsquash-liveiso-genrules.sh
++++ b/modules.d/90dmsquash-live/dmsquash-liveiso-genrules.sh
+@@ -3,7 +3,7 @@
+ # ex: ts=8 sw=4 sts=4 et filetype=sh
+ if [ "${root%%:*}" = "liveiso" ]; then
+     {
+-        printf 'KERNEL=="loop0", RUN+="/sbin/initqueue --settled --onetime --unique /sbin/dmsquash-live-root `/sbin/losetup -f --show %s`"\n' \
++        printf 'KERNEL=="loop-control", RUN+="/sbin/initqueue --settled --onetime --unique /sbin/dmsquash-live-root `/sbin/losetup -f --show %s`"\n' \
+             ${root#liveiso:}
+     } >> /etc/udev/rules.d/99-liveiso-mount.rules
+ fi

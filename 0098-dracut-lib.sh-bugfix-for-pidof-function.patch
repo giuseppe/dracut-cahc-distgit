@@ -1,0 +1,26 @@
+From 365e7f70465af866e9f89ce630dc48ab75f78b54 Mon Sep 17 00:00:00 2001
+From: Stig Telfer <stelfer@cray.com>
+Date: Fri, 24 Jan 2014 15:19:11 +0000
+Subject: [PATCH] dracut-lib.sh: bugfix for pidof function
+
+It appears there is a simple substitution error in the pidof shell function which causes it to fail to find processes.  In my case, processes started by 95nfs are not terminated in the cleanup hook.  This causes knock-on effects disturbing the root filesystem service dependencies.
+
+Enjoy,
+Stig Telfer
+---
+ modules.d/99base/dracut-lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index cd62851..61e5a81 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -969,7 +969,7 @@ if ! command -v pidof >/dev/null 2>/dev/null; then
+         for i in /proc/*/exe; do
+             [ -e "$i" ] || return 1
+             if [ -n "$_exe" ]; then
+-                [ "$i" -ef "$_cmd" ] || continue
++                [ "$i" -ef "$_exe" ] || continue
+             else
+                 _rl=$(readlink -f "$i");
+                 [ "${_rl%/$_cmd}" != "$_rl" ] || continue

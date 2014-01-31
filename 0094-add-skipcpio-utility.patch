@@ -1,0 +1,190 @@
+From 979038ba0da3ff61ddb61a809795189d3c25f71a Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 24 Jan 2014 15:27:51 +0100
+Subject: [PATCH] add skipcpio utility
+
+skipcpio skips a cpio archive at the beginning of a file.
+
+It is used for skipping an early cpio archive for lsinitrd.
+---
+ Makefile            |  13 +++++-
+ skipcpio/skipcpio.c | 123 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 135 insertions(+), 1 deletion(-)
+ create mode 100644 skipcpio/skipcpio.c
+
+diff --git a/Makefile b/Makefile
+index e7da948..5441d8f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -40,7 +40,7 @@ manpages = $(man1pages) $(man5pages) $(man7pages) $(man8pages)
+ 
+ .PHONY: install clean archive rpm testimage test all check AUTHORS doc dracut-version.sh
+ 
+-all: dracut-version.sh dracut-install
++all: dracut-version.sh dracut-install skipcpio/skipcpio
+ 
+ DRACUT_INSTALL_OBJECTS = \
+         install/dracut-install.o \
+@@ -61,8 +61,15 @@ install/dracut-install: $(DRACUT_INSTALL_OBJECTS)
+ dracut-install: install/dracut-install
+ 	ln -fs $< $@
+ 
++SKIPCPIO_OBJECTS= \
++	skipcpio/skipcpio.o
++
++skipcpio/skipcpio.o: skipcpio/skipcpio.c
++skipcpio/skipcpio: skipcpio/skipcpio.o
++
+ indent:
+ 	indent -i8 -nut -br -linux -l120 install/dracut-install.c
++	indent -i8 -nut -br -linux -l120 skipcpio/skipcpio.c
+ 
+ doc: $(manpages) dracut.html
+ 
+@@ -136,6 +143,9 @@ endif
+ 	if [ -f install/dracut-install ]; then \
+ 		install -m 0755 install/dracut-install $(DESTDIR)$(pkglibdir)/dracut-install; \
+ 	fi
++	if [ -f skipcpio/skipcpio ]; then \
++		install -m 0755 skipcpio/skipcpio $(DESTDIR)$(pkglibdir)/skipcpio; \
++	fi
+ 	mkdir -p $(DESTDIR)${prefix}/lib/kernel/install.d
+ 	install -m 0755 50-dracut.install $(DESTDIR)${prefix}/lib/kernel/install.d/50-dracut.install
+ 	install -m 0755 51-dracut-rescue.install $(DESTDIR)${prefix}/lib/kernel/install.d/51-dracut-rescue.install
+@@ -155,6 +165,7 @@ clean:
+ 	$(RM) dracut-*.rpm dracut-*.tar.bz2
+ 	$(RM) dracut-version.sh
+ 	$(RM) dracut-install install/dracut-install $(DRACUT_INSTALL_OBJECTS)
++	$(RM) skipcpio/skipcpio $(SKIPCPIO_OBJECTS)
+ 	$(RM) $(manpages) dracut.html
+ 	$(MAKE) -C test clean
+ 
+diff --git a/skipcpio/skipcpio.c b/skipcpio/skipcpio.c
+new file mode 100644
+index 0000000..fbf391b
+--- /dev/null
++++ b/skipcpio/skipcpio.c
+@@ -0,0 +1,123 @@
++/*-*- Mode: C; c-basic-offset: 8; indent-tabs-mode: nil -*-*/
++
++/* dracut-install.c  -- install files and executables
++
++   Copyright (C) 2012 Harald Hoyer
++   Copyright (C) 2012 Red Hat, Inc.  All rights reserved.
++
++   This program is free software: you can redistribute it and/or modify
++   under the terms of the GNU Lesser General Public License as published by
++   the Free Software Foundation; either version 2.1 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful, but
++   WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public License
++   along with this program; If not, see <http://www.gnu.org/licenses/>.
++*/
++
++#define PROGRAM_VERSION_STRING "1"
++
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
++#endif
++
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <string.h>
++
++#define CPIO_END "TRAILER!!!"
++#define CPIO_ENDLEN (sizeof(CPIO_END)-1)
++
++static char buf[CPIO_ENDLEN * 2 + 1];
++
++int main(int argc, char **argv)
++{
++        FILE *f;
++        size_t s;
++        long pos = 0;
++
++        if (argc != 2) {
++                fprintf(stderr, "Usage: %s <file>\n", argv[0]);
++                exit(1);
++        }
++
++        f = fopen(argv[1], "r");
++
++        if (f == NULL) {
++                fprintf(stderr, "Cannot open file '%s'\n", argv[1]);
++                exit(1);
++        }
++
++        s = fread(buf, 6, 1, f);
++        if (s <= 0) {
++                fprintf(stderr, "Read error from file '%s'\n", argv[1]);
++                fclose(f);
++                exit(1);
++        }
++        fseek(f, 0, SEEK_SET);
++
++        /* check, if this is a cpio archive */
++        if ((buf[0] == 0x71 && buf[1] == 0xc7)
++            || (buf[0] == '0' && buf[1] == '7' && buf[0] == '0' && buf[1] == '7' && buf[0] == '0' && buf[1] == '1')) {
++
++                /* Search for CPIO_END */
++                do {
++                        char *h;
++                        fseek(f, pos, SEEK_SET);
++                        buf[sizeof(buf) - 1] = 0;
++                        s = fread(buf, CPIO_ENDLEN, 2, f);
++                        if (s <= 0)
++                                break;
++
++                        h = strstr(buf, CPIO_END);
++                        if (h) {
++                                pos = (h - buf) + pos + CPIO_ENDLEN;
++                                fseek(f, pos, SEEK_SET);
++                                break;
++                        }
++                        pos += CPIO_ENDLEN;
++                } while (!feof(f));
++
++                if (feof(f)) {
++                        /* CPIO_END not found, just cat the whole file */
++                        fseek(f, 0, SEEK_SET);
++                } else {
++                        /* skip zeros */
++                        while (!feof(f)) {
++                                size_t i;
++
++                                buf[sizeof(buf) - 1] = 0;
++                                s = fread(buf, 1, sizeof(buf) - 1, f);
++                                if (s <= 0)
++                                        break;
++
++                                for (i = 0; (i < s) && (buf[i] == 0); i++) ;
++
++                                if (buf[i] != 0) {
++                                        pos += i;
++                                        fseek(f, pos, SEEK_SET);
++                                        break;
++                                }
++
++                                pos += s;
++                        }
++                }
++        }
++        /* cat out the rest */
++        while (!feof(f)) {
++                s = fread(buf, 1, sizeof(buf), f);
++                if (s <= 0)
++                        break;
++
++                s = fwrite(buf, 1, s, stdout);
++                if (s <= 0)
++                        break;
++        }
++        fclose(f);
++}

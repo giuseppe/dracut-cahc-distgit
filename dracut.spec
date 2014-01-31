@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 89%{?dist}
+Release: 110%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -116,6 +116,28 @@ Patch84: 0084-dracut-lib.sh-fixed-shebang.patch
 Patch85: 0085-iscsi-more-iscsiroot-fixes.patch
 Patch86: 0086-iscsiroot-touch-the-right-marker-file.patch
 Patch87: 0087-lvm-lvm_scan.sh-handle-one-LV-at-a-time-with-lvchang.patch
+Patch88: 0088-dracut-logger.sh-systemd-cat-only-understands-prio-0.patch
+Patch89: 0089-Use-builtin-xz-lzma-option-to-use-all-cores-for-mult.patch
+Patch90: 0090-dracut-initramfs-restore-lsinitrd-add-LZ4-support.patch
+Patch91: 0091-Revert-dmraid-let-dmraid-setup-the-partitions.patch
+Patch92: 0092-dracut.sh-create-early-cpio-dir-for-acpi-tables.patch
+Patch93: 0093-dracut.sh-set-file-owners-of-early-cpio-files-to-0-0.patch
+Patch94: 0094-add-skipcpio-utility.patch
+Patch95: 0095-dracut.sh-add-early_cpio-marker-file-to-the-early-cp.patch
+Patch96: 0096-lsinitrd.sh-make-use-of-the-skipcpio-utility.patch
+Patch97: 0097-network-dhclient-script.sh-set-lease-time.patch
+Patch98: 0098-dracut-lib.sh-bugfix-for-pidof-function.patch
+Patch99: 0099-dracut-lib.sh-bugfix-for-pidof-function.patch
+Patch100: 0100-iscsi-iscsiroot.sh-beautify-warning.patch
+Patch101: 0101-dracut.spec-add-skipcpio.patch
+Patch102: 0102-systemd-ensure-autofs4-and-ipv6-are-included.patch
+Patch103: 0103-dracut-functions.sh-also-search-in-the-updates-direc.patch
+Patch104: 0104-dracut.sh-only-set-the-owner-of-files-to-0-0-if-gene.patch
+Patch105: 0105-dracut.conf.d-fedora.conf.example-turn-on-early_micr.patch
+Patch106: 0106-network-understand-ip-.-dns1-dns2.patch
+Patch107: 0107-network-ifup.sh-handle-dns1-and-dns2-from-ip-setting.patch
+Patch108: 0108-network-net-lib.sh-parse-ibft-nameserver-settings.patch
+Patch109: 0109-dmsquash-live-dmsquash-liveiso-genrules.sh-s-loop0-l.patch
 
 
 BuildRequires: bash git
@@ -390,6 +412,7 @@ rm -rf -- $RPM_BUILD_ROOT
 %{dracutlibdir}/dracut-logger.sh
 %{dracutlibdir}/dracut-initramfs-restore
 %{dracutlibdir}/dracut-install
+%{dracutlibdir}/skipcpio
 %config(noreplace) %{_sysconfdir}/dracut.conf
 %if 0%{?fedora} || 0%{?suse_version} || 0%{?rhel}
 %{dracutlibdir}/dracut.conf.d/01-dist.conf
@@ -539,6 +562,18 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jan 31 2014 Harald Hoyer <harald@redhat.com> 033-110
+- add nameservers from ibft settings
+Resolves: rhbz#1034287
+- add microcode to the initramfs image by default
+Resolves: rhbz#1045639
+- halt the machine for wrong checksums in FIPS mode
+Resolves: rhbz#1053655
+- add kernel drivers from the update directory to search path
+Resolves: rhbz#1055774
+- set the ip address lifetime for DHCP setups
+Resolves: rhbz#1058519
+
 * Tue Jan 28 2014 Daniel Mach <dmach@redhat.com> - 033-89
 - Mass rebuild 2014-01-24
 

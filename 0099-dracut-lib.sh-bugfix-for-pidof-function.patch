@@ -1,0 +1,23 @@
+From 9061e3281f8f0d6cf7fdfae1aaa585d6160b232e Mon Sep 17 00:00:00 2001
+From: Stig Telfer <stelfer@cray.com>
+Date: Fri, 24 Jan 2014 15:48:32 +0000
+Subject: [PATCH] dracut-lib.sh: bugfix for pidof function
+
+In follow-up, the patch requires a second mod: kernel tasks have a /proc/.../exe that links to nothing and derails the for loop:
+---
+ modules.d/99base/dracut-lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index 61e5a81..d892c26 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -967,7 +967,7 @@ if ! command -v pidof >/dev/null 2>/dev/null; then
+         [ -z "$_cmd" ] && return 1
+         _exe=$(type -P "$1")
+         for i in /proc/*/exe; do
+-            [ -e "$i" ] || return 1
++            [ -e "$i" ] || continue
+             if [ -n "$_exe" ]; then
+                 [ "$i" -ef "$_exe" ] || continue
+             else

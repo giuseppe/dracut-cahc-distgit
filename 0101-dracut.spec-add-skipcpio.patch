@@ -1,0 +1,21 @@
+From b46bc56874d879cdf528f71d8ae51ced8330c9cf Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 28 Jan 2014 12:21:33 +0100
+Subject: [PATCH] dracut.spec: add skipcpio
+
+---
+ dracut.spec | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dracut.spec b/dracut.spec
+index 596d728..d6f1a88 100644
+--- a/dracut.spec
++++ b/dracut.spec
+@@ -302,6 +302,7 @@ rm -rf -- $RPM_BUILD_ROOT
+ %{dracutlibdir}/dracut-logger.sh
+ %{dracutlibdir}/dracut-initramfs-restore
+ %{dracutlibdir}/dracut-install
++%{dracutlibdir}/skipcpio
+ %config(noreplace) %{_sysconfdir}/dracut.conf
+ %if 0%{?fedora} || 0%{?suse_version} || 0%{?rhel}
+ %{dracutlibdir}/dracut.conf.d/01-dist.conf

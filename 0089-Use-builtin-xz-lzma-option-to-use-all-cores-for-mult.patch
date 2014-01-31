@@ -1,0 +1,34 @@
+From d7f6f22bca957cc0a5db13f26c3191cae11ac0c2 Mon Sep 17 00:00:00 2001
+From: Koen Kooi <koen@dominion.thruhere.net>
+Date: Fri, 10 Jan 2014 21:41:43 +0100
+Subject: [PATCH] Use builtin xz/lzma option to use all cores for multihreaded
+ compression
+
+This removes the dependency on 'getconf' as well, which is not installed by default on my embedded systems.
+
+Signed-off-by: Koen Kooi <koen@dominion.thruhere.net>
+---
+ dracut.sh | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/dracut.sh b/dracut.sh
+index 8d572a3..ad57218 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -695,14 +695,12 @@ stdloglvl=$((stdloglvl + verbosity_mod_l))
+ # eliminate IFS hackery when messing with fw_dir
+ fw_dir=${fw_dir//:/ }
+ 
+-cpu_count=$(getconf _NPROCESSORS_ONLN)
+-
+ # handle compression options.
+ [[ $compress ]] || compress="gzip"
+ case $compress in
+     bzip2) compress="bzip2 -9";;
+-    lzma)  compress="lzma -9 ${cpu_count:+-T$cpu_count}";;
+-    xz)    compress="xz --check=crc32 --lzma2=dict=1MiB ${cpu_count:+-T$cpu_count}";;
++    lzma)  compress="lzma -9 -T0";;
++    xz)    compress="xz --check=crc32 --lzma2=dict=1MiB -T0";;
+     gzip)  compress="gzip -9"; command -v pigz > /dev/null 2>&1 && compress="pigz -9";;
+     lzo)   compress="lzop -9";;
+     lz4)   compress="lz4 -9";;

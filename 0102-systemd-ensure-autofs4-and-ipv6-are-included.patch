@@ -1,0 +1,29 @@
+From 1e160b06d61d38fb4b97880ea952f5a8d0ba46f9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Cristian=20Rodr=C3=ADguez?= <crrodriguez@opensuse.org>
+Date: Mon, 16 Dec 2013 03:40:58 +0000
+Subject: [PATCH] systemd: ensure autofs4 and ipv6 are included
+
+Systemd tries to load this modules very early.
+Even though they are not strictly required it it is a good
+thing to have them around.
+
+[Edited-by: Harald Hoyer: moved to installkernel() ]
+---
+ modules.d/98systemd/module-setup.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/modules.d/98systemd/module-setup.sh b/modules.d/98systemd/module-setup.sh
+index 511b883..91a6559 100755
+--- a/modules.d/98systemd/module-setup.sh
++++ b/modules.d/98systemd/module-setup.sh
+@@ -17,6 +17,10 @@ depends() {
+     return 0
+ }
+ 
++installkernel() {
++    instmods autofs4 ipv6
++}
++
+ install() {
+     local _mods
+ 

@@ -1,0 +1,22 @@
+From 44e187c863848e51dc4118c2937ba037cbc37240 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 28 Jan 2014 12:14:07 +0100
+Subject: [PATCH] iscsi/iscsiroot.sh: beautify warning
+
+---
+ modules.d/95iscsi/iscsiroot.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/95iscsi/iscsiroot.sh b/modules.d/95iscsi/iscsiroot.sh
+index 60a180d..8b74332 100755
+--- a/modules.d/95iscsi/iscsiroot.sh
++++ b/modules.d/95iscsi/iscsiroot.sh
+@@ -56,7 +56,7 @@ handle_firmware()
+         done
+ 
+         if ! iscsistart -b $iscsi_param; then
+-            warn "\`iscsistart -b $iscsi_param\´ failed"
++            warn "'iscsistart -b $iscsi_param' failed"
+         fi
+ 
+         if [ -d /sys/class/iscsi_session ]; then
