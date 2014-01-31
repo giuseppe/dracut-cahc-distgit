@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 110%{?dist}
+Release: 115%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -138,6 +138,11 @@ Patch106: 0106-network-understand-ip-.-dns1-dns2.patch
 Patch107: 0107-network-ifup.sh-handle-dns1-and-dns2-from-ip-setting.patch
 Patch108: 0108-network-net-lib.sh-parse-ibft-nameserver-settings.patch
 Patch109: 0109-dmsquash-live-dmsquash-liveiso-genrules.sh-s-loop0-l.patch
+Patch110: 0110-base-rdsosreport.sh-add-dracut-version-to-rdsosrepor.patch
+Patch111: 0111-fcoe-move-uefi-parsing-to-fcoe-uefi-module.patch
+Patch112: 0112-move-uefi-lib-to-a-seperate-module.patch
+Patch113: 0113-dracut.spec-add-95fcoe-uefi-and-99uefi-lib.patch
+Patch114: 0114-fcoe-uefi-do-not-include-if-fcoe-utils-not-installed.patch
 
 
 BuildRequires: bash git
@@ -523,6 +528,8 @@ rm -rf -- $RPM_BUILD_ROOT
 %{dracutlibdir}/modules.d/95ssh-client
 %{dracutlibdir}/modules.d/45ifcfg
 %{dracutlibdir}/modules.d/95znet
+%{dracutlibdir}/modules.d/95fcoe-uefi
+%{dracutlibdir}/modules.d/99uefi-lib
 
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version}
 %files fips
@@ -562,6 +569,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jan 31 2014 Harald Hoyer <harald@redhat.com> 033-115
+- add fcoe module even in hostonly case
+Resolves: rhbz#1038827
+
 * Fri Jan 31 2014 Harald Hoyer <harald@redhat.com> 033-110
 - add nameservers from ibft settings
 Resolves: rhbz#1034287

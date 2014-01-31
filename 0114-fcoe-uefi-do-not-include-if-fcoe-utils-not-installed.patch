@@ -1,0 +1,28 @@
+From 521662043e8d71830c3c1157f8408523f736f469 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 7 Jan 2014 14:34:55 +0100
+Subject: [PATCH] fcoe-uefi: do not include, if fcoe utils not installed
+
+---
+ modules.d/95fcoe-uefi/module-setup.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/95fcoe-uefi/module-setup.sh b/modules.d/95fcoe-uefi/module-setup.sh
+index 653d88e..c91f775 100755
+--- a/modules.d/95fcoe-uefi/module-setup.sh
++++ b/modules.d/95fcoe-uefi/module-setup.sh
+@@ -4,6 +4,9 @@
+ 
+ # called by dracut
+ check() {
++    for i in dcbtool fipvlan lldpad ip readlink; do
++        type -P $i >/dev/null || return 1
++    done
+     return 0
+ }
+ 
+@@ -17,4 +20,3 @@ depends() {
+ install() {
+     inst_hook cmdline 20 "$moddir/parse-uefifcoe.sh"
+ }
+-

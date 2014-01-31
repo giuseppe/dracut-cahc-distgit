@@ -1,0 +1,22 @@
+From 98bd5fbf129ac738345e52503fb37cc469fc5add Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 16 Dec 2013 12:30:26 +0100
+Subject: [PATCH] dracut.spec: add 95fcoe-uefi and 99uefi-lib
+
+---
+ dracut.spec | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/dracut.spec b/dracut.spec
+index d6f1a88..302cfc5 100644
+--- a/dracut.spec
++++ b/dracut.spec
+@@ -413,6 +413,8 @@ rm -rf -- $RPM_BUILD_ROOT
+ %{dracutlibdir}/modules.d/95ssh-client
+ %{dracutlibdir}/modules.d/45ifcfg
+ %{dracutlibdir}/modules.d/95znet
++%{dracutlibdir}/modules.d/95fcoe-uefi
++%{dracutlibdir}/modules.d/99uefi-lib
+ 
+ %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version}
+ %files fips
