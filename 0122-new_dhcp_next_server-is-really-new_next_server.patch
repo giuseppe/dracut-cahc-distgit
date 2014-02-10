@@ -1,0 +1,25 @@
+From 6a0da312e0118208fa2799abf188755fbd97b479 Mon Sep 17 00:00:00 2001
+From: "Brian C. Lane" <bcl@redhat.com>
+Date: Wed, 5 Feb 2014 12:10:39 -0800
+Subject: [PATCH] new_dhcp_next_server is really new_next_server
+
+The variable that dhclient sets doesn't have dhcp in the name. This
+could cause problems with setups where the server is not the same as the
+dhcp server.
+---
+ modules.d/95nfs/nfs-lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/95nfs/nfs-lib.sh b/modules.d/95nfs/nfs-lib.sh
+index f5fc56d..9ced2e6 100755
+--- a/modules.d/95nfs/nfs-lib.sh
++++ b/modules.d/95nfs/nfs-lib.sh
+@@ -97,7 +97,7 @@ nfsroot_from_dhcp() {
+     [ -z "$path" ] && [ "$(getarg root=)" == "/dev/nfs" ] && path=/tftpboot/%s
+     [ -z "$server" ] && server=$srv
+     [ -z "$server" ] && server=$new_dhcp_server_identifier
+-    [ -z "$server" ] && server=$new_dhcp_next_server
++    [ -z "$server" ] && server=$new_next_server
+     [ -z "$server" ] && server=${new_root_path%%:*}
+ }
+ 

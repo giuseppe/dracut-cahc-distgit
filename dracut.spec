@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 115%{?dist}
+Release: 124%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -143,6 +143,15 @@ Patch111: 0111-fcoe-move-uefi-parsing-to-fcoe-uefi-module.patch
 Patch112: 0112-move-uefi-lib-to-a-seperate-module.patch
 Patch113: 0113-dracut.spec-add-95fcoe-uefi-and-99uefi-lib.patch
 Patch114: 0114-fcoe-uefi-do-not-include-if-fcoe-utils-not-installed.patch
+Patch115: 0115-network-fix-dns-parsing-in-ip-parameter.patch
+Patch116: 0116-skipcpio-return-something-at-end-of-program.patch
+Patch117: 0117-skipcpio-fixed-signatured-check.patch
+Patch118: 0118-network-ifup-do-not-ifup-an-already-setup-network-in.patch
+Patch119: 0119-network-ifup-do-not-run-dhclient-twice-on-the-same-i.patch
+Patch120: 0120-nfs-nfsroot-symlink-dev-null-to-dev-nfs-as-a-marker-.patch
+Patch121: 0121-systemd-dracut-pre-pivot-run-for-dev-nfs-root-and-cl.patch
+Patch122: 0122-new_dhcp_next_server-is-really-new_next_server.patch
+Patch123: 0123-dracut.sh-Fix-variable-name-typo.patch
 
 
 BuildRequires: bash git
@@ -569,6 +578,16 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb 10 2014 Harald Hoyer <harald@redhat.com> 033-124
+- fixed dns parsing for ip= parameter
+Resolves: rhbz#1034287
+- skipcpio bugfixes
+Resolves: rhbz#1045639
+- do not ifup, and already setup network
+Resolves: rhbz#844828
+- do not run dhclient twice
+Resolves: rhbz#844828
+
 * Fri Jan 31 2014 Harald Hoyer <harald@redhat.com> 033-115
 - add fcoe module even in hostonly case
 Resolves: rhbz#1038827

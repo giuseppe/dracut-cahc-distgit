@@ -1,0 +1,22 @@
+From a3a5b817ebd6cece50e2cd9e03fe4279d9c2f7ba Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 7 Feb 2014 15:41:50 +0100
+Subject: [PATCH] network:fix dns parsing in ip= parameter
+
+---
+ modules.d/40network/net-lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index 1b51c85..8948a47 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -353,7 +353,7 @@ ip_to_var() {
+             [ -n "$5" ] && hostname=$5; [ -n "$6" ] && dev=$6; [ -n "$7" ] && autoconf=$7;
+             case "$8" in
+                 [0-9]*:*|[0-9]*.[0-9]*.[0-9]*.[0-9]*)
+-                    dns1="$mtu"; unset $mtu
++                    dns1="$8"
+                     [ -n "$9" ] && dns2="$9"
+                     ;;
+                 [0-9]*)

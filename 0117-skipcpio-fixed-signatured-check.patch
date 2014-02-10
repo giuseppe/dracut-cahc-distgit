@@ -1,0 +1,22 @@
+From a7e6fb923190640d961db10ee109d38b6227536b Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 29 Jan 2014 08:35:47 +0100
+Subject: [PATCH] skipcpio: fixed signatured check
+
+---
+ skipcpio/skipcpio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/skipcpio/skipcpio.c b/skipcpio/skipcpio.c
+index c912061..ac0578e 100644
+--- a/skipcpio/skipcpio.c
++++ b/skipcpio/skipcpio.c
+@@ -64,7 +64,7 @@ int main(int argc, char **argv)
+ 
+         /* check, if this is a cpio archive */
+         if ((buf[0] == 0x71 && buf[1] == 0xc7)
+-            || (buf[0] == '0' && buf[1] == '7' && buf[0] == '0' && buf[1] == '7' && buf[0] == '0' && buf[1] == '1')) {
++            || (buf[0] == '0' && buf[1] == '7' && buf[2] == '0' && buf[3] == '7' && buf[4] == '0' && buf[5] == '1')) {
+ 
+                 /* Search for CPIO_END */
+                 do {
