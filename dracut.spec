@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 124%{?dist}
+Release: 125%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -152,6 +152,7 @@ Patch120: 0120-nfs-nfsroot-symlink-dev-null-to-dev-nfs-as-a-marker-.patch
 Patch121: 0121-systemd-dracut-pre-pivot-run-for-dev-nfs-root-and-cl.patch
 Patch122: 0122-new_dhcp_next_server-is-really-new_next_server.patch
 Patch123: 0123-dracut.sh-Fix-variable-name-typo.patch
+Patch124: 0124-modules.d-98systemd-install-70-uaccess.rules.patch
 
 
 BuildRequires: bash git
@@ -578,6 +579,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Feb 24 2014 Ray Strode <rstrode@redhat.com> 033-125
+- fix plymouth in initrd
+Resolves: #1015564
+
 * Mon Feb 10 2014 Harald Hoyer <harald@redhat.com> 033-124
 - fixed dns parsing for ip= parameter
 Resolves: rhbz#1034287
