@@ -1,0 +1,19 @@
+From 06eb3b80be3d4da642aeb05b37f567dd3d468a92 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 25 Feb 2014 12:34:41 +0100
+Subject: [PATCH] default conf: set hostonly_cmdline == "no"
+
+---
+ dracut.conf.d/fedora.conf.example | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dracut.conf.d/fedora.conf.example b/dracut.conf.d/fedora.conf.example
+index 2364b04..ff4e3b2 100644
+--- a/dracut.conf.d/fedora.conf.example
++++ b/dracut.conf.d/fedora.conf.example
+@@ -13,4 +13,5 @@ systemdsystemunitdir=/usr/lib/systemd/system
+ systemdsystemconfdir=/etc/systemd/system
+ udevdir=/usr/lib/udev
+ hostonly="yes"
++hostonly_cmdline="no"
+ early_microcode="yes"

@@ -1,0 +1,24 @@
+From 648353b27209fa24e51f54a12f105b2d4f521183 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 17 Feb 2014 13:27:46 +0100
+Subject: [PATCH] dracut-functions.sh:find_kernel_modules_by_path() fixed
+ updates search
+
+"updates/*" path does not start with "/"
+---
+ dracut-functions.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index 96a20d5..bddcdcf 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -1530,7 +1530,7 @@ find_kernel_modules_by_path () {
+     _OLDIFS=$IFS
+     IFS=:
+     while read a rest; do
+-        [[ $a = */$1/* ]] || [[ $a = */updates/* ]] || continue
++        [[ $a = */$1/* ]] || [[ $a = updates/* ]] || continue
+         printf "%s\n" "$srcmods/$a"
+     done < "$srcmods/modules.dep"
+     IFS=$_OLDIFS

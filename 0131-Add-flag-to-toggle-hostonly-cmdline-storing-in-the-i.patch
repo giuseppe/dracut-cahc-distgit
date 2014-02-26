@@ -1,0 +1,250 @@
+From 2b965be4f11584462fa891e4508c6b115de2a1ed Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 25 Feb 2014 12:35:32 +0100
+Subject: [PATCH] Add flag to toggle hostonly cmdline storing in the initramfs
+
+--hostonly-cmdline:
+    Store kernel command line arguments needed in the initramfs
+
+--no-hostonly-cmdline:
+    Do not store kernel command line arguments needed in the initramfs
+---
+ dracut.8.asc                             |  6 ++++++
+ dracut.conf.5.asc                        |  3 +++
+ dracut.sh                                | 27 +++++++++++++++++++++------
+ modules.d/90crypt/module-setup.sh        |  6 ++++--
+ modules.d/90dmraid/module-setup.sh       |  6 ++++--
+ modules.d/90lvm/module-setup.sh          |  6 ++++--
+ modules.d/90mdraid/module-setup.sh       |  6 ++++--
+ modules.d/95rootfs-block/module-setup.sh | 31 ++++++++++++++++++++-----------
+ 8 files changed, 66 insertions(+), 25 deletions(-)
+
+diff --git a/dracut.8.asc b/dracut.8.asc
+index b294675..ba125c0 100644
+--- a/dracut.8.asc
++++ b/dracut.8.asc
+@@ -294,6 +294,12 @@ provide a valid _/etc/fstab_.
+ **-N, --no-hostonly**::
+     Disable Host-Only mode
+ 
++**--hostonly-cmdline**:
++    Store kernel command line arguments needed in the initramfs
++
++**--no-hostonly-cmdline**:
++    Do not store kernel command line arguments needed in the initramfs
++
+ **--persistent-policy** _<policy>_::
+     Use _<policy>_ to address disks and partitions.
+     _<policy>_ can be any directory name found in /dev/disk.
+diff --git a/dracut.conf.5.asc b/dracut.conf.5.asc
+index 5c94118..be62da9 100644
+--- a/dracut.conf.5.asc
++++ b/dracut.conf.5.asc
+@@ -76,6 +76,9 @@ Configuration files must have the extension .conf; other extensions are ignored.
+     Host-Only mode: Install only what is needed for booting the local host
+     instead of a generic host and generate host-specific configuration.
+ 
++*hostonly_cmdline*"__{yes|no}__"::
++    If set, store the kernel command line arguments needed in the initramfs
++
+ *persistent_policy=*"__<policy>__"::
+     Use _<policy>_ to address disks and partitions.
+     _<policy>_ can be any directory name found in /dev/disk.
+diff --git a/dracut.sh b/dracut.sh
+index c4bf4eb..1c5e688 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -136,6 +136,10 @@ Creates initial ramdisk images for preloading modules
+   -H, --hostonly        Host-Only mode: Install only what is needed for
+                         booting the local host instead of a generic host.
+   -N, --no-hostonly     Disables Host-Only mode
++  --hostonly-cmdline    Store kernel command line arguments needed
++                        in the initramfs
++  --no-hostonly-cmdline Do not store kernel command line arguments needed
++                        in the initramfs
+   --persistent-policy [POLICY]
+                         Use [POLICY] to address disks and partitions.
+                         POLICY can be any directory name found in /dev/disk.
+@@ -376,7 +380,8 @@ while :; do
+         -a|--add)      push add_dracutmodules_l  "$2"; shift;;
+         --force-add)   push force_add_dracutmodules_l  "$2"; shift;;
+         --add-drivers) push add_drivers_l        "$2"; shift;;
+-        --omit-drivers) push omit_drivers_l      "$2"; shift;;
++        --omit-drivers)
++                       push omit_drivers_l      "$2"; shift;;
+         -m|--modules)  push dracutmodules_l      "$2"; shift;;
+         -o|--omit)     push omit_dracutmodules_l "$2"; shift;;
+         -d|--drivers)  push drivers_l            "$2"; shift;;
+@@ -389,7 +394,8 @@ while :; do
+         --mount)       push fstab_lines          "$2"; shift;;
+         --add-device|--device)
+                        push add_device_l         "$2"; shift;;
+-        --kernel-cmdline) push kernel_cmdline_l  "$2"; shift;;
++        --kernel-cmdline)
++                       push kernel_cmdline_l  "$2"; shift;;
+         --nofscks)     nofscks_l="yes";;
+         --ro-mnt)      ro_mnt_l="yes";;
+         -k|--kmoddir)  drivers_dir_l="$2"; shift;;
+@@ -402,9 +408,12 @@ while :; do
+         -f|--force)    force=yes;;
+         --kernel-only) kernel_only="yes"; no_kernel="no";;
+         --no-kernel)   kernel_only="no"; no_kernel="yes";;
+-        --print-cmdline) print_cmdline="yes"; hostonly_l="yes"; kernel_only="yes"; no_kernel="yes";;
+-        --early-microcode) early_microcode_l="yes";;
+-        --no-early-microcode) early_microcode_l="no";;
++        --print-cmdline)
++                       print_cmdline="yes"; hostonly_l="yes"; kernel_only="yes"; no_kernel="yes";;
++        --early-microcode)
++                       early_microcode_l="yes";;
++        --no-early-microcode)
++                       early_microcode_l="no";;
+         --strip)       do_strip_l="yes";;
+         --nostrip)     do_strip_l="no";;
+         --prelink)     do_prelink_l="yes";;
+@@ -430,11 +439,16 @@ while :; do
+                        hostonly_l="yes" ;;
+         -N|--no-hostonly|--no-host-only)
+                        hostonly_l="no" ;;
++        --hostonly-cmdline)
++                       hostonly_cmdline_l="yes" ;;
++        --no-hostonly-cmdline)
++                       hostonly_cmdline_l="no" ;;
+         --persistent-policy)
+                        persistent_policy_l="$2"; shift;;
+         --fstab)       use_fstab_l="yes" ;;
+         -h|--help)     long_usage; exit 1 ;;
+-        -i|--include)  push include_src "$2"
++        -i|--include)
++                       push include_src "$2"
+                        shift;;
+         --bzip2)       compress_l="bzip2";;
+         --lzma)        compress_l="lzma";;
+@@ -677,6 +691,7 @@ stdloglvl=$((stdloglvl + verbosity_mod_l))
+ [[ $prefix_l ]] && prefix=$prefix_l
+ [[ $prefix = "/" ]] && unset prefix
+ [[ $hostonly_l ]] && hostonly=$hostonly_l
++[[ $hostonly_cmdline_l ]] && hostonly_cmdline=$hostonly_cmdline_l
+ [[ $persistent_policy_l ]] && persistent_policy=$persistent_policy_l
+ [[ $use_fstab_l ]] && use_fstab=$use_fstab_l
+ [[ $mdadmconf_l ]] && mdadmconf=$mdadmconf_l
+diff --git a/modules.d/90crypt/module-setup.sh b/modules.d/90crypt/module-setup.sh
+index 1858391..267d39d 100755
+--- a/modules.d/90crypt/module-setup.sh
++++ b/modules.d/90crypt/module-setup.sh
+@@ -46,8 +46,10 @@ cmdline() {
+ 
+ install() {
+ 
+-    cmdline >> "${initdir}/etc/cmdline.d/90crypt.conf"
+-    echo >> "${initdir}/etc/cmdline.d/90crypt.conf"
++    if [[ $hostonly_cmdline == "yes" ]]; then
++        cmdline >> "${initdir}/etc/cmdline.d/90crypt.conf"
++        echo >> "${initdir}/etc/cmdline.d/90crypt.conf"
++    fi
+ 
+     inst_multiple cryptsetup rmdir readlink umount
+     inst_script "$moddir"/cryptroot-ask.sh /sbin/cryptroot-ask
+diff --git a/modules.d/90dmraid/module-setup.sh b/modules.d/90dmraid/module-setup.sh
+index 11181cf..b230cb0 100755
+--- a/modules.d/90dmraid/module-setup.sh
++++ b/modules.d/90dmraid/module-setup.sh
+@@ -61,8 +61,10 @@ cmdline() {
+ install() {
+     local _i
+ 
+-    cmdline >> "${initdir}/etc/cmdline.d/90dmraid.conf"
+-    echo >> "${initdir}/etc/cmdline.d/90dmraid.conf"
++    if [[ $hostonly_cmdline == "yes" ]]; then
++        cmdline >> "${initdir}/etc/cmdline.d/90dmraid.conf"
++        echo >> "${initdir}/etc/cmdline.d/90dmraid.conf"
++    fi
+ 
+     inst_multiple dmraid
+     inst_multiple -o kpartx
+diff --git a/modules.d/90lvm/module-setup.sh b/modules.d/90lvm/module-setup.sh
+index f0c9b96..1c962d5 100755
+--- a/modules.d/90lvm/module-setup.sh
++++ b/modules.d/90lvm/module-setup.sh
+@@ -48,8 +48,10 @@ install() {
+ 
+     inst lvm
+ 
+-    cmdline >> "${initdir}/etc/cmdline.d/90lvm.conf"
+-    echo >> "${initdir}/etc/cmdline.d/90lvm.conf"
++    if [[ $hostonly_cmdline == "yes" ]]; then
++        cmdline >> "${initdir}/etc/cmdline.d/90lvm.conf"
++        echo >> "${initdir}/etc/cmdline.d/90lvm.conf"
++    fi
+ 
+     inst_rules "$moddir/64-lvm.rules"
+ 
+diff --git a/modules.d/90mdraid/module-setup.sh b/modules.d/90mdraid/module-setup.sh
+index 34aae1e..1e03847 100755
+--- a/modules.d/90mdraid/module-setup.sh
++++ b/modules.d/90mdraid/module-setup.sh
+@@ -65,8 +65,10 @@ install() {
+     inst $(command -v partx) /sbin/partx
+     inst $(command -v mdadm) /sbin/mdadm
+ 
+-    cmdline  >> "${initdir}/etc/cmdline.d/90mdraid.conf"
+-    echo  >> "${initdir}/etc/cmdline.d/90mdraid.conf"
++    if [[ $hostonly_cmdline == "yes" ]]; then
++        cmdline  >> "${initdir}/etc/cmdline.d/90mdraid.conf"
++        echo  >> "${initdir}/etc/cmdline.d/90mdraid.conf"
++    fi
+ 
+     # <mdadm-3.3 udev rule
+     inst_rules 64-md-raid.rules
+diff --git a/modules.d/95rootfs-block/module-setup.sh b/modules.d/95rootfs-block/module-setup.sh
+index 7e714eb..5bb704a 100755
+--- a/modules.d/95rootfs-block/module-setup.sh
++++ b/modules.d/95rootfs-block/module-setup.sh
+@@ -10,17 +10,8 @@ depends() {
+     echo fs-lib
+ }
+ 
+-cmdline() {
+-    local dev=/dev/block/$(find_root_block_device)
+-    if [ -e $dev ]; then
+-        printf " root=%s" "$(shorten_persistent_dev "$(get_persistent_dev "$dev")")"
+-        printf " rootflags=%s" "$(find_mp_fsopts /)"
+-        printf " rootfstype=%s" "$(find_mp_fstype /)"
+-    fi
+-}
+-
+-install() {
+ 
++cmdline_journal() {
+     if [[ $hostonly ]]; then
+         for dev in "${!host_fs_types[@]}"; do
+             [[ ${host_fs_types[$dev]} = "reiserfs" ]] || [[ ${host_fs_types[$dev]} = "xfs" ]] || continue
+@@ -32,10 +23,28 @@ install() {
+             fi
+ 
+             if [ -n "$journaldev" ]; then
+-                printf "%s\n" "root.journaldev=$journaldev" >> "${initdir}/etc/cmdline.d/95root-journaldev.conf"
++                printf " root.journaldev=%s" "$journaldev"
+             fi
+         done
+     fi
++    return 0
++}
++
++cmdline() {
++    local dev=/dev/block/$(find_root_block_device)
++    if [ -e $dev ]; then
++        printf " root=%s" "$(shorten_persistent_dev "$(get_persistent_dev "$dev")")"
++        printf " rootflags=%s" "$(find_mp_fsopts /)"
++        printf " rootfstype=%s" "$(find_mp_fstype /)"
++    fi
++    cmdline_journal
++}
++
++install() {
++    if [[ $hostonly_cmdline == "yes" ]]; then
++        journaldev=$(cmdline_journal)
++        [[ $journaldev ]] && printf "%s\n" "$journaldev" >> "${initdir}/etc/cmdline.d/95root-journaldev.conf"
++    fi
+ 
+     inst_multiple umount
+     inst_multiple tr

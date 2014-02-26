@@ -1,0 +1,45 @@
+From 7633ef988a8b1e7611f2b8a64452c2d588ff89fb Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 19 Feb 2014 15:20:34 +0100
+Subject: [PATCH] fcoe-uefi: try all FcoeBootDevice-* variables for a
+ DevicePath
+
+try to read the DevicePath from all FcoeBootDevice-* UEFI variables
+until one has a MAC.
+---
+ modules.d/95fcoe-uefi/parse-uefifcoe.sh | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/modules.d/95fcoe-uefi/parse-uefifcoe.sh b/modules.d/95fcoe-uefi/parse-uefifcoe.sh
+index e03bcb3..0799cdd 100755
+--- a/modules.d/95fcoe-uefi/parse-uefifcoe.sh
++++ b/modules.d/95fcoe-uefi/parse-uefifcoe.sh
+@@ -9,10 +9,10 @@ command -v set_ifname >/dev/null || . /lib/net-lib.sh
+ print_fcoe_uefi_conf()
+ {
+     local mac dev vlan
+-    mac=$(get_fcoe_boot_mac)
+-    [ -z "$mac" ] && continue
++    mac=$(get_fcoe_boot_mac "$1")
++    [ -z "$mac" ] && return 1
+     dev=$(set_ifname fcoe $mac)
+-    vlan=$(get_fcoe_boot_vlan)
++    vlan=$(get_fcoe_boot_vlan  "$1")
+     if [ "$vlan" -ne "0" ]; then
+         case "$vlan" in
+             [0-9]*)
+@@ -27,9 +27,10 @@ print_fcoe_uefi_conf()
+     fi
+     # fcoe=eth0:nodcb
+     printf "%s\n" "$dev:nodcb"
++    return 0
+ }
+ 
+-
+-if [ -e /sys/firmware/efi/vars/FcoeBootDevice-a0ebca23-5f9c-447a-a268-22b6c158c2ac/data ]; then
+-    print_fcoe_uefi_conf > /etc/cmdline.d/40-fcoe-uefi.conf
+-fi
++for i in /sys/firmware/efi/vars/FcoeBootDevice-*/data; do
++    [ -e "$i" ] || continue
++    print_fcoe_uefi_conf $i > /etc/cmdline.d/40-fcoe-uefi.conf && break
++done

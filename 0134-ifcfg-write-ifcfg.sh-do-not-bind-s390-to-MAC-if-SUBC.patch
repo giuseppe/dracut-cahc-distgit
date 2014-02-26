@@ -1,0 +1,54 @@
+From fc4298a5dd3605db4e468ae58efa223775dbf0d0 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 25 Feb 2014 13:05:11 +0100
+Subject: [PATCH] ifcfg/write-ifcfg.sh: do not bind s390 to MAC if SUBCHANNELS
+ set
+
+If SUBCHANNELS are set, do not specify HWADDR, because the SUBCHANNELS
+are the identifier for the interface.
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1056438
+---
+ modules.d/45ifcfg/write-ifcfg.sh | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/modules.d/45ifcfg/write-ifcfg.sh b/modules.d/45ifcfg/write-ifcfg.sh
+index dcb2aef..d9e9f3a 100755
+--- a/modules.d/45ifcfg/write-ifcfg.sh
++++ b/modules.d/45ifcfg/write-ifcfg.sh
+@@ -55,9 +55,9 @@ print_s390() {
+ 
+     SUBCHANNELS=${SUBCHANNELS%,}
+     echo "SUBCHANNELS=\"${SUBCHANNELS}\""
+-    CONFIG_LINE=$(get_config_line_by_subchannel $SUBCHANNELS)
+ 
+-    [ $? -ne 0 -o -z "$CONFIG_LINE" ] && return
++    CONFIG_LINE=$(get_config_line_by_subchannel $SUBCHANNELS)
++    [ $? -ne 0 -o -z "$CONFIG_LINE" ] && return 0
+ 
+     OLD_IFS=$IFS
+     IFS=","
+@@ -77,6 +77,7 @@ print_s390() {
+     OPTIONS=${OPTIONS## }
+     echo "NETTYPE=\"${NETTYPE}\""
+     echo "OPTIONS=\"${OPTIONS}\""
++    return 0
+ }
+ 
+ for netup in /tmp/net.*.did-setup ; do
+@@ -159,12 +160,10 @@ for netup in /tmp/net.*.did-setup ; do
+     if [ -z "$bridge" ] && [ -z "$bond" ] && [ -z "$vlan" ]; then
+         # standard interface
+         {
+-            if [ -n "$macaddr" ]; then
+-                echo "MACADDR=\"$macaddr\""
+-            else
+-                echo "HWADDR=\"$(cat /sys/class/net/$netif/address)\""
++            [ -n "$macaddr" ] && echo "MACADDR=\"$macaddr\""
++            if ! print_s390 $netif; then
++                [ -n "$macaddr" ] || echo "HWADDR=\"$(cat /sys/class/net/$netif/address)\""
+             fi
+-            print_s390 $netif
+             echo "TYPE=Ethernet"
+             echo "NAME=\"$netif\""
+             [ -n "$mtu" ] && echo "MTU=\"$mtu\""

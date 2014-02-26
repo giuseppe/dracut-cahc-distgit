@@ -1,0 +1,42 @@
+From 97dd91273c811b79f99c7a62df9cebc390c818c9 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 19 Feb 2014 15:22:39 +0100
+Subject: [PATCH] dracut.sh: write directly to the output file
+
+Because we already remove the output file before writing to it, we don't
+have to play games and write to a temporary file first.
+---
+ dracut.sh | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/dracut.sh b/dracut.sh
+index 89df9cd..c4bf4eb 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -729,7 +729,6 @@ fi
+ # clean up after ourselves no matter how we die.
+ trap '
+     ret=$?;
+-    [[ $outfile ]] && [[ -f $outfile.$$ ]] && rm -f -- "$outfile.$$";
+     [[ $keep ]] && echo "Not removing $initdir." >&2 || { [[ $initdir ]] && rm -rf -- "$initdir"; };
+     [[ $keep ]] && echo "Not removing $early_cpio_dir." >&2 || { [[ $early_cpio_dir ]] && rm -Rf -- "$early_cpio_dir"; };
+     [[ $_dlogdir ]] && rm -Rf -- "$_dlogdir";
+@@ -1383,15 +1382,13 @@ dinfo "*** Creating image file ***"
+ if [[ $create_early_cpio = yes ]]; then
+     echo 1 > "$early_cpio_dir/d/early_cpio"
+     # The microcode blob is _before_ the initramfs blob, not after
+-    (cd "$early_cpio_dir/d";     find . -print0 | cpio --null $cpio_owner_root -H newc -o --quiet >../early.cpio)
+-    mv $early_cpio_dir/early.cpio $outfile.$$
++    (cd "$early_cpio_dir/d";     find . -print0 | cpio --null $cpio_owner_root -H newc -o --quiet > $outfile)
+ fi
+ if ! ( umask 077; cd "$initdir"; find . -print0 | cpio --null $cpio_owner_root -H newc -o --quiet | \
+-    $compress >> "$outfile.$$"; ); then
+-    dfatal "dracut: creation of $outfile.$$ failed"
++    $compress >> "$outfile"; ); then
++    dfatal "dracut: creation of $outfile failed"
+     exit 1
+ fi
+-mv -- "$outfile.$$" "$outfile"
+ dinfo "*** Creating image file done ***"
+ 
+ if (( maxloglvl >= 5 )); then

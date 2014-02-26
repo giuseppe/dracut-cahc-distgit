@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 125%{?dist}
+Release: 137%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -152,7 +152,19 @@ Patch120: 0120-nfs-nfsroot-symlink-dev-null-to-dev-nfs-as-a-marker-.patch
 Patch121: 0121-systemd-dracut-pre-pivot-run-for-dev-nfs-root-and-cl.patch
 Patch122: 0122-new_dhcp_next_server-is-really-new_next_server.patch
 Patch123: 0123-dracut.sh-Fix-variable-name-typo.patch
-Patch124: 0124-modules.d-98systemd-install-70-uaccess.rules.patch
+Patch124: 0124-kernel-modules-add-sdhci_acpi-to-the-static-list-of-.patch
+Patch125: 0125-dracut-functions.sh-find_kernel_modules_by_path-fixe.patch
+Patch126: 0126-iscsi-for-iBFT-read-the-initiator-name-from-the-corr.patch
+Patch127: 0127-fcoe-uefi-try-all-FcoeBootDevice-variables-for-a-Dev.patch
+Patch128: 0128-dracut.sh-write-directly-to-the-output-file.patch
+Patch129: 0129-systemd-add-sys-kernel-config.mount.patch
+Patch130: 0130-systemd-add-70-uaccess.rules.patch
+Patch131: 0131-Add-flag-to-toggle-hostonly-cmdline-storing-in-the-i.patch
+Patch132: 0132-default-conf-set-hostonly_cmdline-no.patch
+Patch133: 0133-systemd-rootfs-generator.sh-generate-units-in-run-sy.patch
+Patch134: 0134-ifcfg-write-ifcfg.sh-do-not-bind-s390-to-MAC-if-SUBC.patch
+Patch135: 0135-network-net-lib.sh-wait_for_ipv6_auto-also-wait-for-.patch
+Patch136: 0136-network-dhclient-script.sh-DHCP-IPv6-interface-setup.patch
 
 
 BuildRequires: bash git
@@ -579,6 +591,29 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Feb 26 2014 Harald Hoyer <harald@redhat.com> 033-137
+- added sdhci_acpi to static list of kernel modules
+- add kernel drivers from the update directory to search path
+Resolves: rhbz#1055774
+- set the correct initiatior name for iBFT (typo)
+- try all FcoeBootDevice variables
+Resolves: rhbz#1032699
+- write directly to the output file and get correct selinux label
+- add sys-kernel-config.mount to the initramfs
+- configure IPv6 interface for DHCP6
+Resolves: rhbz#1064365
+- Wait until the tentative flag is cleared.
+Resolves: rhbz#1069263
+- no HWADDR if SUBCHANNELS are set for s390 interfaces
+Resolves: rhbz#1056438
+- modify the device timeout for the root device with the rootfs-generator
+Resolves: rhbz#1069133
+Resolves: rhbz#1028043
+- do not store kernel cmdline config in the initramfs about device assembly
+Resolves: rhbz#949697
+- write directly to the output image
+Resolves: rhbz#1062544
+
 * Mon Feb 24 2014 Ray Strode <rstrode@redhat.com> 033-125
 - fix plymouth in initrd
 Resolves: #1015564
