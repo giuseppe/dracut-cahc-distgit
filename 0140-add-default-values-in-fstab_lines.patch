@@ -1,0 +1,61 @@
+From cea62a2a68db9d63380d279acf64b672442d2f40 Mon Sep 17 00:00:00 2001
+From: Dave Young <dyoung@redhat.com>
+Date: Thu, 27 Feb 2014 10:44:23 +0800
+Subject: [PATCH] add default values in fstab_lines
+
+It's useful for passing a full fstab line including like fs_passno so fsck
+can take effect.
+
+Previously it's assumed that there's no fs_freq and fs_passno in fstab lines
+so original code just append "0 0" at the end of each fstab lines.
+
+Improve this issue by assign default value in case they are not passed in.
+Three field are handled here:
+fs_mntops: default to "defaults"
+fs_freq: default to "0"
+fs_passno: default to "2"
+
+Signed-off-by: Dave Young <dyoung@redhat.com>
+---
+ dracut.8.asc | 10 +++++++---
+ dracut.sh    |  6 +++++-
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/dracut.8.asc b/dracut.8.asc
+index ba125c0..f97074a 100644
+--- a/dracut.8.asc
++++ b/dracut.8.asc
+@@ -311,9 +311,13 @@ provide a valid _/etc/fstab_.
+ **--add-fstab** _<filename>_::
+     Add entries of _<filename>_ to the initramfs /etc/fstab.
+ 
+-**--mount** "_<device>_ _<mountpoint>_ _<filesystem type>_ _<filesystem options>_"::
+-    Mount _<device>_ on _<mountpoint>_ with _<filesystem type>_ and _<filesystem
+-    options>_ in the initramfs
++**--mount** "_<device>_ _<mountpoint>_ _<filesystem type>_ [_<filesystem options>_ [_<dump frequency>_ [_<fsck order>_]]]"::
++    Mount _<device>_ on _<mountpoint>_ with _<filesystem type>_ in the
++    initramfs. _<filesystem options>_, _<dump options>_ and _<fsck order>_ can
++    be specified, see fstab manpage for the details.
++    The default _<filesystem options>_ is "defaults".
++    The default _<dump frequency>_ is "0".
++    the default _<fsck order>_ is "2".
+ 
+ **--add-device** _<device>_ ::
+     Bring up _<device>_ in initramfs, _<device>_ should be the device name.
+diff --git a/dracut.sh b/dracut.sh
+index 1c5e688..2d5b7dc 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -1234,7 +1234,11 @@ if [[ $kernel_only != yes ]]; then
+     [[ $kernel_cmdline ]] && printf "%s\n" "$kernel_cmdline" >> "${initdir}/etc/cmdline.d/01-default.conf"
+ 
+     while pop fstab_lines line; do
+-        printf "%s\n" "$line 0 0" >> "${initdir}/etc/fstab"
++        line=($line)
++        [ -z "${line[3]}" ] && line[3]="defaults"
++        [ -z "${line[4]}" ] && line[4]="0"
++        [ -z "${line[5]}" ] && line[5]="2"
++        echo "${line[@]}" >> "${initdir}/etc/fstab"
+     done
+ 
+     for f in $add_fstab; do

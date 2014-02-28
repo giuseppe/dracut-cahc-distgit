@@ -1,0 +1,152 @@
+From 8b77ffc4d82301e6a674e1d47aa8aa3872f9bc5e Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 28 Feb 2014 10:36:12 +0100
+Subject: [PATCH] network: merge setup_net_$netif.ok and net.$netif.did-setup
+
+one marker per interface is enough
+---
+ modules.d/40network/dhclient-script.sh | 8 ++------
+ modules.d/40network/ifup.sh            | 9 ++++++---
+ modules.d/40network/net-genrules.sh    | 2 +-
+ modules.d/40network/net-lib.sh         | 6 ++++++
+ modules.d/45ifcfg/write-ifcfg.sh       | 4 +++-
+ 5 files changed, 18 insertions(+), 11 deletions(-)
+
+diff --git a/modules.d/40network/dhclient-script.sh b/modules.d/40network/dhclient-script.sh
+index a9c2523..822cce9 100755
+--- a/modules.d/40network/dhclient-script.sh
++++ b/modules.d/40network/dhclient-script.sh
+@@ -116,12 +116,10 @@ case $reason in
+             echo "setup_net $netif"
+             echo "source_hook initqueue/online $netif"
+             [ -e /tmp/net.$netif.manualup ] || echo "/sbin/netroot $netif"
+-            echo "> /tmp/setup_net_$netif.ok"
+-            echo "> /tmp/setup_net_\$(cat /sys/class/net/$netif/address).ok"
+             echo "rm -f -- $hookdir/initqueue/setup_net_$netif.sh"
+         } > $hookdir/initqueue/setup_net_$netif.sh
+ 
+-        echo "[ -f /tmp/setup_net_$netif.ok ]" > $hookdir/initqueue/finished/dhclient-$netif.sh
++        echo "[ -f /tmp/net.$netif.did-setup ]" > $hookdir/initqueue/finished/dhclient-$netif.sh
+         >/tmp/net.$netif.up
+         ;;
+ 
+@@ -139,12 +137,10 @@ case $reason in
+             echo "setup_net $netif"
+             echo "source_hook initqueue/online $netif"
+             [ -e /tmp/net.$netif.manualup ] || echo "/sbin/netroot $netif"
+-            echo "> /tmp/setup_net_$netif.ok"
+-            echo "> /tmp/setup_net_\$(cat /sys/class/net/$netif/address).ok"
+             echo "rm -f -- $hookdir/initqueue/setup_net_$netif.sh"
+         } > $hookdir/initqueue/setup_net_$netif.sh
+ 
+-        echo "[ -f /tmp/setup_net_$netif.ok ]" > $hookdir/initqueue/finished/dhclient-$netif.sh
++        echo "[ -f /tmp/net.$netif.did-setup ]" > $hookdir/initqueue/finished/dhclient-$netif.sh
+         >/tmp/net.$netif.up
+         ;;
+     *) echo "dhcp: $reason";;
+diff --git a/modules.d/40network/ifup.sh b/modules.d/40network/ifup.sh
+index e439106..02dfc94 100755
+--- a/modules.d/40network/ifup.sh
++++ b/modules.d/40network/ifup.sh
+@@ -83,7 +83,9 @@ fi
+ if [ -n "$manualup" ]; then
+     >/tmp/net.$netif.manualup
+ else
+-    [ -f /tmp/net.${iface}.did-setup ] && exit 0
++    [ -e /tmp/net.${netif}.did-setup ] && exit 0
++    [ -e /sys/class/net/$netif/address ] && \
++        [ -e /tmp/net.$(cat /sys/class/net/$netif/address).did-setup ] && exit 0
+ fi
+ 
+ # Run dhclient
+@@ -145,7 +147,6 @@ do_static() {
+     [ -n "$gw" ] && echo ip route add default via $gw dev $netif > /tmp/net.$netif.gw
+     [ -n "$hostname" ] && echo "echo $hostname > /proc/sys/kernel/hostname" > /tmp/net.$netif.hostname
+ 
+-    > /tmp/setup_net_${netif}.ok
+     return 0
+ }
+ 
+@@ -334,6 +335,8 @@ for p in $(getargs ip=); do
+             do_static ;;
+     esac
+ 
++    > /tmp/net.${netif}.up
++
+     case $autoconf in
+         dhcp|on|any|dhcp6)
+             ;;
+@@ -359,7 +362,7 @@ if [ -n "$DO_BOND_SETUP" -o -n "$DO_TEAM_SETUP" -o -n "$DO_VLAN_SETUP" ]; then
+ fi
+ 
+ # no ip option directed at our interface?
+-if [ ! -e /tmp/setup_net_${netif}.ok ]; then
++if [ ! -e /tmp/net.${netif}.up ]; then
+     do_dhcp -4
+ fi
+ 
+diff --git a/modules.d/40network/net-genrules.sh b/modules.d/40network/net-genrules.sh
+index c4def61..af2f09c 100755
+--- a/modules.d/40network/net-genrules.sh
++++ b/modules.d/40network/net-genrules.sh
+@@ -89,7 +89,7 @@ command -v fix_bootif >/dev/null || . /lib/net-lib.sh
+ 
+         for iface in $wait_ifaces; do
+             if [ "$bootdev" = "$iface" ] || [ "$NEEDNET" = "1" ]; then
+-                echo "[ -f /tmp/setup_net_${iface}.ok ]" >$hookdir/initqueue/finished/wait-$iface.sh
++                echo "[ -f /tmp/net.${iface}.did-setup ]" >$hookdir/initqueue/finished/wait-$iface.sh
+             fi
+         done
+     # Default: We don't know the interface to use, handle all
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index a586711..7430e4c 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -82,12 +82,16 @@ ifdown() {
+     ip addr flush dev $netif
+     echo "#empty" > /etc/resolv.conf
+     rm -f -- /tmp/net.$netif.did-setup
++    [ -e /sys/class/net/$netif/address ] && \
++        rm -f -- /tmp/net.$(cat /sys/class/net/$netif/address).did-setup
+     # TODO: send "offline" uevent?
+ }
+ 
+ setup_net() {
+     local netif="$1" f="" gw_ip="" netroot_ip="" iface="" IFACES=""
+     [ -e /tmp/net.$netif.did-setup ] && return
++    [ -e /sys/class/net/$netif/address ] && \
++        [ -e /tmp/net.$(cat /sys/class/net/$netif/address).did-setup ] && return
+     [ -e "/tmp/net.ifaces" ] && read IFACES < /tmp/net.ifaces
+     [ -z "$IFACES" ] && IFACES="$netif"
+     # run the scripts written by ifup
+@@ -129,6 +133,8 @@ setup_net() {
+     unset layer2
+ 
+     > /tmp/net.$netif.did-setup
++    [ -e /sys/class/net/$netif/address ] && \
++        > /tmp/net.$(cat /sys/class/net/$netif/address).did-setup
+ }
+ 
+ save_netinfo() {
+diff --git a/modules.d/45ifcfg/write-ifcfg.sh b/modules.d/45ifcfg/write-ifcfg.sh
+index d9e9f3a..e2fa485 100755
+--- a/modules.d/45ifcfg/write-ifcfg.sh
++++ b/modules.d/45ifcfg/write-ifcfg.sh
+@@ -85,6 +85,7 @@ for netup in /tmp/net.*.did-setup ; do
+ 
+     netif=${netup%%.did-setup}
+     netif=${netif##*/net.}
++    strstr "$netif" ":*:*:*:*:" && continue
+     [ -e /tmp/ifcfg/ifcfg-$netif ] && continue
+     unset bridge
+     unset bond
+@@ -111,7 +112,8 @@ for netup in /tmp/net.*.did-setup ; do
+     if [ "$netif" = "$vlanname" ]; then
+         vlan=yes
+     fi
+-    cat /sys/class/net/$netif/address > /tmp/net.$netif.hwaddr
++    [ -e /sys/class/net/$netif/address ] && \
++        cat /sys/class/net/$netif/address > /tmp/net.$netif.hwaddr
+     {
+         echo "# Generated by dracut initrd"
+         echo "DEVICE=\"$netif\""

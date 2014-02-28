@@ -1,0 +1,57 @@
+From e25a74d851509ac7bc644de6986bedc06bfe748d Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 27 Feb 2014 12:11:20 +0100
+Subject: [PATCH] network: IPv6 status, wait for tentative flag to be cleared
+
+also do not arping the IPv6 address.
+---
+ modules.d/40network/ifup.sh    |  1 +
+ modules.d/40network/net-lib.sh | 16 ++++++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/40network/ifup.sh b/modules.d/40network/ifup.sh
+index 33ec81d..e439106 100755
+--- a/modules.d/40network/ifup.sh
++++ b/modules.d/40network/ifup.sh
+@@ -136,6 +136,7 @@ do_static() {
+     if strstr $ip '*:*:*'; then
+         # note no ip addr flush for ipv6
+         ip addr add $ip/$mask ${srv:+peer $srv} dev $netif
++        wait_for_ipv6_dad $netif
+     else
+         ip addr flush dev $netif
+         ip addr add $ip/$mask ${srv:+peer $srv} brd + dev $netif
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index 4e1b019..a586711 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -123,8 +123,8 @@ setup_net() {
+         read layer2 < /sys/class/net/$netif/device/layer2
+     fi
+ 
+-    if [ "$layer2" != "0" ] && [ -n "$dest" ] && ! arping -q -f -w 60 -I $netif $dest ; then
+-        info "Resolving $dest via ARP on $netif failed"
++    if [ "$layer2" != "0" ] && [ -n "$dest" ] && ! strstr "$dest" ":"; then
++        arping -q -f -w 60 -I $netif $dest || info "Resolving $dest via ARP on $netif failed"
+     fi
+     unset layer2
+ 
+@@ -451,6 +451,18 @@ wait_for_route_ok() {
+     return 1
+ }
+ 
++wait_for_ipv6_dad() {
++    local cnt=0
++    local li
++    while [ $cnt -lt 500 ]; do
++        li=$(ip -6 addr show dev $1)
++        strstr "$li" "tentative" || return 0
++        sleep 0.1
++        cnt=$(($cnt+1))
++    done
++    return 1
++}
++
+ wait_for_ipv6_auto() {
+     local cnt=0
+     local li

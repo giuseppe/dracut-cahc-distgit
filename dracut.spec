@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 137%{?dist}
+Release: 144%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -165,6 +165,13 @@ Patch133: 0133-systemd-rootfs-generator.sh-generate-units-in-run-sy.patch
 Patch134: 0134-ifcfg-write-ifcfg.sh-do-not-bind-s390-to-MAC-if-SUBC.patch
 Patch135: 0135-network-net-lib.sh-wait_for_ipv6_auto-also-wait-for-.patch
 Patch136: 0136-network-dhclient-script.sh-DHCP-IPv6-interface-setup.patch
+Patch137: 0137-network-IPv6-status-wait-for-tentative-flag-to-be-cl.patch
+Patch138: 0138-network-merge-setup_net_-netif.ok-and-net.-netif.did.patch
+Patch139: 0139-systemd-add-systemd-sysctl-service.patch
+Patch140: 0140-add-default-values-in-fstab_lines.patch
+Patch141: 0141-test-add-missing-Makefile.testdir.patch
+Patch142: 0142-test-Makefile-add-SKIP-env-to-skip-certain-tests.patch
+Patch143: 0143-test-TEST-50-MULTINIC-client-init.sh-skip-MAC-marker.patch
 
 
 BuildRequires: bash git
@@ -591,6 +598,18 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 28 2014 Harald Hoyer <harald@redhat.com> 033-144
+- wait for IPv6 tentative flag to be cleared
+Resolves: rhbz#1069263
+- set correct flag file for interfaces
+Resolves: rhbz#1069263
+- add systemd-sysctl service to initramfs
+Resolves: rhbz#1070086
+- honor kernel cmdline, no internal cmdline anymore
+Resolves: rhbz#985160
+- --mount can now take fsck options
+Resolves: rhbz#1069106
+
 * Wed Feb 26 2014 Harald Hoyer <harald@redhat.com> 033-137
 - added sdhci_acpi to static list of kernel modules
 - add kernel drivers from the update directory to search path

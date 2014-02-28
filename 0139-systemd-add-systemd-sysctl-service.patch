@@ -1,0 +1,30 @@
+From 902c42afdd0af97dfb3dd26add19de0367857c3a Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 28 Feb 2014 12:03:24 +0100
+Subject: [PATCH] systemd: add systemd-sysctl service
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1070086
+---
+ modules.d/98systemd/module-setup.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/modules.d/98systemd/module-setup.sh b/modules.d/98systemd/module-setup.sh
+index 429781b..52edd80 100755
+--- a/modules.d/98systemd/module-setup.sh
++++ b/modules.d/98systemd/module-setup.sh
+@@ -94,6 +94,7 @@ install() {
+         $systemdsystemunitdir/systemd-journald.service \
+         $systemdsystemunitdir/systemd-vconsole-setup.service \
+         $systemdsystemunitdir/systemd-random-seed-load.service \
++        $systemdsystemunitdir/systemd-sysctl.service \
+         \
+         $systemdsystemunitdir/sysinit.target.wants/systemd-modules-load.service \
+         $systemdsystemunitdir/sysinit.target.wants/systemd-ask-password-console.path \
+@@ -105,6 +106,7 @@ install() {
+         $systemdsystemunitdir/sysinit.target.wants/systemd-udev-trigger.service \
+         $systemdsystemunitdir/sysinit.target.wants/kmod-static-nodes.service \
+         $systemdsystemunitdir/sysinit.target.wants/systemd-tmpfiles-setup-dev.service \
++        $systemdsystemunitdir/sysinit.target.wants/systemd-sysctl.service \
+         \
+         $systemdsystemunitdir/ctrl-alt-del.target \
+         $systemdsystemunitdir/syslog.socket \

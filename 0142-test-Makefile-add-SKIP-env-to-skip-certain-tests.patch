@@ -1,0 +1,21 @@
+From dd826ee50d06b8f8e22e78e56e7d09bd5368245f Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 28 Feb 2014 13:25:39 +0100
+Subject: [PATCH] test/Makefile: add SKIP env to skip certain tests
+
+---
+ test/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/test/Makefile b/test/Makefile
+index 97a7aad..f71f854 100644
+--- a/test/Makefile
++++ b/test/Makefile
+@@ -6,6 +6,7 @@ check:
+ 		[ -d $$i ] || continue ; \
+ 		[ -f $$i/Makefile ] || continue ; \
+ 		if [ -n "$$TESTS" ]; then t=$${i##TEST-}; t=$${t%%-*}; [ "$${TESTS#*$$t*}" != "$$TESTS" ] || continue; fi; \
++		if [ -n "$$SKIP" ]; then t=$${i##TEST-}; t=$${t%%-*}; [ "$${SKIP#*$$t*}" != "$$SKIP" ] && continue; fi; \
+ 		$(MAKE) -C $$i all ; \
+ 	done
+ 
