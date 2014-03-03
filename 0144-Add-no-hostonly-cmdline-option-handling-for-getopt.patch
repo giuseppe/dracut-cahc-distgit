@@ -1,0 +1,26 @@
+From c401e97b0b649385debfb61c8e5e24f81810466f Mon Sep 17 00:00:00 2001
+From: WANG Chao <chaowang@redhat.com>
+Date: Mon, 3 Mar 2014 15:22:00 +0800
+Subject: [PATCH] Add -[-no]-hostonly-cmdline option handling for getopt
+
+commit ab9457e introduce such new options but it missed to add these
+options to getopt arguments.
+
+Signed-off-by: WANG Chao <chaowang@redhat.com>
+---
+ dracut.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/dracut.sh b/dracut.sh
+index 2d5b7dc..78d7fad 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -347,6 +347,8 @@ TEMP=$(unset POSIXLY_CORRECT; getopt \
+     --long host-only \
+     --long no-hostonly \
+     --long no-host-only \
++    --long hostonly-cmdline \
++    --long no-hostonly-cmdline \
+     --long persistent-policy: \
+     --long fstab \
+     --long help \

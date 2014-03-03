@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 144%{?dist}
+Release: 145%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -172,6 +172,7 @@ Patch140: 0140-add-default-values-in-fstab_lines.patch
 Patch141: 0141-test-add-missing-Makefile.testdir.patch
 Patch142: 0142-test-Makefile-add-SKIP-env-to-skip-certain-tests.patch
 Patch143: 0143-test-TEST-50-MULTINIC-client-init.sh-skip-MAC-marker.patch
+Patch144: 0144-Add-no-hostonly-cmdline-option-handling-for-getopt.patch
 
 
 BuildRequires: bash git
@@ -598,6 +599,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Mar 03 2014 Harald Hoyer <harald@redhat.com> 033-145
+- fixed argument handling for cmdline config
+Resolves: rhbz#949697
+
 * Fri Feb 28 2014 Harald Hoyer <harald@redhat.com> 033-144
 - wait for IPv6 tentative flag to be cleared
 Resolves: rhbz#1069263
