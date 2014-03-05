@@ -1,0 +1,37 @@
+From f90bc8c75438c5a7e08288343edbb42f49d42178 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 4 Mar 2014 13:46:14 +0100
+Subject: [PATCH] dracut: don't let devices timeout
+
+https://bugzilla.redhat.com/show_bug.cgi?id=949697
+---
+ modules.d/98systemd/rootfs-generator.sh | 2 +-
+ modules.d/99base/dracut-lib.sh          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/98systemd/rootfs-generator.sh b/modules.d/98systemd/rootfs-generator.sh
+index a11ce59..2c09895 100755
+--- a/modules.d/98systemd/rootfs-generator.sh
++++ b/modules.d/98systemd/rootfs-generator.sh
+@@ -29,7 +29,7 @@ generator_wait_for_dev()
+         mkdir -p /run/systemd/generator/${_name}.device.d
+         {
+             echo "[Unit]"
+-            echo "JobTimeoutSec=3600"
++            echo "JobTimeoutSec=0"
+         } > /run/systemd/generator/${_name}.device.d/timeout.conf
+     fi
+ }
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index d892c26..62facda 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -884,7 +884,7 @@ wait_for_dev()
+             mkdir -p ${PREFIX}/etc/systemd/system/${_name}.device.d
+             {
+                 echo "[Unit]"
+-                echo "JobTimeoutSec=3600"
++                echo "JobTimeoutSec=0"
+             } > ${PREFIX}/etc/systemd/system/${_name}.device.d/timeout.conf
+             _needreload=1
+         fi

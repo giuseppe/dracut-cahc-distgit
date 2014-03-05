@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 145%{?dist}
+Release: 146%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -173,6 +173,7 @@ Patch141: 0141-test-add-missing-Makefile.testdir.patch
 Patch142: 0142-test-Makefile-add-SKIP-env-to-skip-certain-tests.patch
 Patch143: 0143-test-TEST-50-MULTINIC-client-init.sh-skip-MAC-marker.patch
 Patch144: 0144-Add-no-hostonly-cmdline-option-handling-for-getopt.patch
+Patch145: 0145-dracut-don-t-let-devices-timeout.patch
 
 
 BuildRequires: bash git
@@ -599,6 +600,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Mar 05 2014 Harald Hoyer <harald@redhat.com> 033-146
+- don't let devices timeout
+Resolves: rhbz#949697
+
 * Mon Mar 03 2014 Harald Hoyer <harald@redhat.com> 033-145
 - fixed argument handling for cmdline config
 Resolves: rhbz#949697
