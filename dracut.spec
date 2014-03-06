@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 146%{?dist}
+Release: 147%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -174,6 +174,7 @@ Patch142: 0142-test-Makefile-add-SKIP-env-to-skip-certain-tests.patch
 Patch143: 0143-test-TEST-50-MULTINIC-client-init.sh-skip-MAC-marker.patch
 Patch144: 0144-Add-no-hostonly-cmdline-option-handling-for-getopt.patch
 Patch145: 0145-dracut-don-t-let-devices-timeout.patch
+Patch146: 0146-Do-not-wait_for_dev-if-hostonly_cmdline-not-set.patch
 
 
 BuildRequires: bash git
@@ -600,6 +601,11 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Mar 06 2014 Harald Hoyer <harald@redhat.com> 033-147
+- also do not hardcode waiting for devices
+Resolves: rhbz#1073101
+Related: rhbz#985160
+
 * Wed Mar 05 2014 Harald Hoyer <harald@redhat.com> 033-146
 - don't let devices timeout
 Resolves: rhbz#949697
