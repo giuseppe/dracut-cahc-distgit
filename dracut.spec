@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 147%{?dist}
+Release: 150%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -175,6 +175,9 @@ Patch143: 0143-test-TEST-50-MULTINIC-client-init.sh-skip-MAC-marker.patch
 Patch144: 0144-Add-no-hostonly-cmdline-option-handling-for-getopt.patch
 Patch145: 0145-dracut-don-t-let-devices-timeout.patch
 Patch146: 0146-Do-not-wait_for_dev-if-hostonly_cmdline-not-set.patch
+Patch147: 0147-systemd-dracut-shutdown.service-make-failure-non-fat.patch
+Patch148: 0148-network-dhclient-script-do-PREINIT6-for-DHCP6.patch
+Patch149: 0149-shutdown-if-kexec-failed-do-a-simple-reboot.patch
 
 
 BuildRequires: bash git
@@ -601,6 +604,12 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Mar 18 2014 Harald Hoyer <harald@redhat.com> 033-150
+- make dracut-shutdown not fail fatally
+Resolves: rhbz#1067116
+- do PREINIT6 for DHCP6
+Resolves: rhbz#1064365
+
 * Thu Mar 06 2014 Harald Hoyer <harald@redhat.com> 033-147
 - also do not hardcode waiting for devices
 Resolves: rhbz#1073101

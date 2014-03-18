@@ -1,0 +1,75 @@
+From f7a3db1abaf437d50615a54448d9d5f45efe8cf4 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 17 Mar 2014 13:00:17 +0100
+Subject: [PATCH] network:dhclient-script do PREINIT6 for DHCP6
+
+---
+ modules.d/40network/dhclient-script.sh | 29 ++++++++++++++++-------------
+ modules.d/40network/ifup.sh            |  1 +
+ 2 files changed, 17 insertions(+), 13 deletions(-)
+
+diff --git a/modules.d/40network/dhclient-script.sh b/modules.d/40network/dhclient-script.sh
+index 822cce9..50e8932 100755
+--- a/modules.d/40network/dhclient-script.sh
++++ b/modules.d/40network/dhclient-script.sh
+@@ -2,6 +2,17 @@
+ # -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
+ # ex: ts=8 sw=4 sts=4 et filetype=sh
+ 
++PATH=/usr/sbin:/usr/bin:/sbin:/bin
++
++type getarg >/dev/null 2>&1 || . /lib/dracut-lib.sh
++type ip_to_var >/dev/null 2>&1 || . /lib/net-lib.sh
++
++# We already need a set netif here
++netif=$interface
++
++# Huh? Interface configured?
++[ -f "/tmp/net.$netif.up" ] && exit 0
++
+ setup_interface() {
+     ip=$new_ip_address
+     mtu=$new_interface_mtu
+@@ -73,25 +84,17 @@ setup_interface6() {
+     [ -n "$hostname" ] && echo "echo ${hostname%.$domain}${domain:+.$domain} > /proc/sys/kernel/hostname" > /tmp/net.$netif.hostname
+ }
+ 
+-PATH=/usr/sbin:/usr/bin:/sbin:/bin
+-
+-export PS4="dhclient.$interface.$$ + "
+-exec >>/run/initramfs/loginit.pipe 2>>/run/initramfs/loginit.pipe
+-type getarg >/dev/null 2>&1 || . /lib/dracut-lib.sh
+-type ip_to_var >/dev/null 2>&1 || . /lib/net-lib.sh
+-
+-# We already need a set netif here
+-netif=$interface
+-
+-# Huh? Interface configured?
+-[ -f "/tmp/net.$netif.up" ] && exit 0
+-
+ case $reason in
+     PREINIT)
+         echo "dhcp: PREINIT $netif up"
+         linkup $netif
+         ;;
+ 
++    PREINIT6)
++        echo "dhcp: PREINIT $netif up"
++        linkup $netif
++        ;;
++
+     BOUND)
+         echo "dhcp: BOND setting $netif"
+         unset layer2
+diff --git a/modules.d/40network/ifup.sh b/modules.d/40network/ifup.sh
+index 02dfc94..51b0d52 100755
+--- a/modules.d/40network/ifup.sh
++++ b/modules.d/40network/ifup.sh
+@@ -328,6 +328,7 @@ for p in $(getargs ip=); do
+         dhcp|on|any)
+             do_dhcp -4 ;;
+         dhcp6)
++            load_ipv6
+             do_dhcp -6 ;;
+         auto6)
+             do_ipv6auto ;;
