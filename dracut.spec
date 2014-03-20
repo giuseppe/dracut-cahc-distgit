@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 150%{?dist}
+Release: 151%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -178,6 +178,7 @@ Patch146: 0146-Do-not-wait_for_dev-if-hostonly_cmdline-not-set.patch
 Patch147: 0147-systemd-dracut-shutdown.service-make-failure-non-fat.patch
 Patch148: 0148-network-dhclient-script-do-PREINIT6-for-DHCP6.patch
 Patch149: 0149-shutdown-if-kexec-failed-do-a-simple-reboot.patch
+Patch150: 0150-dracut-initramfs-restore-fix-unpacking-with-early-mi.patch
 
 
 BuildRequires: bash git
@@ -604,6 +605,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Mar 20 2014 Harald Hoyer <harald@redhat.com> 033-151
+- fixed dracut-initramfs-restore with early microcode
+Resolves: rhbz#1067116
+
 * Tue Mar 18 2014 Harald Hoyer <harald@redhat.com> 033-150
 - make dracut-shutdown not fail fatally
 Resolves: rhbz#1067116
