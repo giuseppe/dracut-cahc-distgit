@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 151%{?dist}
+Release: 153%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -179,6 +179,8 @@ Patch147: 0147-systemd-dracut-shutdown.service-make-failure-non-fat.patch
 Patch148: 0148-network-dhclient-script-do-PREINIT6-for-DHCP6.patch
 Patch149: 0149-shutdown-if-kexec-failed-do-a-simple-reboot.patch
 Patch150: 0150-dracut-initramfs-restore-fix-unpacking-with-early-mi.patch
+Patch151: 0151-fcoe-wait-for-lldpad-to-be-ready.patch
+Patch152: 0152-network-handle-ip-dhcp6-for-all-interfaces.patch
 
 
 BuildRequires: bash git
@@ -605,6 +607,12 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Mar 25 2014 Harald Hoyer <harald@redhat.com> 033-153
+- fcoe: wait for lldpad to be ready
+Resolves: rhbz#1080353
+- network: handle "ip=dhcp6" for all interfaces
+Resolves: rhbz#1064365
+
 * Thu Mar 20 2014 Harald Hoyer <harald@redhat.com> 033-151
 - fixed dracut-initramfs-restore with early microcode
 Resolves: rhbz#1067116
