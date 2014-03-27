@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 153%{?dist}
+Release: 154%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -181,6 +181,7 @@ Patch149: 0149-shutdown-if-kexec-failed-do-a-simple-reboot.patch
 Patch150: 0150-dracut-initramfs-restore-fix-unpacking-with-early-mi.patch
 Patch151: 0151-fcoe-wait-for-lldpad-to-be-ready.patch
 Patch152: 0152-network-handle-ip-dhcp6-for-all-interfaces.patch
+Patch153: 0153-lsinitrd.sh-prevent-construct.patch
 
 
 BuildRequires: bash git
@@ -607,6 +608,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Mar 27 2014 Harald Hoyer <harald@redhat.com> 033-154
+- lsinitrd: fix for chroot envs without /dev/fd
+Resolves: rhbz#1081396
+
 * Tue Mar 25 2014 Harald Hoyer <harald@redhat.com> 033-153
 - fcoe: wait for lldpad to be ready
 Resolves: rhbz#1080353
