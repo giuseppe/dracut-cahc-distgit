@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 156%{?dist}
+Release: 157%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -184,6 +184,7 @@ Patch152: 0152-network-handle-ip-dhcp6-for-all-interfaces.patch
 Patch153: 0153-lsinitrd.sh-prevent-construct.patch
 Patch154: 0154-network-DCHPv6-set-valid_lft-and-preferred_lft.patch
 Patch155: 0155-dm-add-dm-cache-modules.patch
+Patch156: 0156-fcoe-workaround-fcoe-timing-issues.patch
 
 
 BuildRequires: bash git
@@ -610,6 +611,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Mar 31 2014 Harald Hoyer <harald@redhat.com> 033-157
+- workaround fcoe timing issues
+Resolves: rhbz#1080353
+
 * Thu Mar 27 2014 Harald Hoyer <harald@redhat.com> 033-156
 - network: set correct lease times for DHCPv6
 Resolves: rhbz#1064365
