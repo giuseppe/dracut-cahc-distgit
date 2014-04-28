@@ -1,0 +1,24 @@
+From 89353cd0cca255a5639e40992d58b8de596b66fb Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 28 Apr 2014 12:45:44 +0200
+Subject: [PATCH] dracut-functions.sh: add /lib/modules/*/{extras|weak-updates}
+ for kernel modules
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1086291
+---
+ dracut-functions.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index bddcdcf..cb43f7a 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -1530,7 +1530,7 @@ find_kernel_modules_by_path () {
+     _OLDIFS=$IFS
+     IFS=:
+     while read a rest; do
+-        [[ $a = */$1/* ]] || [[ $a = updates/* ]] || continue
++        [[ $a = */$1/* ]] || [[ $a = updates/* ]] || [[ $a = extra/* ]] || [[ $a = weak-updates/* ]] ||continue
+         printf "%s\n" "$srcmods/$a"
+     done < "$srcmods/modules.dep"
+     IFS=$_OLDIFS

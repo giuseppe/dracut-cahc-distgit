@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 160%{?dist}
+Release: 161%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -188,6 +188,7 @@ Patch156: 0156-fcoe-workaround-fcoe-timing-issues.patch
 Patch157: 0157-Add-legacy-flag-l-to-lz4-and-update-magic-number.patch
 Patch158: 0158-fs-lib-always-install-fsck.-fs-if-present.patch
 Patch159: 0159-ifcfg-write-ifcfg.sh-turn-on-IPV6INIT-if-any-inet6-a.patch
+Patch160: 0160-dracut-functions.sh-add-lib-modules-extras-weak-upda.patch
 
 
 BuildRequires: bash git
@@ -614,6 +615,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Apr 28 2014 Harald Hoyer <harald@redhat.com> 033-161
+- add extra and weak-updates kernel module dirs
+Resolves: rhbz#1086291
+
 * Fri Apr 04 2014 Harald Hoyer <harald@redhat.com> 033-160
 - add fsck.<filesystem>, if it exists
 Resolves: rhbz#1083654
