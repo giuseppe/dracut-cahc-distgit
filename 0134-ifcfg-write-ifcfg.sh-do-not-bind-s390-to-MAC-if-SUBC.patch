@@ -1,4 +1,4 @@
-From fc4298a5dd3605db4e468ae58efa223775dbf0d0 Mon Sep 17 00:00:00 2001
+From ea6bc75ccbb626c62062bdf2d3ca2a90dbb9467d Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Feb 2014 13:05:11 +0100
 Subject: [PATCH] ifcfg/write-ifcfg.sh: do not bind s390 to MAC if SUBCHANNELS

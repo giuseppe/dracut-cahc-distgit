@@ -1,4 +1,4 @@
-From b46bc56874d879cdf528f71d8ae51ced8330c9cf Mon Sep 17 00:00:00 2001
+From 40cf35ef4ef959838729c12d4d0d73e03476914b Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 28 Jan 2014 12:21:33 +0100
 Subject: [PATCH] dracut.spec: add skipcpio

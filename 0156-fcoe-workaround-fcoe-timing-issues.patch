@@ -1,4 +1,4 @@
-From 876b463114b26bf33f71589ad99860efadc8d42e Mon Sep 17 00:00:00 2001
+From 4c2d48d5c4449789018024c3d9f402f5108e9a68 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 31 Mar 2014 16:21:49 +0200
 Subject: [PATCH] fcoe: workaround fcoe timing issues

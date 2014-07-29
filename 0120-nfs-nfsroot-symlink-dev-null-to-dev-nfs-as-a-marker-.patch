@@ -1,4 +1,4 @@
-From 9175fd58469282c1ca87674cec43bec33f6164e6 Mon Sep 17 00:00:00 2001
+From 37a09c9cb6f22309820dd7a9ab26ea99bb7af72d Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 5 Feb 2014 13:06:29 +0100
 Subject: [PATCH] nfs/nfsroot: symlink /dev/null to /dev/nfs, as a marker for

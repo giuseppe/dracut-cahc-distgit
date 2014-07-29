@@ -1,4 +1,4 @@
-From f7a3db1abaf437d50615a54448d9d5f45efe8cf4 Mon Sep 17 00:00:00 2001
+From 89f2586ae93e948cb9c41f971423431e8cccf236 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 17 Mar 2014 13:00:17 +0100
 Subject: [PATCH] network:dhclient-script do PREINIT6 for DHCP6

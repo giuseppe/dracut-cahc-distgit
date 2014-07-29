@@ -1,0 +1,24 @@
+From 17e74416c892494900f282e283211ab9a22f76db Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 30 Jun 2014 11:29:56 +0200
+Subject: [PATCH] TEST-15-BTRFSRAID: install /etc/os-release
+
+makes systemd switch-root happy
+
+(cherry picked from commit 44537b7bf89f297a8f188c93a2148d55cb7799e7)
+---
+ test/TEST-15-BTRFSRAID/test.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/test/TEST-15-BTRFSRAID/test.sh b/test/TEST-15-BTRFSRAID/test.sh
+index e6ff351..3fc1d45 100755
+--- a/test/TEST-15-BTRFSRAID/test.sh
++++ b/test/TEST-15-BTRFSRAID/test.sh
+@@ -37,6 +37,7 @@ test_setup() {
+ 	inst "$basedir/modules.d/40network/ifup.sh" "/sbin/ifup"
+ 	inst_multiple grep
+ 	inst ./test-init.sh /sbin/init
++	inst_simple /etc/os-release
+ 	find_binary plymouth >/dev/null && inst_multiple plymouth
+ 	(cd "$initdir"; mkdir -p dev sys proc etc var/run tmp )
+ 	cp -a /etc/ld.so.conf* $initdir/etc

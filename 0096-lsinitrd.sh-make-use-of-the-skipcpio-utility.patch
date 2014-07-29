@@ -1,4 +1,4 @@
-From 8732cab18a05e98086462e51d9c7b8b7a3190ddf Mon Sep 17 00:00:00 2001
+From 815b9c16a4e90b67bab008da678d73faa74f8e0c Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 15:30:22 +0100
 Subject: [PATCH] lsinitrd.sh: make use of the skipcpio utility

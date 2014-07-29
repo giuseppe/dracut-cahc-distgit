@@ -1,4 +1,4 @@
-From 06b83706baaaf1586d83b1534dd52fccfa012ce2 Mon Sep 17 00:00:00 2001
+From 52d3c1b7267b6930fe6a835b4000546c5f106d0e Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 8 Oct 2013 10:30:00 +0200
 Subject: [PATCH] lvm: install thin utils for non-hostonly

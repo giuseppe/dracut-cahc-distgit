@@ -1,4 +1,4 @@
-From 78d5cf7cb4e10d9e08ba5e89fe130fe5d7714b95 Mon Sep 17 00:00:00 2001
+From 764b5209942dc435c7c611b0008975aa13738374 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 2 Oct 2013 12:36:25 +0200
 Subject: [PATCH] add /etc/system-fips for dracut-fips subpackage

@@ -1,4 +1,4 @@
-From d7f6f22bca957cc0a5db13f26c3191cae11ac0c2 Mon Sep 17 00:00:00 2001
+From dfaeee7341acba43367dd26bce9143d8a5c08ac5 Mon Sep 17 00:00:00 2001
 From: Koen Kooi <koen@dominion.thruhere.net>
 Date: Fri, 10 Jan 2014 21:41:43 +0100
 Subject: [PATCH] Use builtin xz/lzma option to use all cores for multihreaded

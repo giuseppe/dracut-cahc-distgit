@@ -1,4 +1,4 @@
-From c411899e9dbc3071e7da68b023d532c69c79a05f Mon Sep 17 00:00:00 2001
+From 74c9df58f25736aea0da8c56e15d047dc6a9cb5a Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 22 Jan 2014 11:48:45 +0100
 Subject: [PATCH] dracut-logger.sh: systemd-cat only understands prio 0-7

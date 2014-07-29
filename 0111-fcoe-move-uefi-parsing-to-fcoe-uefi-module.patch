@@ -1,4 +1,4 @@
-From 837d1da3cd3b4578f4a7d0a9ff40623cc01099f0 Mon Sep 17 00:00:00 2001
+From 8bde20bc6553f306a549f80742995daad31baa55 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 12 Dec 2013 09:20:53 +0100
 Subject: [PATCH] fcoe: move uefi parsing to fcoe-uefi module

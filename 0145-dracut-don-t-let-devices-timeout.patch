@@ -1,4 +1,4 @@
-From f90bc8c75438c5a7e08288343edbb42f49d42178 Mon Sep 17 00:00:00 2001
+From 711030d61d8dbf195d416fbd23759feac0303c15 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 4 Mar 2014 13:46:14 +0100
 Subject: [PATCH] dracut: don't let devices timeout

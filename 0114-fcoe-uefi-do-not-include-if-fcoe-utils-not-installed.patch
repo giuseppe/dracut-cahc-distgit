@@ -1,4 +1,4 @@
-From 521662043e8d71830c3c1157f8408523f736f469 Mon Sep 17 00:00:00 2001
+From d802e985aed9dbe48f7b9165f3eddd0be7d47c27 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 7 Jan 2014 14:34:55 +0100
 Subject: [PATCH] fcoe-uefi: do not include, if fcoe utils not installed

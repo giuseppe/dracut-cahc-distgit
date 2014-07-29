@@ -1,4 +1,4 @@
-From 9347898404ad1f8f0c11be9c5f13255a04d5e275 Mon Sep 17 00:00:00 2001
+From 4fde4d06474cdf321958592edf3f856446927d29 Mon Sep 17 00:00:00 2001
 From: Alexander Tsoy <alexander@tsoy.me>
 Date: Sun, 29 Sep 2013 01:31:01 +0400
 Subject: [PATCH] mdraid/module-setup.sh: fixes for mdadm-3.2.6+

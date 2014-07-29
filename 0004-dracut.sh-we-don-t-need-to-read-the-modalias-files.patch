@@ -1,4 +1,4 @@
-From 3b9aaaab429903ace447fa9ab585592c3343c6f0 Mon Sep 17 00:00:00 2001
+From 72ce014bc79933379cb864cef665114ac5d4ccfa Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 13 Sep 2013 17:51:29 +0200
 Subject: [PATCH] dracut.sh: we don't need to read the modalias files

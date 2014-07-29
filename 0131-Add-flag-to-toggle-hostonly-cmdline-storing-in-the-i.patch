@@ -1,4 +1,4 @@
-From 2b965be4f11584462fa891e4508c6b115de2a1ed Mon Sep 17 00:00:00 2001
+From 81c9e224820fa284806690fc64ac39c58e8760a3 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Feb 2014 12:35:32 +0100
 Subject: [PATCH] Add flag to toggle hostonly cmdline storing in the initramfs

@@ -1,4 +1,4 @@
-From cea62a2a68db9d63380d279acf64b672442d2f40 Mon Sep 17 00:00:00 2001
+From d52c4a761a5232f9d92cae90259fbb00e3859a9f Mon Sep 17 00:00:00 2001
 From: Dave Young <dyoung@redhat.com>
 Date: Thu, 27 Feb 2014 10:44:23 +0800
 Subject: [PATCH] add default values in fstab_lines

@@ -1,4 +1,4 @@
-From c401e97b0b649385debfb61c8e5e24f81810466f Mon Sep 17 00:00:00 2001
+From e2e32cd02febaf26b9cd0b17de9f02256dd72cb2 Mon Sep 17 00:00:00 2001
 From: WANG Chao <chaowang@redhat.com>
 Date: Mon, 3 Mar 2014 15:22:00 +0800
 Subject: [PATCH] Add -[-no]-hostonly-cmdline option handling for getopt

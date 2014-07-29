@@ -1,4 +1,4 @@
-From acbc09a360a1e1a8197db1fbb93b83f9823a1de1 Mon Sep 17 00:00:00 2001
+From 8eee542b4014166ef52efc20ab499aed4fe231d3 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 21 Oct 2013 09:43:04 +0200
 Subject: [PATCH] dracut.spec: move /sbin/dracut to /usr/sbin/dracut

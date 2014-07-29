@@ -1,4 +1,4 @@
-From 9d9f81d6a5f452a18dd1c253cd8805d39be8af21 Mon Sep 17 00:00:00 2001
+From 6ea78f9f4eb405e6743e8be67836f9134d11e77b Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 7 Oct 2013 15:06:50 +0200
 Subject: [PATCH] btrfs: use inst_hook to install the timeout hook

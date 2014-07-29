@@ -1,4 +1,4 @@
-From 02d602fe7014e39edf17f25643e3c3d1aa36c874 Mon Sep 17 00:00:00 2001
+From 69acbc47356b56a03a331b8be57ed83af2687c8d Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 27 Mar 2014 12:31:23 +0100
 Subject: [PATCH] network: DCHPv6: set valid_lft and preferred_lft

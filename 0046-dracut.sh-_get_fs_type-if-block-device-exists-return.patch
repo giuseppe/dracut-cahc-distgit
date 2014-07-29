@@ -1,4 +1,4 @@
-From cedb7d124c3c884b3feee873b67b78dd16e4300e Mon Sep 17 00:00:00 2001
+From fb67162559469fedd84950eee6808962ceaf48a7 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 2 Dec 2013 10:32:00 +0100
 Subject: [PATCH] dracut.sh:_get_fs_type() if block device exists return early

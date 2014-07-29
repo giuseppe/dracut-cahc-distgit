@@ -1,4 +1,4 @@
-From 51ebae23d21bc1b030e98558ee46257e4f99297d Mon Sep 17 00:00:00 2001
+From 1a21ed8d1dbec162986fff9f30d5efc68107524e Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 16 Oct 2013 11:30:08 +0200
 Subject: [PATCH] lvm: fix thin recognition

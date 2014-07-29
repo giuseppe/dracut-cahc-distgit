@@ -1,4 +1,4 @@
-From 40df7e9cc77e1cff9d3bf53eec6eea1dfbbc2d8a Mon Sep 17 00:00:00 2001
+From 5a3b267d06cc81fcb7e0374c7656a1f48d031497 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Feb 2014 12:54:28 +0100
 Subject: [PATCH] systemd/rootfs-generator.sh: generate units in

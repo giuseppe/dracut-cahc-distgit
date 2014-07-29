@@ -1,4 +1,4 @@
-From 3a64364dfccab4253c315755171702db7a31e187 Mon Sep 17 00:00:00 2001
+From 3d47b5124c9539740a4b3cfd587765879b3226cc Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 30 Jan 2014 17:11:43 +0100
 Subject: [PATCH] network/net-lib.sh: parse ibft nameserver settings

@@ -1,4 +1,4 @@
-From dd826ee50d06b8f8e22e78e56e7d09bd5368245f Mon Sep 17 00:00:00 2001
+From e96c0100113eb35a476fdb7949d5e347a81281a2 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 28 Feb 2014 13:25:39 +0100
 Subject: [PATCH] test/Makefile: add SKIP env to skip certain tests

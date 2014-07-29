@@ -1,4 +1,4 @@
-From 9a222e393afe093b5e940679e13b8bf5c2fb16a3 Mon Sep 17 00:00:00 2001
+From 779f980658ab223773ef065ac3f833aacd374c53 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 17 Jan 2014 15:27:47 +0100
 Subject: [PATCH] base/dracut-lib.sh: "halt" the machine in systemd mode for

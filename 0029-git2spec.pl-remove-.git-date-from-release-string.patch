@@ -1,4 +1,4 @@
-From 239a2e91fb97a5ac3c4efdcfc31810f13b26d051 Mon Sep 17 00:00:00 2001
+From 9bd3573ddba40e4ee7b01f4e906126dbdc494f28 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 18 Oct 2013 15:34:44 +0200
 Subject: [PATCH] git2spec.pl: remove ".git$(date)" from release string

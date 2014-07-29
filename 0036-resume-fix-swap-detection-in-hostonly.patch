@@ -1,4 +1,4 @@
-From 3ad9febfafc57aff4a705cc4c5f184fed2dc3c4c Mon Sep 17 00:00:00 2001
+From ccad388c2578ba3e3539c87268a06c73f42b762f Mon Sep 17 00:00:00 2001
 From: Alexander Tsoy <alexander@tsoy.me>
 Date: Wed, 9 Oct 2013 06:39:46 +0400
 Subject: [PATCH] resume: fix swap detection in hostonly

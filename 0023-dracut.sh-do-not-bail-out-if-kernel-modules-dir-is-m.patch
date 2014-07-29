@@ -1,4 +1,4 @@
-From 28cf10ecf3881d1c364f85d2a1ac1673c70df45c Mon Sep 17 00:00:00 2001
+From f0df0f3fcd0e79a697ec8bd45b9ce2e420f2820a Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 8 Oct 2013 15:03:40 +0200
 Subject: [PATCH] dracut.sh: do not bail out, if kernel modules dir is missing

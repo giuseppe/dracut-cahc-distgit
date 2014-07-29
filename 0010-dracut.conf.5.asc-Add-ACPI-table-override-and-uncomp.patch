@@ -1,4 +1,4 @@
-From 4e93c3f7079305114779a4bf2adefdbd429a9701 Mon Sep 17 00:00:00 2001
+From 54011e3591216503dd93d1028ff209a6a4851a57 Mon Sep 17 00:00:00 2001
 From: Thomas Renninger <trenn@suse.de>
 Date: Fri, 27 Sep 2013 20:10:40 +0200
 Subject: [PATCH] dracut.conf.5.asc: Add ACPI table override and uncompressed

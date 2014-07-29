@@ -1,4 +1,4 @@
-From 40c2e2db5c8b08e064a03235ec843ff39a2addc7 Mon Sep 17 00:00:00 2001
+From c35826c0e7623852be8735acf8cc13e6bf829208 Mon Sep 17 00:00:00 2001
 From: Alexander Tsoy <alexander@tsoy.me>
 Date: Wed, 9 Oct 2013 07:02:56 +0400
 Subject: [PATCH] resume: remove resume-genrules.sh

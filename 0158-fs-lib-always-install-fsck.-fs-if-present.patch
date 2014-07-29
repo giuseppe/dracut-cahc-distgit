@@ -1,4 +1,4 @@
-From c4bcf133dc4a56eb2ce21bec7a3c3bf7ef67c578 Mon Sep 17 00:00:00 2001
+From 4b07c26d33c5b2ab1e4d2e98c88e787bdf032917 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 4 Apr 2014 11:33:02 +0200
 Subject: [PATCH] fs-lib: always install fsck.$fs, if present

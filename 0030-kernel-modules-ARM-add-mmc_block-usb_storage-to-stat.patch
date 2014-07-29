@@ -1,4 +1,4 @@
-From f88fc58d7c048fe4c2cf40018e365405b4dc0935 Mon Sep 17 00:00:00 2001
+From 88fc0b8750c827ecdeacd70893905db5d6c9b87d Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 18 Oct 2013 14:56:51 +0200
 Subject: [PATCH] kernel-modules(ARM): add mmc_block usb_storage to statis list

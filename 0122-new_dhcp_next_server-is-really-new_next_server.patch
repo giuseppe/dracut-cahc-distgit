@@ -1,4 +1,4 @@
-From 6a0da312e0118208fa2799abf188755fbd97b479 Mon Sep 17 00:00:00 2001
+From 99ed45c2181819be473ae275bbf88df556cdff1c Mon Sep 17 00:00:00 2001
 From: "Brian C. Lane" <bcl@redhat.com>
 Date: Wed, 5 Feb 2014 12:10:39 -0800
 Subject: [PATCH] new_dhcp_next_server is really new_next_server

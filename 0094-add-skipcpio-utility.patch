@@ -1,4 +1,4 @@
-From 979038ba0da3ff61ddb61a809795189d3c25f71a Mon Sep 17 00:00:00 2001
+From a3dc6a721873f0365612a5acee952a5f7d33853a Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 15:27:51 +0100
 Subject: [PATCH] add skipcpio utility

@@ -1,4 +1,4 @@
-From 761263922538d3c00b34dc6fc71a98eb8d8e1aa9 Mon Sep 17 00:00:00 2001
+From cb97abc7bb304a9eb8d6f6c29eaa62e9525117fb Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 17 Jan 2014 11:52:43 +0100
 Subject: [PATCH] dracut-install,dracut: fix ldd output parsing

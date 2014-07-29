@@ -1,4 +1,4 @@
-From e90e9dc73381cf0c54472e9346b3f0bf94889b90 Mon Sep 17 00:00:00 2001
+From a367bed83602ce482132f36dfb6047261fb930db Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 5 Feb 2014 13:58:33 +0100
 Subject: [PATCH] systemd: add sys-kernel-config.mount

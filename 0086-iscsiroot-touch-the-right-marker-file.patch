@@ -1,4 +1,4 @@
-From 4d5ede17afb3402e1c9b48a8fecb8b4750fe160d Mon Sep 17 00:00:00 2001
+From 56a5975f91cf897d09ac3b5b74342fff48e7aea3 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 16:35:08 +0100
 Subject: [PATCH] iscsiroot: touch the right marker file

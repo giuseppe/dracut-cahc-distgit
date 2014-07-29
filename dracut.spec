@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 161%{?dist}
+Release: 203%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -189,6 +189,48 @@ Patch157: 0157-Add-legacy-flag-l-to-lz4-and-update-magic-number.patch
 Patch158: 0158-fs-lib-always-install-fsck.-fs-if-present.patch
 Patch159: 0159-ifcfg-write-ifcfg.sh-turn-on-IPV6INIT-if-any-inet6-a.patch
 Patch160: 0160-dracut-functions.sh-add-lib-modules-extras-weak-upda.patch
+Patch161: 0161-fstab-do-not-mount-and-fsck-from-fstab-if-using-syst.patch
+Patch162: 0162-lvm-module-setup.sh-check-for-existance-of-69-dm-lvm.patch
+Patch163: 0163-dracut-initqueue-service-runs-before-remote-fs-pre.t.patch
+Patch164: 0164-ifcfg-do-not-bind-persistent-interface-names-to-HWAD.patch
+Patch165: 0165-ifcfg-only-bind-to-HWADDR-if-addr_assign_type-0.patch
+Patch166: 0166-dracut-lib.sh-fixed-return-value-of-pidof.patch
+Patch167: 0167-Do-not-log-to-kmsg-syslog-and-files-for-print-cmdlin.patch
+Patch168: 0168-ifcfg-write-ifcfg.sh-IPV6INIT-yes-check-also-for-non.patch
+Patch169: 0169-cms-cmssetup.sh-convert-SUBCHANNELS-to-lowercase.patch
+Patch170: 0170-mdraid-module-setup.sh-fixed-print-cmdline-for-empty.patch
+Patch171: 0171-ifcfg-write-ifcfg.sh-include-net-lib.sh.patch
+Patch172: 0172-nbd-nbdroot.sh-call-nbd-client-with-systemd-mark.patch
+Patch173: 0173-fcoe-uefi-parse-uefifcoe.sh-fixed-parameter-generati.patch
+Patch174: 0174-dracut-functions.sh-print_vars-fix-for-values-with-s.patch
+Patch175: 0175-98systemd-fixup-rootfs-generator-installation-path.patch
+Patch176: 0176-dracut-pre-pivot-pulls-in-remote-fs.target.patch
+Patch177: 0177-kernel-modules-Fix-storage-module-selection-for-sdhc.patch
+Patch178: 0178-bonding-use-hwaddr-of-the-slave-rather-than-the-mast.patch
+Patch179: 0179-network-ifup.sh-Don-t-try-to-modprobe-ipv6-if-alread.patch
+Patch180: 0180-iscsi-correctly-install-the-timeout-iscsiroot-dummy-.patch
+Patch181: 0181-iscsi-correctly-install-the-settled-iscsiroot-dummy-.patch
+Patch182: 0182-deprecate-ip-ibft-kernel-command-line-parameter.patch
+Patch183: 0183-systemd-Optionally-include-efivarsfs-module.patch
+Patch184: 0184-98systemd-also-install-systemd-journald-dev-log.sock.patch
+Patch185: 0185-lsinitrd.sh-don-t-choke-on-LZO-compressed-images.patch
+Patch186: 0186-usable_root-only-check-for-ld-.so.patch
+Patch187: 0187-print-out-what-kernel-command-line-parameters-are-us.patch
+Patch188: 0188-kernel-modules-add-tegra-arm-modules.patch
+Patch189: 0189-Add-rd.cmdline-ask-kernel-command-line-parameter.patch
+Patch190: 0190-base-init.sh-use-loop-counter-with-unique-varname.patch
+Patch191: 0191-ifcfg-depends-on-network.patch
+Patch192: 0192-test-add-udev-settle-after-sfdisk.patch
+Patch193: 0193-TEST-15-BTRFSRAID-install-etc-os-release.patch
+Patch194: 0194-lvm-module-setup.sh-check-for-existance-of-69-dm-lvm.patch
+Patch195: 0195-dracut.sh-always-copy-prelink-files-in-FIPS-mode.patch
+Patch196: 0196-dracut-functions.sh-speed-up-ldconfig_paths.patch
+Patch197: 0197-Installing-an-OS-with-VLAN-enabled-to-an-ISCSI-LUN-f.patch
+Patch198: 0198-ARM-update-modules-for-ARM-host-only-options.patch
+Patch199: 0199-base-dracut-lib-pidof-turn-off-debugging.patch
+Patch200: 0200-network-add-rd.route-parameter.patch
+Patch201: 0201-udev-rules-add-uaccess-and-seat-rules.patch
+Patch202: 0202-testsuite-mods-for-kvm-nested-in-kvm.patch
 
 
 BuildRequires: bash git
@@ -615,6 +657,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jul 29 2014 Harald Hoyer <harald@redhat.com> 033-203
+- add rd.cmdline=ask parameter
+Resolves: rhbz#1070104
+
 * Mon Apr 28 2014 Harald Hoyer <harald@redhat.com> 033-161
 - add extra and weak-updates kernel module dirs
 Resolves: rhbz#1086291

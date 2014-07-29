@@ -1,4 +1,4 @@
-From 3c67ed50135c8e454d0a4e0f414eca85c014b99a Mon Sep 17 00:00:00 2001
+From d1e9a5e3840b569aa8de6daba0e9ffd40b315a23 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 15 Jan 2014 14:35:53 +0100
 Subject: [PATCH] network: include all ethernet drivers

@@ -1,4 +1,4 @@
-From a3a5b817ebd6cece50e2cd9e03fe4279d9c2f7ba Mon Sep 17 00:00:00 2001
+From 36d3274050935419c90fd0c0ba71ec26bf4a1b4c Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 7 Feb 2014 15:41:50 +0100
 Subject: [PATCH] network:fix dns parsing in ip= parameter

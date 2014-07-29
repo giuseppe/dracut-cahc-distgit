@@ -1,4 +1,4 @@
-From fc68c87afa4fbe4c40abe4326df8cc7cfc9ac23d Mon Sep 17 00:00:00 2001
+From af34b260474c551a45a6fa4ae8719622f1e35910 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 13 Sep 2013 17:34:18 +0200
 Subject: [PATCH] dracut.sh: also search uevent's for MODALIAS

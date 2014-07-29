@@ -1,4 +1,4 @@
-From 958bc11ddd2b21c631bde5871b22cb727d051042 Mon Sep 17 00:00:00 2001
+From a1e9e9364a98032a83e166173930c141c8baa4c6 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 5 Dec 2013 18:38:35 +0100
 Subject: [PATCH] systemd/dracut-initqueue.sh: fixed waiting in the loop if PW

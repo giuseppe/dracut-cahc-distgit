@@ -1,4 +1,4 @@
-From d02a9c97d4cfe4149aa71174892569b6347bdf52 Mon Sep 17 00:00:00 2001
+From d11012969527a027ad2db8d06e374fb8f04e7f45 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 20 Jan 2014 14:59:46 +0100
 Subject: [PATCH] dracut-lib.sh: fixed shebang

@@ -1,4 +1,4 @@
-From e25a74d851509ac7bc644de6986bedc06bfe748d Mon Sep 17 00:00:00 2001
+From 30e20744477c18a70c4f487275f2a8e957fca555 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 27 Feb 2014 12:11:20 +0100
 Subject: [PATCH] network: IPv6 status, wait for tentative flag to be cleared

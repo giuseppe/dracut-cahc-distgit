@@ -1,4 +1,4 @@
-From 89965b78b4bbf9b27b4f19baf805657f7e62bc6e Mon Sep 17 00:00:00 2001
+From be10aecb17b1f71682cfc364553cf35f150a1045 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 10 Dec 2013 12:58:37 +0100
 Subject: [PATCH] base/rdsosreport.sh: add "ip a" output

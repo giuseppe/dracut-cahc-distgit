@@ -1,4 +1,4 @@
-From 16a841f79305818cbf51a2c31786c73b9284fd5a Mon Sep 17 00:00:00 2001
+From 15962471fed6c1f074f532d2e74c3583b1d38128 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 2 Dec 2013 10:30:52 +0100
 Subject: [PATCH] dracut.cmdline.7.asc: document "server-ip" of "ip=" parameter

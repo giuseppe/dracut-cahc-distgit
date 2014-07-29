@@ -1,0 +1,24 @@
+From 7cab5fbf59bb0d1f654e7fbc888513367f4ea65d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Cristian=20Rodr=C3=ADguez?= <crrodriguez@opensuse.org>
+Date: Mon, 16 Jun 2014 01:13:44 -0400
+Subject: [PATCH] systemd: Optionally, include efivarsfs module
+
+It is, however not an error if this module can't be found.
+
+(cherry picked from commit f46c2fff717d0036bf3cd4d6c1c9af28eb46ceb1)
+---
+ modules.d/98systemd/module-setup.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules.d/98systemd/module-setup.sh b/modules.d/98systemd/module-setup.sh
+index 36a0505..19be587 100755
+--- a/modules.d/98systemd/module-setup.sh
++++ b/modules.d/98systemd/module-setup.sh
+@@ -19,6 +19,7 @@ depends() {
+ 
+ installkernel() {
+     instmods autofs4 ipv6
++    instmods -s efivarfs
+ }
+ 
+ install() {

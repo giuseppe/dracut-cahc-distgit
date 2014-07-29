@@ -1,4 +1,4 @@
-From 2ec86382fb7e60ae808a591b7160e26e240a4c15 Mon Sep 17 00:00:00 2001
+From 7aa989a4fd5c29da18e9e57fb94dec253516b0c4 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 2 Dec 2013 10:38:21 +0100
 Subject: [PATCH] network/ifup.sh: before doing dhcp, check, if the link has a

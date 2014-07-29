@@ -1,4 +1,4 @@
-From 9061e3281f8f0d6cf7fdfae1aaa585d6160b232e Mon Sep 17 00:00:00 2001
+From 2f117f4db3425229f9a9b107682ad05b8ba613ea Mon Sep 17 00:00:00 2001
 From: Stig Telfer <stelfer@cray.com>
 Date: Fri, 24 Jan 2014 15:48:32 +0000
 Subject: [PATCH] dracut-lib.sh: bugfix for pidof function

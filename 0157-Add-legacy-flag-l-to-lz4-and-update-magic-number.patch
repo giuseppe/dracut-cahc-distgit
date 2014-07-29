@@ -1,4 +1,4 @@
-From dea5f0f06b306b786dda5af59f7a4d54afd3c040 Mon Sep 17 00:00:00 2001
+From 07c4a2fce5ddc0b6266526911586f1bd36f5700f Mon Sep 17 00:00:00 2001
 From: Alexander Tsoy <alexander@tsoy.me>
 Date: Wed, 26 Feb 2014 15:50:17 +0400
 Subject: [PATCH] Add legacy flag (-l) to lz4 and update magic number

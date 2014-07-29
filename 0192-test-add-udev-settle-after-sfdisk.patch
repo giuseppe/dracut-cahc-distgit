@@ -1,0 +1,151 @@
+From 932169bc349be88cd31bb3bd0e19c02a532b8241 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 30 Jun 2014 11:29:37 +0200
+Subject: [PATCH] test: add udev settle after sfdisk
+
+(cherry picked from commit e54d961160f12e30917c1a6360f7ba32ecb0f83d)
+---
+ test/TEST-01-BASIC/create-root.sh        | 1 +
+ test/TEST-02-SYSTEMD/create-root.sh      | 1 +
+ test/TEST-03-USR-MOUNT/create-root.sh    | 1 +
+ test/TEST-04-FULL-SYSTEMD/create-root.sh | 1 +
+ test/TEST-10-RAID/create-root.sh         | 1 +
+ test/TEST-11-LVM/create-root.sh          | 1 +
+ test/TEST-12-RAID-DEG/create-root.sh     | 1 +
+ test/TEST-13-ENC-RAID-LVM/create-root.sh | 1 +
+ test/TEST-15-BTRFSRAID/create-root.sh    | 9 +++++----
+ test/TEST-17-LVM-THIN/create-root.sh     | 1 +
+ 10 files changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/test/TEST-01-BASIC/create-root.sh b/test/TEST-01-BASIC/create-root.sh
+index 96e3c33..3a62afd 100755
+--- a/test/TEST-01-BASIC/create-root.sh
++++ b/test/TEST-01-BASIC/create-root.sh
+@@ -12,6 +12,7 @@ sfdisk -C 2560 -H 2 -S 32 -L /dev/sda <<EOF
+ ,
+ EOF
+ 
++udevadm settle
+ mkfs.ext3 -L dracut /dev/sda2
+ mkdir -p /root
+ mount /dev/sda2 /root
+diff --git a/test/TEST-02-SYSTEMD/create-root.sh b/test/TEST-02-SYSTEMD/create-root.sh
+index 682e472..b102106 100755
+--- a/test/TEST-02-SYSTEMD/create-root.sh
++++ b/test/TEST-02-SYSTEMD/create-root.sh
+@@ -12,6 +12,7 @@ sfdisk -C 2560 -H 2 -S 32 -L /dev/sda <<EOF
+ ,
+ EOF
+ 
++udevadm settle
+ mkfs.ext3 -L dracut /dev/sda2
+ mkdir -p /root
+ mount /dev/sda2 /root
+diff --git a/test/TEST-03-USR-MOUNT/create-root.sh b/test/TEST-03-USR-MOUNT/create-root.sh
+index 961392f..f3cecaf 100755
+--- a/test/TEST-03-USR-MOUNT/create-root.sh
++++ b/test/TEST-03-USR-MOUNT/create-root.sh
+@@ -17,6 +17,7 @@ sfdisk -C 5120 -H 2 -S 32 -L /dev/sdb <<EOF
+ ,
+ EOF
+ 
++udevadm settle
+ modprobe btrfs
+ mkfs.btrfs -L dracut /dev/sda2
+ mkfs.btrfs -L dracutusr /dev/sdb2
+diff --git a/test/TEST-04-FULL-SYSTEMD/create-root.sh b/test/TEST-04-FULL-SYSTEMD/create-root.sh
+index fb462ab..86ad449 100755
+--- a/test/TEST-04-FULL-SYSTEMD/create-root.sh
++++ b/test/TEST-04-FULL-SYSTEMD/create-root.sh
+@@ -17,6 +17,7 @@ sfdisk -C 10240 -H 2 -S 32 -L /dev/sdb <<EOF
+ ,
+ EOF
+ 
++udevadm settle
+ 
+ mkfs.btrfs -L dracut /dev/sda2
+ mkfs.btrfs -L dracutusr /dev/sdb2
+diff --git a/test/TEST-10-RAID/create-root.sh b/test/TEST-10-RAID/create-root.sh
+index 68face8..5055413 100755
+--- a/test/TEST-10-RAID/create-root.sh
++++ b/test/TEST-10-RAID/create-root.sh
+@@ -12,6 +12,7 @@ sfdisk -C 2560 -H 2 -S 32 -L /dev/sda <<EOF
+ ,800
+ ,800
+ EOF
++udevadm settle
+ mdadm --create /dev/md0 --run --auto=yes --level=5 --raid-devices=3 /dev/sda2 /dev/sda3 /dev/sda4
+ # wait for the array to finish initailizing, otherwise this sometimes fails
+ # randomly.
+diff --git a/test/TEST-11-LVM/create-root.sh b/test/TEST-11-LVM/create-root.sh
+index 0ab0496..a97fa58 100755
+--- a/test/TEST-11-LVM/create-root.sh
++++ b/test/TEST-11-LVM/create-root.sh
+@@ -12,6 +12,7 @@ sfdisk -C 1280 -H 2 -S 32 -L /dev/sda <<EOF
+ ,400
+ ,400
+ EOF
++udevadm settle
+ for i in sda2 sda3 sda4; do
+ lvm pvcreate -ff  -y /dev/$i ;
+ done && \
+diff --git a/test/TEST-12-RAID-DEG/create-root.sh b/test/TEST-12-RAID-DEG/create-root.sh
+index 7561be1..699c27c 100755
+--- a/test/TEST-12-RAID-DEG/create-root.sh
++++ b/test/TEST-12-RAID-DEG/create-root.sh
+@@ -15,6 +15,7 @@ sfdisk -C 1280 -H 2 -S 32 -L /dev/sda <<EOF
+ ,400
+ ,400
+ EOF
++udevadm settle
+ mdadm --create /dev/md0 --run --auto=yes --level=5 --raid-devices=3 /dev/sdb /dev/sdc /dev/sdd
+ # wait for the array to finish initailizing, otherwise this sometimes fails
+ # randomly.
+diff --git a/test/TEST-13-ENC-RAID-LVM/create-root.sh b/test/TEST-13-ENC-RAID-LVM/create-root.sh
+index 4260e86..af83c23 100755
+--- a/test/TEST-13-ENC-RAID-LVM/create-root.sh
++++ b/test/TEST-13-ENC-RAID-LVM/create-root.sh
+@@ -13,6 +13,7 @@ sfdisk -C 2560 -H 2 -S 32 -L /dev/sda <<EOF
+ ,800
+ ,800
+ EOF
++udevadm settle
+ echo -n test >keyfile
+ cryptsetup -q luksFormat /dev/sda2 /keyfile
+ cryptsetup -q luksFormat /dev/sda3 /keyfile
+diff --git a/test/TEST-15-BTRFSRAID/create-root.sh b/test/TEST-15-BTRFSRAID/create-root.sh
+index 69f9280..b92f9c0 100755
+--- a/test/TEST-15-BTRFSRAID/create-root.sh
++++ b/test/TEST-15-BTRFSRAID/create-root.sh
+@@ -15,14 +15,15 @@ sfdisk  -C 327800 -H 2 -S 32 -L /dev/sda <<EOF
+ ,5120
+ ,5120
+ EOF
++udevadm settle
+ mkfs.btrfs -draid10 -mraid10 -L root /dev/sda5 /dev/sda6 /dev/sda7 /dev/sda8
+ udevadm settle
+ btrfs device scan
+ udevadm settle
+ set -e
+-mkdir -p /sysroot 
+-mount -t btrfs /dev/sda8 /sysroot 
+-cp -a -t /sysroot /source/* 
+-umount /sysroot 
++mkdir -p /sysroot
++mount -t btrfs /dev/sda8 /sysroot
++cp -a -t /sysroot /source/*
++umount /sysroot
+ echo "dracut-root-block-created" >/dev/sda1
+ poweroff -f
+diff --git a/test/TEST-17-LVM-THIN/create-root.sh b/test/TEST-17-LVM-THIN/create-root.sh
+index 740704f..416c3c3 100755
+--- a/test/TEST-17-LVM-THIN/create-root.sh
++++ b/test/TEST-17-LVM-THIN/create-root.sh
+@@ -12,6 +12,7 @@ sfdisk -C 2560 -H 2 -S 32 -L /dev/sda <<EOF
+ ,800
+ ,800
+ EOF
++udevadm settle
+ for i in sda2 sda3 sda4; do
+ lvm pvcreate -ff  -y /dev/$i ;
+ done && \

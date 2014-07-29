@@ -1,4 +1,4 @@
-From c1c355698174807bf816f022f84303b460ec9e32 Mon Sep 17 00:00:00 2001
+From 5676a6d877fec50cf969369045788ff3ac59fdc0 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 28 Jan 2014 18:33:36 +0100
 Subject: [PATCH] dmsquash-live/dmsquash-liveiso-genrules.sh:

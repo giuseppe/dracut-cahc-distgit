@@ -1,4 +1,4 @@
-From 275262b9986cfe79ecb3343cbba7e72e359f8307 Mon Sep 17 00:00:00 2001
+From ade113d75b07ba294facbe943b859624fa45efb9 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 28 Jan 2014 12:12:43 +0100
 Subject: [PATCH] network/dhclient-script.sh: set lease time

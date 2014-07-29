@@ -1,0 +1,41 @@
+From 49fe9bc014993d1dd4a7f26e1904d7359398a6dd Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 24 Jun 2014 18:54:35 +0200
+Subject: [PATCH] usable_root(): only check for ld-*.so
+
+current systemd allows booting with only /usr on the root partition
+
+see, if we can find an elf loader
+
+(cherry picked from commit 7e59d550425833e9ecaa892ef9f1a9fe8160065a)
+---
+ modules.d/99base/dracut-lib.sh | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index 66977e7..417cfd8 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -730,11 +730,18 @@ $(readlink -e -q "$d")" || return 255
+ 
+ 
+ usable_root() {
+-    local _d
+-    [ -d $1 ] || return 1
+-    for _d in proc sys dev; do
+-        [ -e "$1"/$_d ] || return 1
++    local _i
++
++    [ -d "$1" ] || return 1
++
++    for _i in "$1"/usr/lib*/ld-*.so "$1"/lib*/ld-*.so; do
++        [ -e "$_i" ] && return 0
+     done
++
++    for _i in proc sys dev; do
++        [ -e "$1"/$_i ] || return 1
++    done
++
+     return 0
+ }
+ 

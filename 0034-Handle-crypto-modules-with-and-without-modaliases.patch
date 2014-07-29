@@ -1,4 +1,4 @@
-From 662592c46a4561d517e2fa45e917e17824b658c9 Mon Sep 17 00:00:00 2001
+From ee916b72cc6ec89adf68d5b538044ebb5edcdbbd Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 30 Oct 2013 12:22:52 +0100
 Subject: [PATCH] Handle crypto modules with and without modaliases

@@ -1,4 +1,4 @@
-From 06eb3b80be3d4da642aeb05b37f567dd3d468a92 Mon Sep 17 00:00:00 2001
+From c2c437edbaab1630a9308dc81ffbfe0262f52d64 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Feb 2014 12:34:41 +0100
 Subject: [PATCH] default conf: set hostonly_cmdline == "no"

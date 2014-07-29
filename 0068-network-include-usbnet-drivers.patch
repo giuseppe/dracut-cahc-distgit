@@ -1,4 +1,4 @@
-From 2416a117b165be5ff74bf360176a07745700a4cd Mon Sep 17 00:00:00 2001
+From 9a177f8d51afd332fe6528d5cbe80d78d7b74a9e Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 19 Dec 2013 17:06:48 +0100
 Subject: [PATCH] network: include usbnet drivers

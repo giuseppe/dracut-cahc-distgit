@@ -1,4 +1,4 @@
-From ec67b82bd539625d35cdbe6e410a4e3bc16e25ce Mon Sep 17 00:00:00 2001
+From af1154fdce0e6fe0e8cb1216cc5e2f420eb03975 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 12 Mar 2014 15:39:08 +0100
 Subject: [PATCH] systemd/dracut-shutdown.service: make failure non-fatal

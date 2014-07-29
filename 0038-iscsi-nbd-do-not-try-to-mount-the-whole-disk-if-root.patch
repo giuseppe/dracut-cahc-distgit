@@ -1,4 +1,4 @@
-From 26a42e80bed28da0fdf34f7835b2b404ec25e7e6 Mon Sep 17 00:00:00 2001
+From 65ba6c44d8f578a6fde7377cfcd7448202ba01e0 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 30 Oct 2013 17:36:54 +0100
 Subject: [PATCH] iscsi/nbd: do not try to mount the whole disk, if root= is

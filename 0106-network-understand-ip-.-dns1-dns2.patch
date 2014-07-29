@@ -1,4 +1,4 @@
-From 85682fb6f9c3e91580792b266fb4e1ef1caea92f Mon Sep 17 00:00:00 2001
+From b4b60da8dcdd6bc6f1e66ece90e1070b07db0cf4 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 30 Jan 2014 13:50:02 +0100
 Subject: [PATCH] network: understand ip=.....:<dns1>:<dns2>

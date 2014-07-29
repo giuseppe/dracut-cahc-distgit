@@ -1,4 +1,4 @@
-From 7e0cacb7ad15e02d2a75548e673803f4e3719053 Mon Sep 17 00:00:00 2001
+From 411d2aedd602d2b1c85b42bf6de2b18b5a7a249a Mon Sep 17 00:00:00 2001
 From: Hannes Reinecke <hare@suse.de>
 Date: Fri, 29 Nov 2013 13:13:53 +0100
 Subject: [PATCH] Fixup script permissions

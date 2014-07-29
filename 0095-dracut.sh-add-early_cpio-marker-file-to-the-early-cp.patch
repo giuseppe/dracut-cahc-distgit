@@ -1,4 +1,4 @@
-From 77db409239f797e368bfa18a9f07cf119c0dd84d Mon Sep 17 00:00:00 2001
+From eb7c58eced499d5e894971b451d8fb940c829393 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 15:29:24 +0100
 Subject: [PATCH] dracut.sh: add early_cpio marker file to the early cpio

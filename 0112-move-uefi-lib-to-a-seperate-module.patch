@@ -1,4 +1,4 @@
-From b148bdea9edfbdd86f318ad363c55fb96a1e559a Mon Sep 17 00:00:00 2001
+From c26eb3eb3ace56e336817d007da039c058cf330f Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 12 Dec 2013 09:49:06 +0100
 Subject: [PATCH] move uefi-lib to a seperate module

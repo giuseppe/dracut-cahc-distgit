@@ -1,4 +1,4 @@
-From b5b608e44ade93bee54d274f5edc6aad6dc45288 Mon Sep 17 00:00:00 2001
+From 4b1aa19fa0fad0e607961995dbbe971be2ef9f81 Mon Sep 17 00:00:00 2001
 From: Thomas Renninger <trenn@suse.de>
 Date: Fri, 27 Sep 2013 20:10:37 +0200
 Subject: [PATCH] dracut: Generlize microcode early cpio usage

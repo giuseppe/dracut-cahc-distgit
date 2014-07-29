@@ -1,4 +1,4 @@
-From 9c1ddd0962be47ab1bcc7a5e93f5aca46112c9ab Mon Sep 17 00:00:00 2001
+From 8d7bd6af195ef6a7bd5caa89995084a8b484207c Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Sat, 2 Nov 2013 13:14:40 +0100
 Subject: [PATCH] dracut.sh: fixed PATH shortener

@@ -1,4 +1,4 @@
-From 2985e93ffa5f91331f8c27745bd92ab67a9d19fe Mon Sep 17 00:00:00 2001
+From db110a036a13e5c99e073128ec8aa7b1fdc7e992 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 18 Dec 2013 12:28:51 +0100
 Subject: [PATCH] dracut-lib/wait_for_dev(): prevent systemd daemon-reload

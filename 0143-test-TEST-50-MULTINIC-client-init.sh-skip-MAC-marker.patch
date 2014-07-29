@@ -1,4 +1,4 @@
-From f9b2de9328b5d11de0a731d4724576ad7a4ff2b0 Mon Sep 17 00:00:00 2001
+From dccf47fd55e99700c930a23327bfb6647501c38a Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 28 Feb 2014 13:26:13 +0100
 Subject: [PATCH] test/TEST-50-MULTINIC/client-init.sh: skip MAC marker files

@@ -1,4 +1,4 @@
-From 1dedc040181895fc95819fc6546d6862f3aba0a5 Mon Sep 17 00:00:00 2001
+From 9d75fd3b62be29813c9c30a88e3f1bacc921847a Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 18 Mar 2014 13:21:22 +0100
 Subject: [PATCH] shutdown: if kexec failed, do a simple reboot

@@ -1,0 +1,22 @@
+From b201a3f405222ce210a364555fb2b69d07db3281 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 30 Jun 2014 11:28:08 +0200
+Subject: [PATCH] ifcfg: depends on network
+
+(cherry picked from commit f1a38e5294b76c60b7614ec29ed56eccc4ed078a)
+---
+ modules.d/45ifcfg/module-setup.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules.d/45ifcfg/module-setup.sh b/modules.d/45ifcfg/module-setup.sh
+index ce53e5e..4299fea 100755
+--- a/modules.d/45ifcfg/module-setup.sh
++++ b/modules.d/45ifcfg/module-setup.sh
+@@ -8,6 +8,7 @@ check() {
+ }
+ 
+ depends() {
++    echo "network"
+     return 0
+ }
+ 

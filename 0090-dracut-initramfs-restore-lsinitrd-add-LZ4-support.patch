@@ -1,4 +1,4 @@
-From 3eccb9139fcd7559e68162aac348b38782c4d817 Mon Sep 17 00:00:00 2001
+From a0b85db18e163a14144230ae67c43ac23246b7ea Mon Sep 17 00:00:00 2001
 From: Koen Kooi <koen@dominion.thruhere.net>
 Date: Thu, 16 Jan 2014 11:00:54 +0100
 Subject: [PATCH] dracut-initramfs-restore,lsinitrd: add LZ4 support

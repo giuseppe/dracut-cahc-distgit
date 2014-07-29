@@ -1,4 +1,4 @@
-From 0014f6176312d43bbfeab506acf0bd2f1e14973f Mon Sep 17 00:00:00 2001
+From 04220f9affcbd59dd8d95fd716bd9443eb2ea81d Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 19 Dec 2013 12:37:47 +0100
 Subject: [PATCH] kernel-modules: add more block driver

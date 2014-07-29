@@ -1,4 +1,4 @@
-From 8dfe442d1ea9c418b1a2751040f89c6e0e0d30e6 Mon Sep 17 00:00:00 2001
+From 9bdbbe90efb11dfb840f9e9de0daf6388fa0f47f Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 17 Jan 2014 14:45:15 +0100
 Subject: [PATCH] iscsi: call "iscsistart -b" until it succeeds

@@ -1,4 +1,4 @@
-From cda71132a633b0c49733939179fcbeb7b5de1305 Mon Sep 17 00:00:00 2001
+From 1b827040f8b3e1e4fec19de76526fe0620654502 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 7 Oct 2013 14:24:36 +0200
 Subject: [PATCH] fcoe: add FCoE UEFI boot device support

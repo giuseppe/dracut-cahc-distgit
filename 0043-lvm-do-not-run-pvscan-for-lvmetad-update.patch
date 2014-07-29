@@ -1,4 +1,4 @@
-From c16311681e042801f3ead0191da5dca621c6a54c Mon Sep 17 00:00:00 2001
+From 05b79aaa9dde30d4f179303a81084b59898406b6 Mon Sep 17 00:00:00 2001
 From: Peter Rajnoha <prajnoha@redhat.com>
 Date: Mon, 25 Nov 2013 14:38:00 +0100
 Subject: [PATCH] lvm: do not run pvscan for lvmetad update

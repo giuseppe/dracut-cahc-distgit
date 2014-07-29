@@ -1,4 +1,4 @@
-From 3a6bc24b56412dedb0d404613efa1644022b002d Mon Sep 17 00:00:00 2001
+From ea9b961e8cffc30f131d62d21bcbd18b0482b7f6 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 8 Jan 2014 15:37:18 +0100
 Subject: [PATCH] dracut.sh: add missing piece for option --add-device

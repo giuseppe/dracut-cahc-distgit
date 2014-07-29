@@ -1,4 +1,4 @@
-From 53f6d59b5d0c9d55810e162669f22b9acc34448a Mon Sep 17 00:00:00 2001
+From ff3d291a68b912194a7f72a084359ab13853b753 Mon Sep 17 00:00:00 2001
 From: Hannes Reinecke <hare@suse.de>
 Date: Fri, 29 Nov 2013 13:13:54 +0100
 Subject: [PATCH] Remove shebang from shell-completion files

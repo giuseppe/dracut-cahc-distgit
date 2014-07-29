@@ -1,4 +1,4 @@
-From 400921d48bf71add0387a6f3ebdec83f32843f1d Mon Sep 17 00:00:00 2001
+From 31b89c8c2bfb5a0336268cc66bd663429122feb3 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 4 Oct 2013 13:32:15 +0200
 Subject: [PATCH] dracut-functions.sh:inst_rules() do not install rules in CWD

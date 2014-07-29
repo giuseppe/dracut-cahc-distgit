@@ -1,4 +1,4 @@
-From 648353b27209fa24e51f54a12f105b2d4f521183 Mon Sep 17 00:00:00 2001
+From 64c88c2f1d9576afc8b22a9d0c0feea5b51dfb64 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 17 Feb 2014 13:27:46 +0100
 Subject: [PATCH] dracut-functions.sh:find_kernel_modules_by_path() fixed

@@ -1,4 +1,4 @@
-From 1fab351da0368e3da0ee0e883d58b4f53455af1e Mon Sep 17 00:00:00 2001
+From a5659901e87ef70b3cf8ea8b254e3d0f9fa88d96 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 9 Oct 2013 09:50:15 +0200
 Subject: [PATCH] bcache: optionally install the tools and rules

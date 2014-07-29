@@ -1,4 +1,4 @@
-From 8cfcacd3f95621b71766071881a3f5a11a6001de Mon Sep 17 00:00:00 2001
+From 42896820ba1bba0da86e783ac6e1e4951a9acf88 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Mar 2014 15:39:56 +0100
 Subject: [PATCH] network: handle "ip=dhcp6" for all interfaces

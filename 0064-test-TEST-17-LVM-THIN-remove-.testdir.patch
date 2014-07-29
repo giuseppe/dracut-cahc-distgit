@@ -1,4 +1,4 @@
-From e8b49c027061052e7e1168ab480b6e3832a44721 Mon Sep 17 00:00:00 2001
+From 998f4bb72048e7c56d919ba43b8776d82e14b698 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 17 Dec 2013 13:36:55 +0100
 Subject: [PATCH] test/TEST-17-LVM-THIN: remove .testdir

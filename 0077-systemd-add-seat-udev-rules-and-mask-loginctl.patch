@@ -1,4 +1,4 @@
-From 4a28b713d7968b422beefaa0a7e5a7cb269aacff Mon Sep 17 00:00:00 2001
+From 254f437848ca7e73535a9a5bf21478b0a62568f4 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 17 Jan 2014 14:01:33 +0100
 Subject: [PATCH] systemd: add seat udev rules and mask loginctl

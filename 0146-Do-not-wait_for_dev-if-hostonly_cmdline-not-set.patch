@@ -1,4 +1,4 @@
-From 285da6473b9b48a6eddc30c82964cdd2fca7c0a0 Mon Sep 17 00:00:00 2001
+From 84c66ac857b3cb6f5fa3ba597d298350753d79bf Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 6 Mar 2014 09:54:36 +0100
 Subject: [PATCH] Do not wait_for_dev if hostonly_cmdline not set

@@ -1,4 +1,4 @@
-From 8b77ffc4d82301e6a674e1d47aa8aa3872f9bc5e Mon Sep 17 00:00:00 2001
+From 853897808af835b23edacbd815087df3543d835f Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 28 Feb 2014 10:36:12 +0100
 Subject: [PATCH] network: merge setup_net_$netif.ok and net.$netif.did-setup

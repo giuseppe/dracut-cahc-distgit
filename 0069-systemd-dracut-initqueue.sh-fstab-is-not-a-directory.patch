@@ -1,4 +1,4 @@
-From 5b134070e8bff59f4588bb96ae3780645e918c2a Mon Sep 17 00:00:00 2001
+From 866e663fbdedcf520388218151d0f666857b6f92 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 7 Jan 2014 16:39:48 +0100
 Subject: [PATCH] systemd/dracut-initqueue.sh: fstab is not a directory

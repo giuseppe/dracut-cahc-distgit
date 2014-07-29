@@ -1,4 +1,4 @@
-From 0b64ace800ada1fae8e84ed4b81c2f32fea4b015 Mon Sep 17 00:00:00 2001
+From 937456c65b0e641a6494a39acb5a001b2c9ed992 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 18 Dec 2013 12:26:05 +0100
 Subject: [PATCH] iscsi: do iscsi_firmware regardless of network

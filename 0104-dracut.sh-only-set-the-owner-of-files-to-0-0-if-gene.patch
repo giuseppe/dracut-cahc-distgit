@@ -1,4 +1,4 @@
-From 6e2c53c689006eb71de3e70ac68475bc4c9f5910 Mon Sep 17 00:00:00 2001
+From 286fbebdaf4bc4954a3206ca11f1d14f9267a7fd Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 30 Jan 2014 16:11:40 +0100
 Subject: [PATCH] dracut.sh: only set the owner of files to 0:0, if generated

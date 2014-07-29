@@ -1,4 +1,4 @@
-From f4a942783afae314afda3b0adcd33fc3ab2cd12c Mon Sep 17 00:00:00 2001
+From 96f48da50cdc049c635cca8466b38084a3de0f48 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 17 Sep 2013 12:23:20 -0500
 Subject: [PATCH] Add option to turn on/off prelinking

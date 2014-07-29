@@ -1,4 +1,4 @@
-From ea373728fe7ab62b60f94cef8026e30974d7a6bd Mon Sep 17 00:00:00 2001
+From c127eb8021b4b40b2cc32d393515bf56fe441ee2 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 31 Jan 2014 15:33:05 +0100
 Subject: [PATCH] base/rdsosreport.sh: add dracut version to rdsosreport

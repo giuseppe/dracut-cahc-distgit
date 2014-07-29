@@ -1,4 +1,4 @@
-From 32cb5286ed0fded0a3be4147e48daac8513a5e79 Mon Sep 17 00:00:00 2001
+From 34397fe702ae21a3566e166b4001e8121766d5a7 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 2 Dec 2013 10:36:42 +0100
 Subject: [PATCH] network/net-lib.sh:iface_has_link() fixup

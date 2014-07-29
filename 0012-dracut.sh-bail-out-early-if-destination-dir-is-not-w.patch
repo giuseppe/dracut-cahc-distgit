@@ -1,4 +1,4 @@
-From 96cf7270da8f99e3972b18677e7f392a35d6ddd9 Mon Sep 17 00:00:00 2001
+From cf9f56be9c0ab44e5ae5d5abde01151b33206fc2 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 2 Oct 2013 12:48:11 +0200
 Subject: [PATCH] dracut.sh: bail out early, if destination dir is not

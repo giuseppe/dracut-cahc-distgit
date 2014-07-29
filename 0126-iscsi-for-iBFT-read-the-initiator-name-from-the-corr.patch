@@ -1,4 +1,4 @@
-From 09e11165a6ca55ca0b445753695923cb22e5d635 Mon Sep 17 00:00:00 2001
+From 84dfea4d2a9660c7cecfafb6955d075306da2bcb Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 19 Feb 2014 11:49:34 +0100
 Subject: [PATCH] iscsi: for iBFT read the initiator-name from the correct file

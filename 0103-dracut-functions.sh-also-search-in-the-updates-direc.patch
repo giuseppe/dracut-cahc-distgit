@@ -1,4 +1,4 @@
-From 9d9dffa4234250aed696db52fc882cfa480fbde0 Mon Sep 17 00:00:00 2001
+From 27acb483e8f73ceb24eacca067dbea178d53aa2f Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 30 Jan 2014 14:27:18 +0100
 Subject: [PATCH] dracut-functions.sh: also search in the updates directory

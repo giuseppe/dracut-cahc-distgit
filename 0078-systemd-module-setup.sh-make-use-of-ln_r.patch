@@ -1,4 +1,4 @@
-From 8914b61b0128f38fcda46c01dd96139201d932d4 Mon Sep 17 00:00:00 2001
+From 834f33440ff9890235908c46d1d24f4f72f0739c Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 17 Jan 2014 14:01:57 +0100
 Subject: [PATCH] systemd/module-setup.sh: make use of "ln_r"

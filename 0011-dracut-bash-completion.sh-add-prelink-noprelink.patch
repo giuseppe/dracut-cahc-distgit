@@ -1,4 +1,4 @@
-From b19bdcbea7dd2f95fefb7ceea6d6252091c6e9b8 Mon Sep 17 00:00:00 2001
+From eaa4d30d5abd753bd08322e4b7e5ebd8a52dd75a Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 2 Oct 2013 12:47:34 +0200
 Subject: [PATCH] dracut-bash-completion.sh: add --prelink --noprelink

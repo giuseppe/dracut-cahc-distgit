@@ -1,4 +1,4 @@
-From 8b63ce8afcf368f07f8272e17756c46796dbf7fb Mon Sep 17 00:00:00 2001
+From 1dd604efb199af87ba0079eed809483559c9b04f Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 14 Nov 2013 10:07:04 +0100
 Subject: [PATCH] kernel-modules: add ohci-pci to the list of forced module

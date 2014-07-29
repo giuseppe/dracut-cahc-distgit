@@ -1,4 +1,4 @@
-From 68801ee740e40257bdb4782657199428d29196d0 Mon Sep 17 00:00:00 2001
+From 352a49a21d5093955e45c0ccb84c258d4b375aad Mon Sep 17 00:00:00 2001
 From: Alexander Tsoy <alexander@tsoy.me>
 Date: Fri, 25 Oct 2013 17:06:44 +0200
 Subject: [PATCH] usrmount/module-setup.sh: fixed typo

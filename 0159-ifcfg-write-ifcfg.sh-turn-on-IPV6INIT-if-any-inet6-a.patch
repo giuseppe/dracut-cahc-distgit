@@ -1,4 +1,4 @@
-From 76251217e6adf885eea9780e7a5f07abe9179fc2 Mon Sep 17 00:00:00 2001
+From f1ea5376ed00e4e18b3829e4f267973bb9816f72 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 3 Apr 2014 08:53:09 +0200
 Subject: [PATCH] ifcfg/write-ifcfg.sh: turn on IPV6INIT, if any inet6 address

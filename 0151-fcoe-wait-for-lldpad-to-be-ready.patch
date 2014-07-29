@@ -1,4 +1,4 @@
-From 17445cb35ff2f626ccde07de61106bbcd6d0b268 Mon Sep 17 00:00:00 2001
+From bdb6683d6feb744c85b416ea4cb48e7c6a49aaa9 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Mar 2014 15:28:19 +0100
 Subject: [PATCH] fcoe: wait for lldpad to be ready

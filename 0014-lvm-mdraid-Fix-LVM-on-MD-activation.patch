@@ -1,4 +1,4 @@
-From f7289bcdab744f67b8c858bdf61cf08226e5b148 Mon Sep 17 00:00:00 2001
+From 32b970339f5439300fe6155352ec1f17c5e48d78 Mon Sep 17 00:00:00 2001
 From: Peter Rajnoha <prajnoha@redhat.com>
 Date: Fri, 4 Oct 2013 10:41:24 +0200
 Subject: [PATCH] lvm/mdraid: Fix LVM on MD activation

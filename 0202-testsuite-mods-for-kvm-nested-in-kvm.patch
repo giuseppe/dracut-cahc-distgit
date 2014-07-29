@@ -1,0 +1,98 @@
+From 1e03d8eb646938732e66e0babf93c93f1b466e44 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 29 Jul 2014 16:27:35 +0200
+Subject: [PATCH] testsuite mods for kvm nested in kvm
+
+---
+ test/TEST-01-BASIC/test.sh     | 1 +
+ test/TEST-02-SYSTEMD/test.sh   | 2 +-
+ test/TEST-03-USR-MOUNT/test.sh | 9 ++++-----
+ test/TEST-12-RAID-DEG/test.sh  | 2 +-
+ test/TEST-14-IMSM/test.sh      | 2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/test/TEST-01-BASIC/test.sh b/test/TEST-01-BASIC/test.sh
+index f857fd4..5ee6d23 100755
+--- a/test/TEST-01-BASIC/test.sh
++++ b/test/TEST-01-BASIC/test.sh
+@@ -87,6 +87,7 @@ test_setup() {
+     )
+     sudo $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+ 	-a "debug watchdog" \
++        -o "plymouth" \
+ 	-d "piix ide-gd_mod ata_piix ext3 sd_mod i6300esb ib700wdt" \
+ 	-f $TESTDIR/initramfs.testing $KVERSION || return 1
+ 
+diff --git a/test/TEST-02-SYSTEMD/test.sh b/test/TEST-02-SYSTEMD/test.sh
+index cc9da27..2ccf8e6 100755
+--- a/test/TEST-02-SYSTEMD/test.sh
++++ b/test/TEST-02-SYSTEMD/test.sh
+@@ -83,7 +83,7 @@ test_setup() {
+     )
+     sudo $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+ 	-a "debug systemd" \
+-	-o "network" \
++	-o "network plymouth" \
+ 	-d "piix ide-gd_mod ata_piix ext3 sd_mod" \
+ 	-f $TESTDIR/initramfs.testing $KVERSION || return 1
+ 
+diff --git a/test/TEST-03-USR-MOUNT/test.sh b/test/TEST-03-USR-MOUNT/test.sh
+index b3d709e..ef74d40 100755
+--- a/test/TEST-03-USR-MOUNT/test.sh
++++ b/test/TEST-03-USR-MOUNT/test.sh
+@@ -5,7 +5,7 @@ TEST_DESCRIPTION="root filesystem on a btrfs filesystem with /usr subvolume"
+ KVERSION=${KVERSION-$(uname -r)}
+ 
+ # Uncomment this to debug failures
+-#DEBUGFAIL="rd.shell rd.break"
++#DEBUGFAIL="rd.shell rd.break=cmdline"
+ 
+ client_run() {
+     local test_name="$1"; shift
+@@ -20,8 +20,7 @@ client_run() {
+ 	-hdc $TESTDIR/result \
+ 	-m 256M -smp 2 -nographic \
+ 	-net none -kernel /boot/vmlinuz-$KVERSION \
+-	-watchdog i6300esb -watchdog-action poweroff \
+-	-append "root=LABEL=dracut $client_opts quiet rd.retry=3 rd.info console=ttyS0,115200n81 selinux=0 rd.debug $DEBUGFAIL" \
++	-append "root=LABEL=dracut $client_opts rd.retry=3 rd.info console=ttyS0,115200n81 selinux=0 $DEBUGFAIL" \
+ 	-initrd $TESTDIR/initramfs.testing
+ 
+     if (($? != 0)); then
+@@ -121,8 +120,8 @@ test_setup() {
+ 	inst_simple ./99-idesymlinks.rules /etc/udev/rules.d/99-idesymlinks.rules
+     )
+     sudo $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-a "debug watchdog" \
+-        -o "network" \
++	-a "debug" \
++        -o "network plymouth" \
+ 	-d "piix ide-gd_mod ata_piix btrfs sd_mod i6300esb ib700wdt" \
+ 	-f $TESTDIR/initramfs.testing $KVERSION || return 1
+ 
+diff --git a/test/TEST-12-RAID-DEG/test.sh b/test/TEST-12-RAID-DEG/test.sh
+index dfcf3dc..2631621 100755
+--- a/test/TEST-12-RAID-DEG/test.sh
++++ b/test/TEST-12-RAID-DEG/test.sh
+@@ -19,7 +19,7 @@ client_run() {
+ 	-hdc $TESTDIR/disk2.img.new \
+ 	-hdd $TESTDIR/disk3.img.new \
+ 	-net none -kernel /boot/vmlinuz-$KVERSION \
+-	-append "$* root=LABEL=root rw rd.retry=10 rd.info console=ttyS0,115200n81 selinux=0 rd.debug $DEBUGFAIL " \
++	-append "$* root=LABEL=root rw rd.retry=20 rd.info console=ttyS0,115200n81 selinux=0 rd.debug $DEBUGFAIL " \
+ 	-initrd $TESTDIR/initramfs.testing
+     if ! grep -F -m 1 -q dracut-root-block-success $TESTDIR/root.ext2; then
+ 	echo "CLIENT TEST END: $@ [FAIL]"
+diff --git a/test/TEST-14-IMSM/test.sh b/test/TEST-14-IMSM/test.sh
+index 9353a92..532c348 100755
+--- a/test/TEST-14-IMSM/test.sh
++++ b/test/TEST-14-IMSM/test.sh
+@@ -15,7 +15,7 @@ client_run() {
+ 	-hdc $TESTDIR/disk2 \
+ 	-m 256M -nographic \
+ 	-net none -kernel /boot/vmlinuz-$KVERSION \
+-	-append "$* root=LABEL=root rw debug rd.retry=5 rd.debug console=ttyS0,115200n81 selinux=0 rd.info $DEBUGFAIL" \
++	-append "$* root=LABEL=root rw debug rd.retry=20 rd.debug console=ttyS0,115200n81 selinux=0 rd.info $DEBUGFAIL" \
+ 	-initrd $TESTDIR/initramfs.testing
+     if ! grep -F -m 1 -q dracut-root-block-success $TESTDIR/root.ext2; then
+ 	echo "CLIENT TEST END: $@ [FAIL]"

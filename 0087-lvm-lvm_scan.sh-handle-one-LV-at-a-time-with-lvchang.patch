@@ -1,4 +1,4 @@
-From 50ef97540f53ea044653ca6c69212e93a01c8f4c Mon Sep 17 00:00:00 2001
+From 3c4e663251aa64d7946e8a2c91a8bc5eae444182 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 16:37:13 +0100
 Subject: [PATCH] lvm:lvm_scan.sh handle one LV at a time with lvchange

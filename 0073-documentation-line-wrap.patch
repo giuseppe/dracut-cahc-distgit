@@ -1,4 +1,4 @@
-From d32e66826d6cf1e633d94a8e267b59a79a45c66e Mon Sep 17 00:00:00 2001
+From 81564fcefcf1554fa3a0f2145b9e18d149228344 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 9 Jan 2014 12:17:01 +0100
 Subject: [PATCH] documentation: line wrap

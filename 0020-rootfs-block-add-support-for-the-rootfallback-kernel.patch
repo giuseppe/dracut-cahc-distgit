@@ -1,4 +1,4 @@
-From 85c8246d7ba0adbff98478b1f3f9ba1bea0937dc Mon Sep 17 00:00:00 2001
+From 4584826e9a25fdddb876f07875423196d9fc8840 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 7 Oct 2013 15:06:22 +0200
 Subject: [PATCH] rootfs-block: add support for the rootfallback= kernel

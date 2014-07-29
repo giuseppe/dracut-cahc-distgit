@@ -1,4 +1,4 @@
-From 3378f290c9f307dea485d08a7ef7764ce81d6047 Mon Sep 17 00:00:00 2001
+From b1cdf7c5d4df3221504c34010985254f4261b3dd Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 11:55:27 +0100
 Subject: [PATCH] Revert "dmraid: let dmraid setup the partitions"

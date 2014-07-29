@@ -1,4 +1,4 @@
-From 44158fc223873fbaa055736a488e4d290d1818ae Mon Sep 17 00:00:00 2001
+From 90441c4476481e4e05edacf44903aeac2feecd6d Mon Sep 17 00:00:00 2001
 From: Vratislav Podzimek <vpodzime@redhat.com>
 Date: Wed, 13 Nov 2013 13:20:39 +0100
 Subject: [PATCH] Run 'xz' and 'lzma' with multiple threads

@@ -1,4 +1,4 @@
-From 5dcfc56d59e732d7d60cf7f6448eae0dcbf1e28b Mon Sep 17 00:00:00 2001
+From 20ff2d37cc14f72a97325b12ebb7437efbaf0a8e Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 4 Nov 2013 17:29:15 +0100
 Subject: [PATCH] fips: also install /etc/system-fips in the initramfs

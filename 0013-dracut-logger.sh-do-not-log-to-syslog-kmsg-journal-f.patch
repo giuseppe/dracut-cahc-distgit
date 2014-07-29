@@ -1,4 +1,4 @@
-From 283d385fbd7a715e75be4a6b94f82f4692f7024b Mon Sep 17 00:00:00 2001
+From d87da4c7776d0e16b8ce6c3a583d21209c3db144 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 2 Oct 2013 12:48:57 +0200
 Subject: [PATCH] dracut-logger.sh: do not log to syslog/kmsg/journal for UID

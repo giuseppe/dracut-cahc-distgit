@@ -1,4 +1,4 @@
-From d8481c86a9ea78d95e549999743e33860f557615 Mon Sep 17 00:00:00 2001
+From 793beab60c416e0edf7331fa2e6881b08f2bece0 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 13 Dec 2013 11:05:39 +0100
 Subject: [PATCH] lvm: fixed lvm thin check

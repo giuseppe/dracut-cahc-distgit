@@ -1,4 +1,4 @@
-From 508bac6231a967c637e7f880cefeeaef4870af2a Mon Sep 17 00:00:00 2001
+From 243b8e14a2cdd317717ad8db5bb82aae9a8d7d14 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 2 Dec 2013 10:34:18 +0100
 Subject: [PATCH] network/net-lib.sh:wait_for_if_up() wait for "state UP"

@@ -1,4 +1,4 @@
-From a7604c770435477482bbe48c2336964fcef45b7b Mon Sep 17 00:00:00 2001
+From dc662386dc22b049c311e49c859c05a15647c4fa Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Cristian=20Rodr=C3=ADguez?= <crrodriguez@opensuse.org>
 Date: Tue, 28 Jan 2014 16:41:08 -0300
 Subject: [PATCH] skipcpio: return something at end of program

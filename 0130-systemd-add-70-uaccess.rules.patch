@@ -1,4 +1,4 @@
-From 190222ce98756bdeac92c9fbcf34624fe756cddd Mon Sep 17 00:00:00 2001
+From da41507de95445d776787da82a2476837ebc9305 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Feb 2014 12:33:30 +0100
 Subject: [PATCH] systemd: add 70-uaccess.rules

@@ -1,4 +1,4 @@
-From ec72d9946bec0a9fcc386a1ea9915d6672eb7f94 Mon Sep 17 00:00:00 2001
+From e590f5beec5bc282898e38b8d1016288cfc4af9f Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 8 Nov 2013 15:06:18 +0100
 Subject: [PATCH] fips: fix RHEV vmlinuz check

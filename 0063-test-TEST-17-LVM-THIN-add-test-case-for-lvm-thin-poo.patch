@@ -1,4 +1,4 @@
-From fcbc3f941eeb85126ae5f56e82f121f3a51f2534 Mon Sep 17 00:00:00 2001
+From a34d3dcaa8947c8df6a3b809e42e6868d08ba649 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 16 Dec 2013 13:15:48 +0100
 Subject: [PATCH] test/TEST-17-LVM-THIN: add test case for lvm thin pools

@@ -1,4 +1,4 @@
-From 44e187c863848e51dc4118c2937ba037cbc37240 Mon Sep 17 00:00:00 2001
+From f812e271cb9d51365b70f0ee82bb2fd30209ba06 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 28 Jan 2014 12:14:07 +0100
 Subject: [PATCH] iscsi/iscsiroot.sh: beautify warning

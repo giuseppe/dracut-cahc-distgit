@@ -1,4 +1,4 @@
-From b0b16988dd6378b51b6cbecbc70953d7f0a2a123 Mon Sep 17 00:00:00 2001
+From b397bb7c1953419162639308f3d70d6a1ddc9213 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 30 Jan 2014 17:12:24 +0100
 Subject: [PATCH] network/ifup.sh: handle $dns1 and $dns2 from "ip=" settings

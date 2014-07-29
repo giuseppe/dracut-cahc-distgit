@@ -1,4 +1,4 @@
-From db7651a8bce141a09df6010f992d25d532cef896 Mon Sep 17 00:00:00 2001
+From 61fe0031683c8e1c36ca6ca3022ef6243bfae268 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Feb 2014 13:31:29 +0100
 Subject: [PATCH] network/net-lib.sh:wait_for_ipv6_auto() also wait for the

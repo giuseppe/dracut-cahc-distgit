@@ -1,4 +1,4 @@
-From 89353cd0cca255a5639e40992d58b8de596b66fb Mon Sep 17 00:00:00 2001
+From e1021bd2c1ece36c5a92b7282e0f452d9d1ececc Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 28 Apr 2014 12:45:44 +0200
 Subject: [PATCH] dracut-functions.sh: add /lib/modules/*/{extras|weak-updates}

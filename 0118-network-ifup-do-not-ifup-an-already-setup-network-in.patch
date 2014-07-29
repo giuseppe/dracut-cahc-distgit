@@ -1,4 +1,4 @@
-From 9baaf2ab4b26d648d46d3c330b75f60a598c401e Mon Sep 17 00:00:00 2001
+From 0c0ca2d9bce27b3005b9893a699ea325b0161c00 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 4 Feb 2014 12:02:05 +0100
 Subject: [PATCH] network/ifup: do not ifup an already setup network interface

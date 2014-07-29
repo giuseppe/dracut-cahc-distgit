@@ -1,4 +1,4 @@
-From 833db4ead461130d529bfc74f35a632f56283a19 Mon Sep 17 00:00:00 2001
+From 361eaeaf073d4d6f778d54ca4060f6b880e265f2 Mon Sep 17 00:00:00 2001
 From: Colin Guthrie <colin@mageia.org>
 Date: Wed, 5 Feb 2014 10:06:51 +0000
 Subject: [PATCH] dracut.sh: Fix variable name typo.

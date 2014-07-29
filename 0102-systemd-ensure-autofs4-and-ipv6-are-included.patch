@@ -1,4 +1,4 @@
-From 1e160b06d61d38fb4b97880ea952f5a8d0ba46f9 Mon Sep 17 00:00:00 2001
+From 657e832da0f7fb99e60dab9bb934071d81519dc5 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Cristian=20Rodr=C3=ADguez?= <crrodriguez@opensuse.org>
 Date: Mon, 16 Dec 2013 03:40:58 +0000
 Subject: [PATCH] systemd: ensure autofs4 and ipv6 are included

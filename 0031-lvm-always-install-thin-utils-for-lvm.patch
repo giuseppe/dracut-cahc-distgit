@@ -1,4 +1,4 @@
-From f9fc4330da71dfb43c64fb424a5fef2909e4f4c3 Mon Sep 17 00:00:00 2001
+From 37e899aad1a9623d4932d689b4082832fa3660d8 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 21 Oct 2013 09:09:26 +0200
 Subject: [PATCH] lvm: always install thin utils for lvm

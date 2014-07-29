@@ -1,4 +1,4 @@
-From 4d52f2493b600324638b6bc0e6ecfb3fb554e547 Mon Sep 17 00:00:00 2001
+From 123feea1fab225478046db43454b10453df95b51 Mon Sep 17 00:00:00 2001
 From: P J P <ppandit@redhat.com>
 Date: Fri, 11 Oct 2013 19:26:51 +0530
 Subject: [PATCH] Add lzo, lz4 compression and read INITRD_COMPRESS

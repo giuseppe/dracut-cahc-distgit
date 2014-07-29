@@ -1,4 +1,4 @@
-From 2e798d8f8029c16faa5550dd2334833b7dd26d22 Mon Sep 17 00:00:00 2001
+From dac45f997e6868ffba23610167c8bcb7476b0f96 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 5 Dec 2013 16:42:05 +0100
 Subject: [PATCH] i18n: introduce i18n_install_all, to install everything

@@ -1,4 +1,4 @@
-From 72fc1ce3aba3e9fcbe0bfc47d0607e66947e8753 Mon Sep 17 00:00:00 2001
+From 6c7c8d8a071694efd0c7e450fa78e71224a8ced4 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 22 Jan 2014 17:05:22 +0100
 Subject: [PATCH] iscsi: more iscsiroot fixes

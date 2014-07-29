@@ -1,4 +1,4 @@
-From a6fd3168b3b60b5e14ff20011b03ba7bad72e278 Mon Sep 17 00:00:00 2001
+From 03bf7758aa08e6533f438b4a60b4d5bd1847b1cd Mon Sep 17 00:00:00 2001
 From: Colin Guthrie <colin@mageia.org>
 Date: Sat, 2 Nov 2013 11:26:30 +0000
 Subject: [PATCH] dracut-functions.sh: Avoid loading unnecessary 32-bit

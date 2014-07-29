@@ -1,4 +1,4 @@
-From 151329c9d97aac24098d1f23ffc9db91499402ac Mon Sep 17 00:00:00 2001
+From 32c431bb48601a699d8da0b2ff22299ab3888183 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 2 Dec 2013 10:39:36 +0100
 Subject: [PATCH] base/dracut-lib.sh:wait_for_dev() relax requirement

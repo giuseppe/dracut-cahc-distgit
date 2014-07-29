@@ -1,4 +1,4 @@
-From 5adc20e4c2575c2a271e01e700a63a0258353870 Mon Sep 17 00:00:00 2001
+From 0d4bb7ce8928b67a2e835931bc85f317feabd32e Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 15:26:43 +0100
 Subject: [PATCH] dracut.sh: create early cpio dir for acpi tables

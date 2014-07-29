@@ -1,4 +1,4 @@
-From d8b04dc1840047a7533d19f577f30f19d42e2d33 Mon Sep 17 00:00:00 2001
+From ff33b576767d5e020c9f2685a0f5b0acb35a781c Mon Sep 17 00:00:00 2001
 From: Thomas Renninger <trenn@suse.de>
 Date: Fri, 27 Sep 2013 20:10:38 +0200
 Subject: [PATCH] dracut: Do not create early_cpio if no suitable microcode

@@ -1,4 +1,4 @@
-From 1b512344ee34e488a4995534ab96f30362725296 Mon Sep 17 00:00:00 2001
+From 8e3620568cd4e2c7e8db52fcf3f6e25cc4608aaf Mon Sep 17 00:00:00 2001
 From: Marian Csontos <mcsontos@redhat.com>
 Date: Fri, 18 Oct 2013 14:40:40 +0200
 Subject: [PATCH] dracut-functions.sh:check_block_and_slaves*() skip LVM

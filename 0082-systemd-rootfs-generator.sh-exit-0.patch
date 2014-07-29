@@ -1,4 +1,4 @@
-From 607ab52c03b187fd8ac28992ffb2b6b3a4b83ba0 Mon Sep 17 00:00:00 2001
+From 9d47a90b12dd5aa34488be2d5e6ff082c6713b8d Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 17 Jan 2014 12:16:41 +0100
 Subject: [PATCH] systemd/rootfs-generator.sh: exit 0

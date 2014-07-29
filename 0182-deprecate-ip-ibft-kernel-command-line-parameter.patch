@@ -1,0 +1,81 @@
+From 6db59a1630f80ab4a5d6a701f3063aa5a6aaccc9 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 20 Jun 2014 14:27:09 +0200
+Subject: [PATCH] deprecate "ip=ibft" kernel command line parameter
+
+rd.iscsi.ibft[=1] should be used instead.
+
+Thing is, 'ip=ibft' is not really an ip setting, but rather a marker
+that iBFT should be evaluated.
+
+Also removed the trigger of the warning:
+"Warning: Please supply bootdev argument for multiple ip= lines"
+
+(cherry picked from commit 5580e4c176c92624054691a8e12cffe8622cc1a0)
+---
+ dracut.cmdline.7.asc                 | 7 ++++---
+ modules.d/40network/parse-ibft.sh    | 6 +++---
+ modules.d/40network/parse-ip-opts.sh | 4 ++++
+ 3 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/dracut.cmdline.7.asc b/dracut.cmdline.7.asc
+index 985285b..10550ee 100644
+--- a/dracut.cmdline.7.asc
++++ b/dracut.cmdline.7.asc
+@@ -437,7 +437,7 @@ USB Android phone::
+ * enp0s29u1u2
+ =====================
+ 
+-**ip=**__{dhcp|on|any|dhcp6|auto6|ibft}__::
++**ip=**__{dhcp|on|any|dhcp6|auto6}__::
+     dhcp|on|any::: get ip from dhcp server from all interfaces. If root=dhcp,
+     loop sequentially through all interfaces (eth0, eth1, ...) and use the first
+     with a valid DHCP root-path.
+@@ -446,8 +446,6 @@ USB Android phone::
+ 
+     dhcp6::: IPv6 DHCP
+ 
+-    ibft::: iBFT autoconfiguration
+-
+ **ip=**__<interface>__:__{dhcp|on|any|dhcp6|auto6}__[:[__<mtu>__][:__<macaddr>__]]::
+     This parameter can be specified multiple times.
+ +
+@@ -661,6 +659,9 @@ will result in
+ iscsistart -b --param node.session.timeo.replacement_timeout=30
+ --
+ 
++**rd.iscsi.ibft** **rd.iscsi.ibft=1**:
++    Turn on iBFT autoconfiguration for the interfaces
++
+ FCoE
+ ~~~~
+ **fcoe=**__<edd|interface|MAC>__:__{dcb|nodcb}__::
+diff --git a/modules.d/40network/parse-ibft.sh b/modules.d/40network/parse-ibft.sh
+index 9776c75..643313d 100755
+--- a/modules.d/40network/parse-ibft.sh
++++ b/modules.d/40network/parse-ibft.sh
+@@ -5,6 +5,6 @@
+ command -v getarg >/dev/null          || . /lib/dracut-lib.sh
+ command -v ibft_to_cmdline >/dev/null || . /lib/net-lib.sh
+ 
+-# If ibft is requested, read ibft vals and write ip=XXX cmdline args
+-[ "ibft" = "$(getarg ip=)" ] && ibft_to_cmdline
+-
++if getargbool 0 rd.iscsi.ibft -d "ip=ibft"; then
++    ibft_to_cmdline
++fi
+diff --git a/modules.d/40network/parse-ip-opts.sh b/modules.d/40network/parse-ip-opts.sh
+index 7e73574..b029d00 100755
+--- a/modules.d/40network/parse-ip-opts.sh
++++ b/modules.d/40network/parse-ip-opts.sh
+@@ -25,6 +25,10 @@ fi
+ if [ -z "$NEEDBOOTDEV" ] ; then
+     count=0
+     for p in $(getargs ip=); do
++        case "$p" in
++            ibft)
++                continue;;
++        esac
+         count=$(( $count + 1 ))
+     done
+     [ $count -gt 1 ] && NEEDBOOTDEV=1

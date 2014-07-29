@@ -1,4 +1,4 @@
-From 6d346727a1692cbff09f6298beda9b98050ea610 Mon Sep 17 00:00:00 2001
+From 7faae1264db2d015135985c52bc2b8a2ae0636eb Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 7 Jan 2014 16:40:50 +0100
 Subject: [PATCH] iscsi/iscsiroot.sh: do not trust iscsistart return value

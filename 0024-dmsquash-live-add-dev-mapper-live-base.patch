@@ -1,4 +1,4 @@
-From bebff290a27c2f5ccba5fc52323b31d8f1e4ef02 Mon Sep 17 00:00:00 2001
+From 86fff83927ad194def97c60c2eef80099ebb1238 Mon Sep 17 00:00:00 2001
 From: "Brian C. Lane" <bcl@redhat.com>
 Date: Tue, 8 Oct 2013 15:13:44 +0200
 Subject: [PATCH] dmsquash-live: add /dev/mapper/live-base

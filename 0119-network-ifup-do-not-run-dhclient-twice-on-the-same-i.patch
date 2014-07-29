@@ -1,4 +1,4 @@
-From e880049a4092d8231d0342c4e56ace87108ecd48 Mon Sep 17 00:00:00 2001
+From 054447fa23017df5a1774ce30082cb383be97cfa Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 4 Feb 2014 12:02:34 +0100
 Subject: [PATCH] network/ifup: do not run dhclient twice on the same interface

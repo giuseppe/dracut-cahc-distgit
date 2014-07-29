@@ -1,4 +1,4 @@
-From 6ccf39ef1b96d4992abd6b6e95a1f6945592accc Mon Sep 17 00:00:00 2001
+From 8482be832cc24bf2676dca3dcebd2ee82396ab37 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 28 Feb 2014 12:57:57 +0100
 Subject: [PATCH] test: add missing Makefile.testdir

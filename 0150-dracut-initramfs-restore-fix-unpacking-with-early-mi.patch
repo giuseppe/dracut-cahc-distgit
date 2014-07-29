@@ -1,4 +1,4 @@
-From 0573e86a95374ce5e8816b1771634db049c70a3f Mon Sep 17 00:00:00 2001
+From c2196a25b7ff4bd54f3cab64392535b755e4ff88 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 20 Mar 2014 13:18:13 +0100
 Subject: [PATCH] dracut-initramfs-restore: fix unpacking with early microcode

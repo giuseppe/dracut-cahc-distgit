@@ -1,4 +1,4 @@
-From 63f3bcd85245901515f4f45238301e030468cdc5 Mon Sep 17 00:00:00 2001
+From da63c0de561ce9ed158cc2438a1cc5fbb38c3758 Mon Sep 17 00:00:00 2001
 From: WANG Chao <chaowang@redhat.com>
 Date: Fri, 13 Sep 2013 22:28:44 +0800
 Subject: [PATCH] ifup: do not dhcp on network interface of secondary stack

@@ -1,4 +1,4 @@
-From e33b4492dbfd18fe44d3dd3272e59745232c9eca Mon Sep 17 00:00:00 2001
+From 5183c9a58815970a5edc667cb6f531d7dace22ff Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 17 Jan 2014 14:37:55 +0100
 Subject: [PATCH] network: add rd.bootif=0 to ignore BOOTIF

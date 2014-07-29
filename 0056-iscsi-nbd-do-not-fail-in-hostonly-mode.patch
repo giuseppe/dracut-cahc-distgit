@@ -1,4 +1,4 @@
-From 5cda22c36f06deb99ea54ee24487bd052724e397 Mon Sep 17 00:00:00 2001
+From d014032c62b22ef88be6123532b8f4fc545580ff Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 11 Nov 2013 16:57:09 +0100
 Subject: [PATCH] iscsi,nbd: do not fail in hostonly mode

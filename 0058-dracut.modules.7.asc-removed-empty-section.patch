@@ -1,4 +1,4 @@
-From 080a0f5c8d4361cb85b563afcab16630de42d24d Mon Sep 17 00:00:00 2001
+From 5a36d29f8a63da9b62b5ee655f11f03e25dc5ef9 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Sat, 2 Nov 2013 13:20:32 +0100
 Subject: [PATCH] dracut.modules.7.asc: removed empty section

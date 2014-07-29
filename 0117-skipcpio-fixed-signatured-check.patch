@@ -1,4 +1,4 @@
-From a7e6fb923190640d961db10ee109d38b6227536b Mon Sep 17 00:00:00 2001
+From 226004e007314a0fbb340aec0d5cf0db418a7d5c Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 29 Jan 2014 08:35:47 +0100
 Subject: [PATCH] skipcpio: fixed signatured check

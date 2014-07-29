@@ -1,4 +1,4 @@
-From e81ace610db54972b84a6a2c7062092994557b71 Mon Sep 17 00:00:00 2001
+From c6fe81559e88b211fcd17a4687c1707a8434f3ff Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Thu, 30 Jan 2014 16:51:13 +0100
 Subject: [PATCH] dracut.conf.d/fedora.conf.example: turn on early_microcode by

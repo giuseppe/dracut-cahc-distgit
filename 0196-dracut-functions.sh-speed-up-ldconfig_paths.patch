@@ -1,0 +1,30 @@
+From 8bf70609de708380c1184bb27a561f6f253650b6 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 8 Jul 2014 12:54:21 +0200
+Subject: [PATCH] dracut-functions.sh: speed up ldconfig_paths()
+
+(cherry picked from commit 5ea0be0a8c83969fd0041b3e647f82fcfb365e44)
+---
+ dracut-functions.sh | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index 915f70f..0002556 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -60,12 +60,11 @@ ldconfig_paths()
+     local a i
+     declare -A a
+     for i in $(
+-        ldconfig -pN 2>/dev/null | while read a b c d; do
+-            [[ "$c" != "=>" ]] && continue
+-            printf "%s\n" ${d%/*};
++        ldconfig -pN 2>/dev/null | grep -F '=>' | grep -E -v '/(lib|lib64|usr/lib|usr/lib64)/[^/]*$' | while read a b c d; do
++            d=${d%/*}
++            printf "%s\n" "$d";
+         done
+     ); do
+-        [[ "$i" = "/lib" || "$i" = "/usr/lib" || "$i" = "/lib64" || "$i" = "/usr/lib64" ]] && continue
+         a["$i"]=1;
+     done;
+     printf "%s\n" ${!a[@]}

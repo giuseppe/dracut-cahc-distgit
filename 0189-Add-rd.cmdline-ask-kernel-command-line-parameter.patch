@@ -1,0 +1,142 @@
+From 9c2daa5d3aa1b98d5a005a78a7a2d332e7422034 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 27 Jun 2014 12:02:14 +0200
+Subject: [PATCH] Add "rd.cmdline=ask" kernel command line parameter
+
+prompts the user for additional kernel command line parameters
+
+(cherry picked from commit f232f6623d2b761c1538192c97e13842e5037adc)
+
+Conflicts:
+	dracut.cmdline.7.asc
+	modules.d/98systemd/dracut-cmdline.sh
+	modules.d/99base/init.sh
+---
+ dracut.cmdline.7.asc                           |  4 ++++
+ modules.d/98systemd/dracut-cmdline-ask.service | 33 ++++++++++++++++++++++++++
+ modules.d/98systemd/dracut-cmdline-ask.sh      | 20 ++++++++++++++++
+ modules.d/98systemd/module-setup.sh            |  2 ++
+ modules.d/99base/init.sh                       |  8 +++++++
+ 5 files changed, 67 insertions(+)
+ create mode 100644 modules.d/98systemd/dracut-cmdline-ask.service
+ create mode 100755 modules.d/98systemd/dracut-cmdline-ask.sh
+
+diff --git a/dracut.cmdline.7.asc b/dracut.cmdline.7.asc
+index 10550ee..24bf449 100644
+--- a/dracut.cmdline.7.asc
++++ b/dracut.cmdline.7.asc
+@@ -81,6 +81,10 @@ rootfstype=ext3
+     enable autoassembly of special devices like cryptoLUKS, dmraid, mdraid or
+     lvm. Default is off as of dracut version >= 024.
+ 
++
++**rd.cmdline=ask**::
++    prompts the user for additional kernel command line parameters
++
+ **rd.fstab=0**::
+     do not honor special mount options for the root filesystem found in
+     _/etc/fstab_ of the real root.
+diff --git a/modules.d/98systemd/dracut-cmdline-ask.service b/modules.d/98systemd/dracut-cmdline-ask.service
+new file mode 100644
+index 0000000..9993671
+--- /dev/null
++++ b/modules.d/98systemd/dracut-cmdline-ask.service
+@@ -0,0 +1,33 @@
++#  This file is part of systemd.
++#
++#  systemd is free software; you can redistribute it and/or modify it
++#  under the terms of the GNU Lesser General Public License as published by
++#  the Free Software Foundation; either version 2.1 of the License, or
++#  (at your option) any later version.
++
++# See systemd.special(7) for details
++
++[Unit]
++Description=dracut ask for additional cmdline parameters
++DefaultDependencies=no
++Before=dracut-cmdline.service
++After=systemd-journald.socket
++Wants=systemd-journald.socket
++ConditionPathExists=/etc/initrd-release
++ConditionKernelCommandLine=rd.cmdline=ask
++
++[Service]
++Environment=DRACUT_SYSTEMD=1
++Environment=NEWROOT=/sysroot
++Type=oneshot
++ExecStart=-/bin/dracut-cmdline-ask
++StandardInput=tty
++StandardOutput=inherit
++StandardError=inherit
++RemainAfterExit=yes
++KillMode=process
++IgnoreSIGPIPE=no
++
++# Bash ignores SIGTERM, so we send SIGHUP instead, to ensure that bash
++# terminates cleanly.
++KillSignal=SIGHUP
+diff --git a/modules.d/98systemd/dracut-cmdline-ask.sh b/modules.d/98systemd/dracut-cmdline-ask.sh
+new file mode 100755
+index 0000000..024d60e
+--- /dev/null
++++ b/modules.d/98systemd/dracut-cmdline-ask.sh
+@@ -0,0 +1,20 @@
++#!/bin/bash
++# -*- mode: shell-script; indent-tabs-mode: nil; sh-basic-offset: 4; -*-
++# ex: ts=8 sw=4 sts=4 et filetype=sh
++
++sleep 0.5
++echo
++sleep 0.5
++echo
++sleep 0.5
++echo
++echo
++echo
++echo
++echo "Enter additional kernel command line parameter (end with ctrl-d or .)"
++while read -e -p "> " line; do
++    [[ "$line" == "." ]] && break
++    [[ "$line" ]] && printf -- "%s\n" "$line" >> /etc/cmdline.d/99-cmdline-ask.conf
++done
++
++exit 0
+diff --git a/modules.d/98systemd/module-setup.sh b/modules.d/98systemd/module-setup.sh
+index 0de9d61..015597f 100755
+--- a/modules.d/98systemd/module-setup.sh
++++ b/modules.d/98systemd/module-setup.sh
+@@ -183,6 +183,7 @@ install() {
+     ln_r "${systemdsystemunitdir}/initrd.target" "${systemdsystemunitdir}/default.target"
+ 
+     inst_script "$moddir/dracut-cmdline.sh" /bin/dracut-cmdline
++    inst_script "$moddir/dracut-cmdline-ask.sh" /bin/dracut-cmdline-ask
+     inst_script "$moddir/dracut-pre-udev.sh" /bin/dracut-pre-udev
+     inst_script "$moddir/dracut-pre-trigger.sh" /bin/dracut-pre-trigger
+     inst_script "$moddir/dracut-initqueue.sh" /bin/dracut-initqueue
+@@ -212,6 +213,7 @@ install() {
+     mkdir -p "${initdir}/$systemdsystemunitdir/initrd.target.wants"
+     for i in \
+         dracut-cmdline.service \
++        dracut-cmdline-ask.service \
+         dracut-initqueue.service \
+         dracut-mount.service \
+         dracut-pre-mount.service \
+diff --git a/modules.d/99base/init.sh b/modules.d/99base/init.sh
+index ae73fd2..9ee3e9d 100755
+--- a/modules.d/99base/init.sh
++++ b/modules.d/99base/init.sh
+@@ -115,6 +115,14 @@ fi
+ 
+ source_conf /etc/conf.d
+ 
++if getarg "rd.cmdline=ask"; then
++    echo "Enter additional kernel command line parameter (end with ctrl-d or .)"
++    while read -p "> " line; do
++        [ "$line" = "." ] && break
++        echo "$line" >> /etc/cmdline.d/99-cmdline-ask.conf
++    done
++fi
++
+ # run scriptlets to parse the command line
+ make_trace_mem "hook cmdline" '1+:mem' '1+:iomem' '3+:slab'
+ getarg 'rd.break=cmdline' -d 'rdbreak=cmdline' && emergency_shell -n cmdline "Break before cmdline"

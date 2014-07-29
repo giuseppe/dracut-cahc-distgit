@@ -1,4 +1,4 @@
-From 9a2da3c39f90134d33d9397c9dd4687a6113a65c Mon Sep 17 00:00:00 2001
+From 84fe197facb96947638c518639c0913ecad1599b Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 8 Oct 2013 14:59:47 +0200
 Subject: [PATCH] Doc: cleanup, extend and split and reuse

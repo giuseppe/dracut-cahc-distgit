@@ -1,4 +1,4 @@
-From dcf94be9a3817c9b11b6ac77d4f42835d62d1a05 Mon Sep 17 00:00:00 2001
+From 82286609c9736a967f36f0d77cdc585da7f3f506 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 8 Jan 2014 15:38:44 +0100
 Subject: [PATCH] dracut.sh: add /boot/efi to device paths

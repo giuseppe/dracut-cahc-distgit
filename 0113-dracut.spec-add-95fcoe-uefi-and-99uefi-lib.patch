@@ -1,4 +1,4 @@
-From 98bd5fbf129ac738345e52503fb37cc469fc5add Mon Sep 17 00:00:00 2001
+From 3bb36e45126e6c1d92b2cbe9b6f54261475ecdff Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 16 Dec 2013 12:30:26 +0100
 Subject: [PATCH] dracut.spec: add 95fcoe-uefi and 99uefi-lib

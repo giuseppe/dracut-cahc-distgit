@@ -1,4 +1,4 @@
-From f3b14c2b6a852d21fc6fa1fd86959a3818624a36 Mon Sep 17 00:00:00 2001
+From ebc7f823c0013dfe7fcefe82db48bf4832f5dcec Mon Sep 17 00:00:00 2001
 From: Thomas Renninger <trenn@suse.de>
 Date: Fri, 27 Sep 2013 20:10:39 +0200
 Subject: [PATCH] dracut: Implement ACPI table overriding

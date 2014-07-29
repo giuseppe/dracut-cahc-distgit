@@ -1,4 +1,4 @@
-From c79290761ff78ad47ec24854339ab3cbc2ff802d Mon Sep 17 00:00:00 2001
+From 52592ce022550fbf6c7576f5c8b8be1f2b6d72c8 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 11 Nov 2013 16:57:32 +0100
 Subject: [PATCH] systemd: do not exit the initqueue, if systemd asks a

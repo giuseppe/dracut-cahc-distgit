@@ -1,4 +1,4 @@
-From 012f82f7ef99881ce41c231c774f838f49e59781 Mon Sep 17 00:00:00 2001
+From 54c9094e2e25b13fa90a7fcce574e6e4a52df973 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Tue, 25 Feb 2014 14:04:05 +0100
 Subject: [PATCH] network/dhclient-script.sh:DHCP IPv6 interface setup

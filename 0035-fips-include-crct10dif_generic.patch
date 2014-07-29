@@ -1,4 +1,4 @@
-From 5fe3473880475af8542de6568111d27db77588d0 Mon Sep 17 00:00:00 2001
+From eb27e4cc31ff995c5e70442d559fd22377e8a211 Mon Sep 17 00:00:00 2001
 From: Kyle McMartin <kmcmarti@redhat.com>
 Date: Wed, 30 Oct 2013 12:35:27 +0100
 Subject: [PATCH] fips: include crct10dif_generic

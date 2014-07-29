@@ -1,4 +1,4 @@
-From 07708515828f8f8cf0e64c90af46ef5dbf2854f6 Mon Sep 17 00:00:00 2001
+From fdaa69db2061cc83845f631e6e3216e55b2eb235 Mon Sep 17 00:00:00 2001
 From: Alexander Tsoy <alexander@tsoy.me>
 Date: Thu, 3 Oct 2013 14:54:42 +0400
 Subject: [PATCH] mdraid/module-setup.sh: install configs from

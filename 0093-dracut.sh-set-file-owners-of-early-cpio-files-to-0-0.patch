@@ -1,4 +1,4 @@
-From a590f63ec72df1197b294ad46da6611fca84daf9 Mon Sep 17 00:00:00 2001
+From 87862728daaefd56708fe2100c22a90ebf361fac Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 24 Jan 2014 15:27:15 +0100
 Subject: [PATCH] dracut.sh: set file owners of early cpio files to 0:0

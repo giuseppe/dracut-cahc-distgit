@@ -1,4 +1,4 @@
-From c473c3ee57a630b887a442149024d1f319a7c826 Mon Sep 17 00:00:00 2001
+From 9bbea8caf83fac26c800e154b5b72b0333b23e1b Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 12 Feb 2014 11:22:14 +0100
 Subject: [PATCH] kernel-modules: add sdhci_acpi to the static list of kernel

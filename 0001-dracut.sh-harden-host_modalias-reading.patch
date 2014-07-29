@@ -1,4 +1,4 @@
-From 57f90974f9d7c11e06c2b3f2b7e4b47801f380cc Mon Sep 17 00:00:00 2001
+From ffecc452321bbef2c0e1efca09c2077775448141 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Fri, 13 Sep 2013 16:33:01 +0200
 Subject: [PATCH] dracut.sh: harden host_modalias reading

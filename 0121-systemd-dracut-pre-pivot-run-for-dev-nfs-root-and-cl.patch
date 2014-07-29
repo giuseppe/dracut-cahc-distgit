@@ -1,4 +1,4 @@
-From 6d392317b87c316c9a0ac4dd064ecd9f99b7767e Mon Sep 17 00:00:00 2001
+From 80f75fed99eb969e1d8ba9f16e28dec2446a7544 Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Wed, 5 Feb 2014 13:08:54 +0100
 Subject: [PATCH] systemd/dracut-pre-pivot: run for /dev/{nfs,root} and cleanup
