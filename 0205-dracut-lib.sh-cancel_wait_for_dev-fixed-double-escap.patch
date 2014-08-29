@@ -1,0 +1,22 @@
+From 8715aa00a9f046ff923dffb1f36e9a6d09f31249 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 21 Aug 2014 16:38:35 +0200
+Subject: [PATCH] dracut-lib.sh:cancel_wait_for_dev() fixed double escape
+
+---
+ modules.d/99base/dracut-lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index be724df..b0ac08a 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -905,7 +905,7 @@ wait_for_dev()
+ cancel_wait_for_dev()
+ {
+     local _name
+-    _name="$(str_replace "$1" '/' '\\x2f')"
++    _name="$(str_replace "$1" '/' '\x2f')"
+     rm -f -- "$hookdir/initqueue/finished/devexists-${_name}.sh"
+     rm -f -- "$hookdir/emergency/80-${_name}.sh"
+     if [ -n "$DRACUT_SYSTEMD" ]; then

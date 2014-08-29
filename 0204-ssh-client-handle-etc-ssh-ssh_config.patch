@@ -1,0 +1,34 @@
+From 828fd83bc1816bacb24b13106f935b2fbd0964a4 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 29 Aug 2014 14:06:57 +0200
+Subject: [PATCH] ssh-client: handle /etc/ssh/ssh_config
+
+- disable ProxyCommand
+- install the GlobalKnownHostsFile
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1086778
+---
+ modules.d/95ssh-client/module-setup.sh | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/95ssh-client/module-setup.sh b/modules.d/95ssh-client/module-setup.sh
+index 66e5307..f60e963 100755
+--- a/modules.d/95ssh-client/module-setup.sh
++++ b/modules.d/95ssh-client/module-setup.sh
+@@ -41,7 +41,15 @@ inst_sshenv()
+ 
+     # Copy over root and system-wide ssh configs.
+     [[ -f /root/.ssh/config ]] && inst_simple /root/.ssh/config
+-    [[ -f /etc/ssh/ssh_config ]] && inst_simple /etc/ssh/ssh_config
++    if [[ -f /etc/ssh/ssh_config ]]; then
++        inst_simple /etc/ssh/ssh_config
++        sed -i -e 's/\(^[[:space:]]*\)ProxyCommand/\1# ProxyCommand/' ${initdir}/etc/ssh/ssh_config
++        while read key val; do
++            [[ key != "GlobalKnownHostsFile" ]] && continue
++            inst_simple "$val"
++            break
++        done < /etc/ssh/ssh_config
++    fi
+ 
+     return 0
+ }

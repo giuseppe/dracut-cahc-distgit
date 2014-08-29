@@ -1,0 +1,72 @@
+From 4de30f02c8c20238053d2c0978980160fa7e3264 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 29 Aug 2014 13:33:40 +0200
+Subject: [PATCH] add kate and emacs per directory config files
+
+---
+ .dir-locals.el          | 2 ++
+ .kateconfig             | 1 +
+ .kateproject            | 9 +++++++++
+ install/.kateconfig     | 1 +
+ skipcpio/.dir-locals.el | 2 ++
+ skipcpio/.kateconfig    | 1 +
+ 6 files changed, 16 insertions(+)
+ create mode 100644 .dir-locals.el
+ create mode 100644 .kateconfig
+ create mode 100644 .kateproject
+ create mode 100644 install/.kateconfig
+ create mode 100644 skipcpio/.dir-locals.el
+ create mode 100644 skipcpio/.kateconfig
+
+diff --git a/.dir-locals.el b/.dir-locals.el
+new file mode 100644
+index 0000000..c9ac3af
+--- /dev/null
++++ b/.dir-locals.el
+@@ -0,0 +1,2 @@
++(setq sh-basic-offset: 4)
++(setq indent-tabs-mode nil)
+diff --git a/.kateconfig b/.kateconfig
+new file mode 100644
+index 0000000..86b4ce5
+--- /dev/null
++++ b/.kateconfig
+@@ -0,0 +1 @@
++kate: space-indent on; tab-width 4; indent-width 4; replace-tabs on; eol unix;
+diff --git a/.kateproject b/.kateproject
+new file mode 100644
+index 0000000..7a84755
+--- /dev/null
++++ b/.kateproject
+@@ -0,0 +1,9 @@
++{
++  "name": "Kate"
++  , "files": [ { "git": 1 } ]
++  , "build": {
++    "directory": "build"
++  , "build": "make -j $(getconf _NPROCESSORS_ONLN) all"
++  , "clean": "make clean"
++  }
++}
+diff --git a/install/.kateconfig b/install/.kateconfig
+new file mode 100644
+index 0000000..1221528
+--- /dev/null
++++ b/install/.kateconfig
+@@ -0,0 +1 @@
++kate: space-indent on; tab-width 8; indent-width 8; replace-tabs on; eol unix;
+diff --git a/skipcpio/.dir-locals.el b/skipcpio/.dir-locals.el
+new file mode 100644
+index 0000000..fd49d53
+--- /dev/null
++++ b/skipcpio/.dir-locals.el
+@@ -0,0 +1,2 @@
++(setq c-basic-offset 8)
++(setq indent-tabs-mode nil)
+diff --git a/skipcpio/.kateconfig b/skipcpio/.kateconfig
+new file mode 100644
+index 0000000..1221528
+--- /dev/null
++++ b/skipcpio/.kateconfig
+@@ -0,0 +1 @@
++kate: space-indent on; tab-width 8; indent-width 8; replace-tabs on; eol unix;

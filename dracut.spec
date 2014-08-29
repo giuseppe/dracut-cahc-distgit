@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 203%{?dist}
+Release: 207%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -231,6 +231,10 @@ Patch199: 0199-base-dracut-lib-pidof-turn-off-debugging.patch
 Patch200: 0200-network-add-rd.route-parameter.patch
 Patch201: 0201-udev-rules-add-uaccess-and-seat-rules.patch
 Patch202: 0202-testsuite-mods-for-kvm-nested-in-kvm.patch
+Patch203: 0203-add-kate-and-emacs-per-directory-config-files.patch
+Patch204: 0204-ssh-client-handle-etc-ssh-ssh_config.patch
+Patch205: 0205-dracut-lib.sh-cancel_wait_for_dev-fixed-double-escap.patch
+Patch206: 0206-Do-not-reload-systemd-with-wait_for_dev.patch
 
 
 BuildRequires: bash git
@@ -657,6 +661,24 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Aug 29 2014 Harald Hoyer <harald@redhat.com> 033-207
+- only fsck from the systemd side
+Resolves: rhbz#1080699
+- handle multiple fcoe devices
+Resolves: rhbz#1082512
+- handle entries in ssh_config
+Resolves: rhbz#1086778
+- do not bind persistent interfaces to MAC
+Resolves: rhbz#1087945
+- fixed iscsiroot install in initqueue
+Resolves: rhbz#1094469
+- handle upper case letters in SUBCHANNELS
+Resolves: rhbz#1094773
+- add rd.route kernel command line parameter
+Resolves: rhbz#1101412
+- do not reload systemd on wait_for_dev
+Resolves: rhbz#1126008
+
 * Tue Jul 29 2014 Harald Hoyer <harald@redhat.com> 033-203
 - add rd.cmdline=ask parameter
 Resolves: rhbz#1070104
