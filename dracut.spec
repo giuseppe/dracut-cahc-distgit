@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 207%{?dist}
+Release: 213%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -235,6 +235,12 @@ Patch203: 0203-add-kate-and-emacs-per-directory-config-files.patch
 Patch204: 0204-ssh-client-handle-etc-ssh-ssh_config.patch
 Patch205: 0205-dracut-lib.sh-cancel_wait_for_dev-fixed-double-escap.patch
 Patch206: 0206-Do-not-reload-systemd-with-wait_for_dev.patch
+Patch207: 0207-lsinird-Adding-option-m-mod-to-list-dracut-modules-i.patch
+Patch208: 0208-dracut.sh-also-mkdir-run-lock-which-is-copied-to.patch
+Patch209: 0209-dracut.sh-no-need-to-make-subdirs-in-run.patch
+Patch210: 0210-dracut-functions.sh-do-not-force-require-modules.bui.patch
+Patch211: 0211-Make-logfile-configurable.patch
+Patch212: 0212-Dracut-Add-a-new-argument-rebuild.patch
 
 
 BuildRequires: bash git
@@ -661,6 +667,12 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Sep 05 2014 Harald Hoyer <harald@redhat.com> 033-213
+- add "-m" option to lsinitrd to list the modules used
+Resolves: rhbz#1122806
+- add "--rebuild" option to dracut
+Resolves: rhbz#1123900
+
 * Fri Aug 29 2014 Harald Hoyer <harald@redhat.com> 033-207
 - only fsck from the systemd side
 Resolves: rhbz#1080699
