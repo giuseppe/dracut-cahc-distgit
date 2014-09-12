@@ -1,0 +1,25 @@
+From c5c57f3f19aea96ab99636d35e2c901cc0b5b8d0 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 12 Sep 2014 10:03:59 +0200
+Subject: [PATCH] qemu: install virtio_console kernel module
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1097999
+(cherry picked from commit 5058ae2d295cfd68a6b99e7f6c75227164ca7722)
+---
+ modules.d/90qemu/module-setup.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/90qemu/module-setup.sh b/modules.d/90qemu/module-setup.sh
+index 0dbf081..6779642 100755
+--- a/modules.d/90qemu/module-setup.sh
++++ b/modules.d/90qemu/module-setup.sh
+@@ -22,5 +22,8 @@ check() {
+ 
+ installkernel() {
+         # qemu specific modules
+-        hostonly='' instmods virtio_blk virtio virtio_ring virtio_pci ata_piix ata_generic pata_acpi cdrom sr_mod ahci virtio_scsi
++        hostonly='' instmods \
++            ata_piix ata_generic pata_acpi cdrom sr_mod ahci \
++            virtio_blk virtio virtio_ring virtio_pci \
++            virtio_scsi virtio_console
+ }

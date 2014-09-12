@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 213%{?dist}
+Release: 224%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -241,6 +241,17 @@ Patch209: 0209-dracut.sh-no-need-to-make-subdirs-in-run.patch
 Patch210: 0210-dracut-functions.sh-do-not-force-require-modules.bui.patch
 Patch211: 0211-Make-logfile-configurable.patch
 Patch212: 0212-Dracut-Add-a-new-argument-rebuild.patch
+Patch213: 0213-network-net-lib.sh-parse_iscsi_root-do-not-enforce-t.patch
+Patch214: 0214-replaced-ip-auto-with-ip-dhcp-in-the-documentation.patch
+Patch215: 0215-Support-spaces-in-mount_nfs-1109933.patch
+Patch216: 0216-fixed-bridge-setup.patch
+Patch217: 0217-bridging-update-the-ifcfg-files-generated-for-bridge.patch
+Patch218: 0218-ifcfg-write-ifcfg.sh-bind-bond-and-bridge-interfaces.patch
+Patch219: 0219-cms-cmssetup.sh-fixed-indention.patch
+Patch220: 0220-cms-cmssetup.sh-understand-DASD-none.patch
+Patch221: 0221-qemu-install-virtio_console-kernel-module.patch
+Patch222: 0222-dracut-functions.sh-exit-for-missing-force-add-or-ad.patch
+Patch223: 0223-do-ip-route-replace-default-instead-of-add.patch
 
 
 BuildRequires: bash git
@@ -667,6 +678,24 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Sep 12 2014 Harald Hoyer <harald@redhat.com> 033-224
+- don't enforce iSCSI target name policy
+Resolves: rhbz#1078867
+- replaced "ip=auto" with "ip=dhcp" in the documentation
+Resolves: rhbz#1086931
+- bind bonding and bridge interfaces to SUBCHANNELS on s390(x)
+Resolves: rhbz#1090524
+- turn on ipv6, if configured
+Resolves: rhbz#1091410
+- parse DASD="none" as empty
+Resolves: rhbz#1096979
+- add virtio-console for qemu
+Resolves: rhbz#1097999
+- fail on missing dracut modules
+Resolves: rhbz#1121362
+- replace the default route
+Resolves: rhbz#1137022
+
 * Fri Sep 05 2014 Harald Hoyer <harald@redhat.com> 033-213
 - add "-m" option to lsinitrd to list the modules used
 Resolves: rhbz#1122806

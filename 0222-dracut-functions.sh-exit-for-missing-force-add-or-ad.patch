@@ -1,0 +1,37 @@
+From 815ab93fe9f57aa3e17066d9564ce5350f95b35a Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 12 Sep 2014 10:19:28 +0200
+Subject: [PATCH] dracut-functions.sh: exit for missing  --force-add or --add
+ dracut modules
+
+Better exit with fail early, so there is no surprise on reboot.
+
+(cherry picked from commit a49cac2e65eb1beb8b0442b74aaa4851d184c0ce)
+---
+ dracut-functions.sh | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index 8a0cd30..6e0b44a 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -1314,11 +1314,17 @@ for_each_module_dir() {
+ 
+     # Report any missing dracut modules, the user has specified
+     _modcheck="$add_dracutmodules $force_add_dracutmodules"
+-    [[ $dracutmodules != all ]] && _modcheck="$m $dracutmodules"
++    [[ $dracutmodules != all ]] && _modcheck="$_modcheck $dracutmodules"
+     for _mod in $_modcheck; do
+         [[ " $mods_to_load " == *\ $_mod\ * ]] && continue
+-        [[ " $omit_dracutmodules " == *\ $_mod\ * ]] && continue
++
++        [[ " $force_add_dracutmodules " != *\ $_mod\ * ]] \
++            && [[ " $omit_dracutmodules " == *\ $_mod\ * ]] \
++            && continue
++
+         derror "dracut module '$_mod' cannot be found or installed."
++        [[ " $force_add_dracutmodules " == *\ $_mod\ * ]] && exit 1
++        [[ " $add_dracutmodules " == *\ $_mod\ * ]] && exit 1
+     done
+ }
+ 

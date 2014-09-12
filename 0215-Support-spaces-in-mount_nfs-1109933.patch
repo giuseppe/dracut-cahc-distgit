@@ -1,0 +1,34 @@
+From 17c1f640faf694e482cc657c9f40b5f61a23e301 Mon Sep 17 00:00:00 2001
+From: "Brian C. Lane" <bcl@redhat.com>
+Date: Thu, 21 Aug 2014 11:31:51 -0700
+Subject: [PATCH] Support spaces in mount_nfs (#1109933)
+
+nfs paths may contain spaces, make sure they are preserved when passed
+to nfs_to_var and mount.
+
+Related: rhbz#1109933
+(cherry picked from commit 7e692cfd43ac7f70dd58a0b083f33d6e80d3908c)
+---
+ modules.d/95nfs/nfs-lib.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/95nfs/nfs-lib.sh b/modules.d/95nfs/nfs-lib.sh
+index 9ced2e6..bf7d044 100755
+--- a/modules.d/95nfs/nfs-lib.sh
++++ b/modules.d/95nfs/nfs-lib.sh
+@@ -125,7 +125,7 @@ munge_nfs_options() {
+ mount_nfs() {
+     local nfsroot="$1" mntdir="$2" netif="$3"
+     local nfs="" server="" path="" options=""
+-    nfs_to_var $nfsroot $netif
++    nfs_to_var "$nfsroot" $netif
+     munge_nfs_options
+     if [ "$nfs" = "nfs4" ]; then
+         options=$options${nfslock:+,$nfslock}
+@@ -136,5 +136,5 @@ mount_nfs() {
+             && warn "Locks unsupported on NFSv{2,3}, using nolock" 1>&2
+         options=$options,nolock
+     fi
+-    mount -t $nfs -o$options $server:$path $mntdir
++    mount -t $nfs -o$options "$server:$path" "$mntdir"
+ }
