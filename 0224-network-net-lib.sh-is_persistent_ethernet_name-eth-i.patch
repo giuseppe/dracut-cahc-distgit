@@ -1,0 +1,25 @@
+From 0630273048326cb7cc51b67f0f134b6badb7b6c7 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 23 Oct 2014 14:34:33 +0200
+Subject: [PATCH] network/net-lib.sh:is_persistent_ethernet_name() eth* is not
+
+eth* is _not_ a persistent ethernet name... tsk, tsk, tsk
+
+(cherry picked from commit 05065741f01e78119f1883f199820b804460c58d)
+---
+ modules.d/40network/net-lib.sh | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index e2901da..22f7754 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -555,8 +555,6 @@ find_iface_with_link() {
+ is_persistent_ethernet_name() {
+     case "$1" in
+         # udev persistent interface names
+-        eth[0-9]|eth[0-9][0-9]|eth[0-9][0-9][0-9]*)
+-            ;;
+         eno[0-9]|eno[0-9][0-9]|eno[0-9][0-9][0-9]*)
+             ;;
+         ens[0-9]|ens[0-9][0-9]|ens[0-9][0-9][0-9]*)

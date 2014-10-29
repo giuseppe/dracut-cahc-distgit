@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 224%{?dist}
+Release: 226%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -252,6 +252,8 @@ Patch220: 0220-cms-cmssetup.sh-understand-DASD-none.patch
 Patch221: 0221-qemu-install-virtio_console-kernel-module.patch
 Patch222: 0222-dracut-functions.sh-exit-for-missing-force-add-or-ad.patch
 Patch223: 0223-do-ip-route-replace-default-instead-of-add.patch
+Patch224: 0224-network-net-lib.sh-is_persistent_ethernet_name-eth-i.patch
+Patch225: 0225-ifcfg-write-ifcfg-only-write-DEVICE-for-non-kernel-n.patch
 
 
 BuildRequires: bash git
@@ -678,6 +680,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Oct 29 2014 Harald Hoyer <harald@redhat.com> 033-226
+- fixed ifcfg generation for persistent interface names
+Resolves: rhbz#1087945
+
 * Fri Sep 12 2014 Harald Hoyer <harald@redhat.com> 033-224
 - don't enforce iSCSI target name policy
 Resolves: rhbz#1078867
