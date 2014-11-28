@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 226%{?dist}
+Release: 227%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -254,6 +254,7 @@ Patch222: 0222-dracut-functions.sh-exit-for-missing-force-add-or-ad.patch
 Patch223: 0223-do-ip-route-replace-default-instead-of-add.patch
 Patch224: 0224-network-net-lib.sh-is_persistent_ethernet_name-eth-i.patch
 Patch225: 0225-ifcfg-write-ifcfg-only-write-DEVICE-for-non-kernel-n.patch
+Patch226: 0226-fips-add-libfreeblpriv3.so-and-libfreeblpriv3.chk.patch
 
 
 BuildRequires: bash git
@@ -680,6 +681,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Nov 28 2014 Harald Hoyer <harald@redhat.com> 033-227
+- fips: add libfreeblpriv3.so and libfreeblpriv3.chk
+Resolves: rhbz#1165603
+
 * Wed Oct 29 2014 Harald Hoyer <harald@redhat.com> 033-226
 - fixed ifcfg generation for persistent interface names
 Resolves: rhbz#1087945
