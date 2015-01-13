@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 227%{?dist}
+Release: 233%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -255,6 +255,12 @@ Patch223: 0223-do-ip-route-replace-default-instead-of-add.patch
 Patch224: 0224-network-net-lib.sh-is_persistent_ethernet_name-eth-i.patch
 Patch225: 0225-ifcfg-write-ifcfg-only-write-DEVICE-for-non-kernel-n.patch
 Patch226: 0226-fips-add-libfreeblpriv3.so-and-libfreeblpriv3.chk.patch
+Patch227: 0227-fips-remove-c-p-and.patch
+Patch228: 0228-net-lib.sh-parse_iscsi_root-fix-target-parsing.patch
+Patch229: 0229-ssh-client-s-key-key.patch
+Patch230: 0230-cms-cms-write-ifcfg.sh-turn-SUBCHANNELS-into-lowerca.patch
+Patch231: 0231-40network-Fix-the-syntax-to-correct-the-judgment-sen.patch
+Patch232: 0232-systemd-add-90-vconsole.rules.patch
 
 
 BuildRequires: bash git
@@ -681,6 +687,20 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Jan 13 2015 Harald Hoyer <harald@redhat.com> 033-233
+- fips: corrected previous fix
+Resolves: rhbz#1165603
+- fixed iscsi_target parsing
+Resolves: rhbz#1176534
+- skip GlobalKnownHostsFile for ssh_config
+Resolves: rhbz#1086778
+- cms-write-ifcfg.sh: turn SUBCHANNELS into lowercase
+Resolves: rhbz#1169384
+- fixed static routes execution
+Resolves: rhbz#1101412
+- add 90-vconsole.rules
+Resolves: rhbz#1162177
+
 * Fri Nov 28 2014 Harald Hoyer <harald@redhat.com> 033-227
 - fips: add libfreeblpriv3.so and libfreeblpriv3.chk
 Resolves: rhbz#1165603

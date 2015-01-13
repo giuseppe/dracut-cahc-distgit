@@ -1,0 +1,27 @@
+From 509a3b2c3354d6ea83bc61a83ac35f64c1c32103 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 12 Jan 2015 14:20:42 +0100
+Subject: [PATCH] ssh-client: s/key/$key
+
+GlobalKnownHostsFile was not installed, because key was not $key
+
+Thanks Jan Stodola!
+
+(cherry picked from commit 4ba44e899cbc58e7cee0ff66c8ac4a96f502b972)
+---
+ modules.d/95ssh-client/module-setup.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/95ssh-client/module-setup.sh b/modules.d/95ssh-client/module-setup.sh
+index f60e963..c7d8ee2 100755
+--- a/modules.d/95ssh-client/module-setup.sh
++++ b/modules.d/95ssh-client/module-setup.sh
+@@ -45,7 +45,7 @@ inst_sshenv()
+         inst_simple /etc/ssh/ssh_config
+         sed -i -e 's/\(^[[:space:]]*\)ProxyCommand/\1# ProxyCommand/' ${initdir}/etc/ssh/ssh_config
+         while read key val; do
+-            [[ key != "GlobalKnownHostsFile" ]] && continue
++            [[ $key != "GlobalKnownHostsFile" ]] && continue
+             inst_simple "$val"
+             break
+         done < /etc/ssh/ssh_config

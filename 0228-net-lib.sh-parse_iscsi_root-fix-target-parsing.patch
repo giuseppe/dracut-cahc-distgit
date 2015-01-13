@@ -1,0 +1,93 @@
+From 20700e3dea3c10aa2c9d4a724ec3d671455d556f Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 12 Jan 2015 14:06:10 +0100
+Subject: [PATCH] net-lib.sh:parse_iscsi_root() fix target parsing
+
+For targets with colons in the iSCSI target name:
+  "iqn.2000-09.com.foo:storage-system.e2000:00000001cm1p1"
+
+the parser was confused with the optional iscsi_iface_name and
+iscsi_netdev_name.
+
+This patch reintroduces the old IQN, EUI and NAA parsing and enhances
+the fallback parser by checking the LUN for a numerical value.
+
+(cherry picked from commit 36e8ce4fb01824b49697bd0e7ad3ca3c4cfd4297)
+---
+ modules.d/40network/net-lib.sh | 50 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 38 insertions(+), 12 deletions(-)
+
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index 337817e..f085020 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -310,6 +310,23 @@ parse_iscsi_root()
+             ;;
+     esac
+ 
++    unset iscsi_target_name
++    # extract target name
++    case "$v" in
++        *:iqn.*)
++            iscsi_target_name=iqn.${v##*:iqn.}
++            v=${v%:iqn.*}:
++            ;;
++        *:eui.*)
++            iscsi_target_name=iqn.${v##*:eui.}
++            v=${v%:iqn.*}:
++            ;;
++        *:naa.*)
++            iscsi_target_name=iqn.${v##*:naa.}
++            v=${v%:iqn.*}:
++            ;;
++    esac
++
+     # parse the rest
+     OLDIFS="$IFS"
+     IFS=:
+@@ -319,24 +336,33 @@ parse_iscsi_root()
+     iscsi_protocol=$1; shift # ignored
+     iscsi_target_port=$1; shift
+ 
+-    if [ $# -gt 3 ] && [ -n "$1$2" ]; then
+-        iscsi_iface_name=$1; shift
+-        iscsi_netdev_name=$1; shift
++    if [ -n "$iscsi_target_name" ]; then
++        if [ $# -eq 3 ]; then
++            iscsi_iface_name=$1; shift
++        fi
++        if [ $# -eq 2 ]; then
++            iscsi_netdev_name=$1; shift
++        fi
++        iscsi_lun=$1; shift
++        if [ $# -ne 0 ]; then
++            warn "Invalid parameter in iscsi: parameter!"
++            return 1
++        fi
++        return 0
+     fi
+ 
+-    iscsi_lun=$1; shift
+ 
+-    if [ $# -gt 2 ]; then
+-        warn "Invalid parameter in iscsi: parameter!"
+-        return 1
++    if [ $# -gt 3 ] && [ -n "$1$2" ]; then
++        if [ -z "$3" ] || [ "$3" -ge 0 ]  2>/dev/null ; then
++            iscsi_iface_name=$1; shift
++            iscsi_netdev_name=$1; shift
++        fi
+     fi
+ 
+-    if [ $# -eq 2 ]; then
+-        iscsi_target_name="$1:$2"
+-    else
+-        iscsi_target_name="$1"
+-    fi
++    iscsi_lun=$1; shift
+ 
++    iscsi_target_name=$(printf "%s:" "$@")
++    iscsi_target_name=${iscsi_target_name%:}
+ }
+ 
+ ip_to_var() {
