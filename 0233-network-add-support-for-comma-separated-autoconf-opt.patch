@@ -1,0 +1,97 @@
+From 368f08cb7efca9738292859e179da269597412e4 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 14 Jan 2015 11:28:16 +0100
+Subject: [PATCH] network: add support for comma separated autoconf options
+
+ip=eth0:auto6,dhcp
+
+might work now
+---
+ modules.d/40network/ifup.sh          | 24 ++++++++++++-----------
+ modules.d/40network/parse-ip-opts.sh | 38 +++++++++++++++++++-----------------
+ 2 files changed, 33 insertions(+), 29 deletions(-)
+
+diff --git a/modules.d/40network/ifup.sh b/modules.d/40network/ifup.sh
+index 67b1d9f..8749c4c 100755
+--- a/modules.d/40network/ifup.sh
++++ b/modules.d/40network/ifup.sh
+@@ -326,17 +326,19 @@ for p in $(getargs ip=); do
+         eval '[ "$'$i'" ] && echo '$i'="$'$i'"'
+     done > /tmp/net.$netif.override
+ 
+-    case $autoconf in
+-        dhcp|on|any)
+-            do_dhcp -4 ;;
+-        dhcp6)
+-            load_ipv6
+-            do_dhcp -6 ;;
+-        auto6)
+-            do_ipv6auto ;;
+-        *)
+-            do_static ;;
+-    esac
++    for autoopt in $(str_replace "$autoconf" "," " "); do
++        case $autoopt in
++            dhcp|on|any)
++                do_dhcp -4 ;;
++            dhcp6)
++                load_ipv6
++                do_dhcp -6 ;;
++            auto6)
++                do_ipv6auto ;;
++            *)
++                do_static ;;
++        esac
++    done
+ 
+     > /tmp/net.${netif}.up
+ 
+diff --git a/modules.d/40network/parse-ip-opts.sh b/modules.d/40network/parse-ip-opts.sh
+index b029d00..5b96e06 100755
+--- a/modules.d/40network/parse-ip-opts.sh
++++ b/modules.d/40network/parse-ip-opts.sh
+@@ -66,24 +66,26 @@ for p in $(getargs ip=); do
+     fi
+ 
+     # Error checking for autoconf in combination with other values
+-    case $autoconf in
+-        error) die "Error parsing option 'ip=$p'";;
+-        bootp|rarp|both) die "Sorry, ip=$autoconf is currenty unsupported";;
+-        none|off)
+-            [ -z "$ip" ] && \
+-            die "For argument 'ip=$p'\nValue '$autoconf' without static configuration does not make sense"
+-            [ -z "$mask" ] && \
+-                die "Sorry, automatic calculation of netmask is not yet supported"
+-            ;;
+-        auto6);;
+-        dhcp|dhcp6|on|any) \
+-            [ -n "$NEEDBOOTDEV" ] && [ -z "$dev" ] && \
+-            die "Sorry, 'ip=$p' does not make sense for multiple interface configurations"
+-            [ -n "$ip" ] && \
+-                die "For argument 'ip=$p'\nSorry, setting client-ip does not make sense for '$autoconf'"
+-            ;;
+-        *) die "For argument 'ip=$p'\nSorry, unknown value '$autoconf'";;
+-    esac
++    for autoopt in $(str_replace "$autoconf" "," " "); do
++        case $autoopt in
++            error) die "Error parsing option 'ip=$p'";;
++            bootp|rarp|both) die "Sorry, ip=$autoopt is currenty unsupported";;
++            none|off)
++                [ -z "$ip" ] && \
++                    die "For argument 'ip=$p'\nValue '$autoopt' without static configuration does not make sense"
++                [ -z "$mask" ] && \
++                    die "Sorry, automatic calculation of netmask is not yet supported"
++                ;;
++            auto6);;
++            dhcp|dhcp6|on|any) \
++                [ -n "$NEEDBOOTDEV" ] && [ -z "$dev" ] && \
++                    die "Sorry, 'ip=$p' does not make sense for multiple interface configurations"
++                [ -n "$ip" ] && \
++                    die "For argument 'ip=$p'\nSorry, setting client-ip does not make sense for '$autoopt'"
++                ;;
++            *) die "For argument 'ip=$p'\nSorry, unknown value '$autoopt'";;
++        esac
++    done
+ 
+     if [ -n "$dev" ] ; then
+         # We don't like duplicate device configs

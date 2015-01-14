@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 233%{?dist}
+Release: 237%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -261,6 +261,10 @@ Patch229: 0229-ssh-client-s-key-key.patch
 Patch230: 0230-cms-cms-write-ifcfg.sh-turn-SUBCHANNELS-into-lowerca.patch
 Patch231: 0231-40network-Fix-the-syntax-to-correct-the-judgment-sen.patch
 Patch232: 0232-systemd-add-90-vconsole.rules.patch
+Patch233: 0233-network-add-support-for-comma-separated-autoconf-opt.patch
+Patch234: 0234-test-add-fs-lib-to-dracut-module-list.patch
+Patch235: 0235-network-enhance-team-support.patch
+Patch236: 0236-dracut-fixed-module-dependency-handling.patch
 
 
 BuildRequires: bash git
@@ -687,6 +691,12 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jan 14 2015 Harald Hoyer <harald@redhat.com> 033-237
+- add support for multiple autoconf options ip=eth0:auto6,dhcp
+Resolves: rhbz#1069270
+- fixed team implementation
+Resolves: rhbz#1147521
+
 * Tue Jan 13 2015 Harald Hoyer <harald@redhat.com> 033-233
 - fips: corrected previous fix
 Resolves: rhbz#1165603

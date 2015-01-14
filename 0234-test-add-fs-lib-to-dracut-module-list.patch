@@ -1,0 +1,223 @@
+From c984ddda6a41c57f579c6d06fdc7e767395e41ac Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 24 Oct 2014 13:19:34 +0200
+Subject: [PATCH] test: add "fs-lib" to dracut module list
+
+(cherry picked from commit eda73c0ad2cfc6a9bc8dc429b1a6fcd873e3e1c2)
+---
+ test/TEST-01-BASIC/test.sh        | 2 +-
+ test/TEST-02-SYSTEMD/test.sh      | 2 +-
+ test/TEST-03-USR-MOUNT/test.sh    | 2 +-
+ test/TEST-04-FULL-SYSTEMD/test.sh | 2 +-
+ test/TEST-10-RAID/test.sh         | 4 ++--
+ test/TEST-11-LVM/test.sh          | 2 +-
+ test/TEST-12-RAID-DEG/test.sh     | 2 +-
+ test/TEST-13-ENC-RAID-LVM/test.sh | 2 +-
+ test/TEST-14-IMSM/test.sh         | 2 +-
+ test/TEST-15-BTRFSRAID/test.sh    | 2 +-
+ test/TEST-17-LVM-THIN/test.sh     | 2 +-
+ test/TEST-20-NFS/test.sh          | 2 +-
+ test/TEST-40-NBD/test.sh          | 4 ++--
+ test/TEST-50-MULTINIC/test.sh     | 2 +-
+ 14 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/test/TEST-01-BASIC/test.sh b/test/TEST-01-BASIC/test.sh
+index 5ee6d23..02ebc23 100755
+--- a/test/TEST-01-BASIC/test.sh
++++ b/test/TEST-01-BASIC/test.sh
+@@ -62,7 +62,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash udev-rules base rootfs-block kernel-modules" \
++	-m "dash udev-rules base rootfs-block fs-lib kernel-modules fs-lib" \
+ 	-d "piix ide-gd_mod ata_piix ext3 sd_mod" \
+         --nomdadmconf \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+diff --git a/test/TEST-02-SYSTEMD/test.sh b/test/TEST-02-SYSTEMD/test.sh
+index 2ccf8e6..2a8ed6b 100755
+--- a/test/TEST-02-SYSTEMD/test.sh
++++ b/test/TEST-02-SYSTEMD/test.sh
+@@ -58,7 +58,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash udev-rules base rootfs-block kernel-modules" \
++	-m "dash udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix ext3 sd_mod" \
+         --nomdadmconf \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+diff --git a/test/TEST-03-USR-MOUNT/test.sh b/test/TEST-03-USR-MOUNT/test.sh
+index ef74d40..b8231fe 100755
+--- a/test/TEST-03-USR-MOUNT/test.sh
++++ b/test/TEST-03-USR-MOUNT/test.sh
+@@ -89,7 +89,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash udev-rules btrfs base rootfs-block kernel-modules" \
++	-m "dash udev-rules btrfs base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix btrfs sd_mod" \
+         --nomdadmconf \
+         --nohardlink \
+diff --git a/test/TEST-04-FULL-SYSTEMD/test.sh b/test/TEST-04-FULL-SYSTEMD/test.sh
+index 3eeb840..aa83122 100755
+--- a/test/TEST-04-FULL-SYSTEMD/test.sh
++++ b/test/TEST-04-FULL-SYSTEMD/test.sh
+@@ -232,7 +232,7 @@ EOF
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash udev-rules btrfs base rootfs-block kernel-modules" \
++	-m "dash udev-rules btrfs base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix btrfs sd_mod" \
+         --nomdadmconf \
+         --nohardlink \
+diff --git a/test/TEST-10-RAID/test.sh b/test/TEST-10-RAID/test.sh
+index b17e912..d79d5cd 100755
+--- a/test/TEST-10-RAID/test.sh
++++ b/test/TEST-10-RAID/test.sh
+@@ -5,7 +5,7 @@ KVERSION=${KVERSION-$(uname -r)}
+ 
+ # Uncomment this to debug failures
+ #DEBUGFAIL="rd.shell rd.udev.log-priority=debug loglevel=70 systemd.log_target=kmsg"
+-#DEBUGFAIL="rd.break rd.shell"
++#DEBUGFAIL="rd.break rd.shell rd.debug debug"
+ test_run() {
+     DISKIMAGE=$TESTDIR/TEST-10-RAID-root.img
+     $testdir/run-qemu \
+@@ -60,7 +60,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash crypt lvm mdraid udev-rules base rootfs-block kernel-modules" \
++	-m "dash crypt lvm mdraid udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix ext2 sd_mod" \
+         --nomdadmconf \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+diff --git a/test/TEST-11-LVM/test.sh b/test/TEST-11-LVM/test.sh
+index 6f2461c..732d0c8 100755
+--- a/test/TEST-11-LVM/test.sh
++++ b/test/TEST-11-LVM/test.sh
+@@ -57,7 +57,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash lvm mdraid udev-rules base rootfs-block kernel-modules" \
++	-m "dash lvm mdraid udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix ext2 sd_mod" \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+     rm -rf -- $TESTDIR/overlay
+diff --git a/test/TEST-12-RAID-DEG/test.sh b/test/TEST-12-RAID-DEG/test.sh
+index 2631621..87fe542 100755
+--- a/test/TEST-12-RAID-DEG/test.sh
++++ b/test/TEST-12-RAID-DEG/test.sh
+@@ -98,7 +98,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash crypt lvm mdraid udev-rules base rootfs-block kernel-modules" \
++	-m "dash crypt lvm mdraid udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix ext2 sd_mod" \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+     rm -rf -- $TESTDIR/overlay
+diff --git a/test/TEST-13-ENC-RAID-LVM/test.sh b/test/TEST-13-ENC-RAID-LVM/test.sh
+index 5102142..129620b 100755
+--- a/test/TEST-13-ENC-RAID-LVM/test.sh
++++ b/test/TEST-13-ENC-RAID-LVM/test.sh
+@@ -94,7 +94,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash crypt lvm mdraid udev-rules base rootfs-block kernel-modules" \
++	-m "dash crypt lvm mdraid udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix ext2 sd_mod" \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+     rm -rf -- $TESTDIR/overlay
+diff --git a/test/TEST-14-IMSM/test.sh b/test/TEST-14-IMSM/test.sh
+index 532c348..ad0cf7b 100755
+--- a/test/TEST-14-IMSM/test.sh
++++ b/test/TEST-14-IMSM/test.sh
+@@ -86,7 +86,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash lvm mdraid dmraid udev-rules base rootfs-block kernel-modules" \
++	-m "dash lvm mdraid dmraid udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix ext2 sd_mod dm-multipath dm-crypt dm-round-robin faulty linear multipath raid0 raid10 raid1 raid456" \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+     rm -rf -- $TESTDIR/overlay
+diff --git a/test/TEST-15-BTRFSRAID/test.sh b/test/TEST-15-BTRFSRAID/test.sh
+index 3fc1d45..71f5703 100755
+--- a/test/TEST-15-BTRFSRAID/test.sh
++++ b/test/TEST-15-BTRFSRAID/test.sh
+@@ -58,7 +58,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash btrfs udev-rules base rootfs-block kernel-modules" \
++	-m "dash btrfs udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix btrfs sd_mod" \
+         --nomdadmconf \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+diff --git a/test/TEST-17-LVM-THIN/test.sh b/test/TEST-17-LVM-THIN/test.sh
+index 0cfce19..4c904b0 100755
+--- a/test/TEST-17-LVM-THIN/test.sh
++++ b/test/TEST-17-LVM-THIN/test.sh
+@@ -57,7 +57,7 @@ test_setup() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-	-m "dash lvm mdraid udev-rules base rootfs-block kernel-modules" \
++	-m "dash lvm mdraid udev-rules base rootfs-block fs-lib kernel-modules" \
+ 	-d "piix ide-gd_mod ata_piix ext2 sd_mod" \
+ 	-f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+     rm -rf -- $TESTDIR/overlay
+diff --git a/test/TEST-20-NFS/test.sh b/test/TEST-20-NFS/test.sh
+index 4f21d45..7b5e3c5 100755
+--- a/test/TEST-20-NFS/test.sh
++++ b/test/TEST-20-NFS/test.sh
+@@ -340,7 +340,7 @@ test_setup() {
+ 
+     # Make server's dracut image
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-        -m "dash udev-rules base rootfs-block debug kernel-modules watchdog" \
++        -m "dash udev-rules base rootfs-block fs-lib debug kernel-modules watchdog" \
+         -d "af_packet piix ide-gd_mod ata_piix ext3 sd_mod e1000 i6300esb" \
+         -f $TESTDIR/initramfs.server $KVERSION || return 1
+ 
+diff --git a/test/TEST-40-NBD/test.sh b/test/TEST-40-NBD/test.sh
+index 7cf64b1..59494ed 100755
+--- a/test/TEST-40-NBD/test.sh
++++ b/test/TEST-40-NBD/test.sh
+@@ -226,7 +226,7 @@ make_encrypted_root() {
+     # We do it this way so that we do not risk trashing the host mdraid
+     # devices, volume groups, encrypted partitions, etc.
+     $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-        -m "dash crypt lvm mdraid udev-rules base rootfs-block kernel-modules" \
++        -m "dash crypt lvm mdraid udev-rules base rootfs-block fs-lib kernel-modules" \
+         -d "piix ide-gd_mod ata_piix ext2 ext3 sd_mod" \
+         -f $TESTDIR/initramfs.makeroot $KVERSION || return 1
+     rm -rf -- $TESTDIR/overlay
+@@ -352,7 +352,7 @@ test_setup() {
+     )
+ 
+     sudo $basedir/dracut.sh -l -i $TESTDIR/overlay / \
+-        -m "dash udev-rules rootfs-block base debug kernel-modules" \
++        -m "dash udev-rules rootfs-block fs-lib base debug kernel-modules" \
+         -d "af_packet piix ide-gd_mod ata_piix ext2 ext3 sd_mod e1000" \
+         -f $TESTDIR/initramfs.server $KVERSION || return 1
+ 
+diff --git a/test/TEST-50-MULTINIC/test.sh b/test/TEST-50-MULTINIC/test.sh
+index add849c..3c6003b 100755
+--- a/test/TEST-50-MULTINIC/test.sh
++++ b/test/TEST-50-MULTINIC/test.sh
+@@ -264,7 +264,7 @@ test_setup() {
+ 
+     # Make server's dracut image
+     $basedir/dracut.sh -l -i "$TESTDIR"/overlay / \
+-        -m "dash udev-rules base rootfs-block debug kernel-modules watchdog" \
++        -m "dash udev-rules base rootfs-block fs-lib debug kernel-modules watchdog" \
+         -d "af_packet piix ide-gd_mod ata_piix ext3 sd_mod nfsv2 nfsv3 nfsv4 nfs_acl nfs_layout_nfsv41_files nfsd e1000 i6300esb ib700wdt" \
+         -f "$TESTDIR"/initramfs.server "$KVERSION" || return 1
+ 

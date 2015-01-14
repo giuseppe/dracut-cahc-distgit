@@ -1,0 +1,112 @@
+From 6914b67545633d23063d5c5812591c67df56c0cf Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 24 Oct 2014 13:19:58 +0200
+Subject: [PATCH] dracut: fixed module dependency handling
+
+Fail for "--modules" and "--force-add" dracut modules, if they or their
+dependencies cannot be included.
+
+(cherry picked from commit ab2f95e45ed9803c5cbee23f41201a0f934f8043)
+---
+ dracut-functions.sh | 37 ++++++++++++++++++++++++++-----------
+ dracut.sh           |  4 +++-
+ 2 files changed, 29 insertions(+), 12 deletions(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index 6e0b44a..89438b2 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -1215,13 +1215,17 @@ check_mount() {
+         fi
+     fi
+ 
+-
+     for _moddep in $(module_depends $_mod); do
+         # handle deps as if they were manually added
+-        [[ " $add_dracutmodules " == *\ $_moddep\ * ]] || \
+-            add_dracutmodules+=" $_moddep "
+-        [[ " $force_add_dracutmodules " == *\ $_moddep\ * ]] || \
+-            force_add_dracutmodules+=" $_moddep "
++        [[ " $dracutmodules " == *\ $_mod\ * ]] \
++            && [[ " $dracutmodules " != *\ $_moddep\ * ]] \
++            && dracutmodules+=" $_moddep "
++        [[ " $add_dracutmodules " == *\ $_mod\ * ]] \
++            && [[ " $add_dracutmodules " != *\ $_moddep\ * ]] \
++            && add_dracutmodules+=" $_moddep "
++        [[ " $force_add_dracutmodules " == *\ $_mod\ * ]] \
++            && [[ " $force_add_dracutmodules " != *\ $_moddep\ * ]] \
++            && force_add_dracutmodules+=" $_moddep "
+         # if a module we depend on fail, fail also
+         if ! check_module $_moddep; then
+             derror "dracut module '$_mod' depends on '$_moddep', which can't be installed"
+@@ -1259,7 +1263,7 @@ check_module() {
+     fi
+ 
+     if [[ " $dracutmodules $add_dracutmodules $force_add_dracutmodules" == *\ $_mod\ * ]]; then
+-        if [[ " $force_add_dracutmodules " == *\ $_mod\ * ]]; then
++        if [[ " $dracutmodules $force_add_dracutmodules " == *\ $_mod\ * ]]; then
+             module_check $_mod 1; ret=$?
+         else
+             module_check $_mod 0; ret=$?
+@@ -1270,7 +1274,11 @@ check_module() {
+         # module not in our list
+         if [[ $dracutmodules = all ]]; then
+             # check, if we can and should install this module
+-            module_check $_mod || return 1
++            module_check $_mod; ret=$?
++            if [[ $ret != 0 ]]; then
++                [[ $2 ]] && return 1
++                [[ $ret != 255 ]] && return 1
++            fi
+         else
+             # skip this module
+             return 1
+@@ -1279,10 +1287,15 @@ check_module() {
+ 
+     for _moddep in $(module_depends $_mod); do
+         # handle deps as if they were manually added
+-        [[ " $add_dracutmodules " == *\ $_moddep\ * ]] || \
+-            add_dracutmodules+=" $_moddep "
+-        [[ " $force_add_dracutmodules " == *\ $_moddep\ * ]] || \
+-            force_add_dracutmodules+=" $_moddep "
++        [[ " $dracutmodules " == *\ $_mod\ * ]] \
++            && [[ " $dracutmodules " != *\ $_moddep\ * ]] \
++            && dracutmodules+=" $_moddep "
++        [[ " $add_dracutmodules " == *\ $_mod\ * ]] \
++            && [[ " $add_dracutmodules " != *\ $_moddep\ * ]] \
++            && add_dracutmodules+=" $_moddep "
++        [[ " $force_add_dracutmodules " == *\ $_mod\ * ]] \
++            && [[ " $force_add_dracutmodules " != *\ $_moddep\ * ]] \
++            && force_add_dracutmodules+=" $_moddep "
+         # if a module we depend on fail, fail also
+         if ! check_module $_moddep; then
+             derror "dracut module '$_mod' depends on '$_moddep', which can't be installed"
+@@ -1319,11 +1332,13 @@ for_each_module_dir() {
+         [[ " $mods_to_load " == *\ $_mod\ * ]] && continue
+ 
+         [[ " $force_add_dracutmodules " != *\ $_mod\ * ]] \
++            && [[ " $dracutmodules " != *\ $_mod\ * ]] \
+             && [[ " $omit_dracutmodules " == *\ $_mod\ * ]] \
+             && continue
+ 
+         derror "dracut module '$_mod' cannot be found or installed."
+         [[ " $force_add_dracutmodules " == *\ $_mod\ * ]] && exit 1
++        [[ " $dracutmodules " == *\ $_mod\ * ]] && exit 1
+         [[ " $add_dracutmodules " == *\ $_mod\ * ]] && exit 1
+     done
+ }
+diff --git a/dracut.sh b/dracut.sh
+index eff096e..74c59a0 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -1152,7 +1152,9 @@ fi
+ 
+ [[ -d "$systemdsystemconfdir" ]] || systemdsystemconfdir=/etc/systemd/system
+ 
+-export initdir dracutbasedir dracutmodules \
++export initdir dracutbasedir \
++    dracutmodules force_add_dracutmodules add_dracutmodules omit_dracutmodules \
++    mods_to_load \
+     fw_dir drivers_dir debug no_kernel kernel_only \
+     omit_drivers mdadmconf lvmconf root_dev \
+     use_fstab fstab_lines libdirs fscks nofscks ro_mnt \
