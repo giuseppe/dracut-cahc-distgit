@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 237%{?dist}
+Release: 238%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -265,6 +265,7 @@ Patch233: 0233-network-add-support-for-comma-separated-autoconf-opt.patch
 Patch234: 0234-test-add-fs-lib-to-dracut-module-list.patch
 Patch235: 0235-network-enhance-team-support.patch
 Patch236: 0236-dracut-fixed-module-dependency-handling.patch
+Patch237: 0237-network-net-lib.sh-parse_iscsi_root-fix-c-p-bug.patch
 
 
 BuildRequires: bash git
@@ -691,6 +692,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jan 15 2015 Harald Hoyer <harald@redhat.com> 033-238
+- fixed more iscsi_target parsing
+Resolves: rhbz#1176534
+
 * Wed Jan 14 2015 Harald Hoyer <harald@redhat.com> 033-237
 - add support for multiple autoconf options ip=eth0:auto6,dhcp
 Resolves: rhbz#1069270
