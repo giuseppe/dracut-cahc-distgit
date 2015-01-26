@@ -1,0 +1,26 @@
+From e7f59d71ae180ed519b83115d9b41f9b3ba000e4 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 26 Jan 2015 15:12:08 +0000
+Subject: [PATCH] network: do not destroy the team interface on teamd shutdown
+
+when doing switch-root teamd gets killed, which tears down the team
+interface, if teamd is not started with "-N".
+
+(cherry picked from commit 2a12e9747524dc719e0da9a9d8c382f957cc13de)
+---
+ modules.d/40network/ifup.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/40network/ifup.sh b/modules.d/40network/ifup.sh
+index 524a3fb..bd7db02 100755
+--- a/modules.d/40network/ifup.sh
++++ b/modules.d/40network/ifup.sh
+@@ -223,7 +223,7 @@ if [ -e /tmp/team.${netif}.info ]; then
+             fi
+         done
+         # Do not add slaves now
+-        teamd -d -U -n -t $teammaster -f /etc/teamd/${teammaster}.conf
++        teamd -d -U -n -N -t $teammaster -f /etc/teamd/$teammaster.conf
+         for slave in $working_slaves; do
+             # team requires the slaves to be down before joining team
+             ip link set dev $slave down

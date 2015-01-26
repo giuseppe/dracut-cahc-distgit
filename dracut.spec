@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 239%{?dist}
+Release: 240%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -267,6 +267,7 @@ Patch235: 0235-network-enhance-team-support.patch
 Patch236: 0236-dracut-fixed-module-dependency-handling.patch
 Patch237: 0237-network-net-lib.sh-parse_iscsi_root-fix-c-p-bug.patch
 Patch238: 0238-network-ifup-source-team-info-if-present.patch
+Patch239: 0239-network-do-not-destroy-the-team-interface-on-teamd-s.patch
 
 
 BuildRequires: bash git
@@ -693,6 +694,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jan 26 2015 Harald Hoyer <harald@redhat.com> 033-240
+- fixed team implementation
+Resolves: rhbz#1147521
+
 * Wed Jan 21 2015 Harald Hoyer <harald@redhat.com> 033-239
 - fixed team implementation
 Resolves: rhbz#1147521
