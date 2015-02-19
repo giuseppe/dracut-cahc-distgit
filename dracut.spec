@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 241%{?dist}
+Release: 241%{?dist}.1
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -695,6 +695,9 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Feb 19 2015 Harald Hoyer <harald@redhat.com> 033-241.1
+- subversion inc
+
 * Thu Feb 19 2015 Harald Hoyer <harald@redhat.com> 033-241
 - fips: load the drbg kernel module
 Resolves: rhbz#1194201
