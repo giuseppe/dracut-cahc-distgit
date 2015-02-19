@@ -1,4 +1,4 @@
-From e7f59d71ae180ed519b83115d9b41f9b3ba000e4 Mon Sep 17 00:00:00 2001
+From 3f7d943141f543a2b9f1db612dccae502e4d556b Mon Sep 17 00:00:00 2001
 From: Harald Hoyer <harald@redhat.com>
 Date: Mon, 26 Jan 2015 15:12:08 +0000
 Subject: [PATCH] network: do not destroy the team interface on teamd shutdown
