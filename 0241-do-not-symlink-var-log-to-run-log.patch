@@ -1,0 +1,86 @@
+From 9eb6db5b9ac5372793aa2fc6f479a2a82a369695 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 1 Dec 2014 12:36:20 +0100
+Subject: [PATCH] do not symlink /var/log to /run/log
+
+some programs e.g. systemd-journald expect a directory in /var/log as
+the marker to do some actions. Here journald tries to flush
+/run/log/journal to /var/log/journal, if the directory is seen.
+
+/var/log is now a symlink to /run/initramfs/log.
+
+(cherry picked from commit 99d4fd6bb791ca8ce07e07e13b58445f3e20894a)
+---
+ dracut.sh                                |  1 -
+ modules.d/98systemd/dracut-tmpfiles.conf |  3 +++
+ modules.d/98systemd/module-setup.sh      |  5 +++++
+ modules.d/99base/dracut-lib.sh           | 11 +++++++++++
+ 4 files changed, 19 insertions(+), 1 deletion(-)
+ create mode 100644 modules.d/98systemd/dracut-tmpfiles.conf
+
+diff --git a/dracut.sh b/dracut.sh
+index 74c59a0..27c2bf4 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -1217,7 +1217,6 @@ if [[ $kernel_only != yes ]]; then
+ 
+     ln -sfn ../run "$initdir/var/run"
+     ln -sfn ../run/lock "$initdir/var/lock"
+-    ln -sfn ../run/log "$initdir/var/log"
+ else
+     for d in lib "$libdir"; do
+         [[ -e "${initdir}${prefix}/$d" ]] && continue
+diff --git a/modules.d/98systemd/dracut-tmpfiles.conf b/modules.d/98systemd/dracut-tmpfiles.conf
+new file mode 100644
+index 0000000..3c21ce8
+--- /dev/null
++++ b/modules.d/98systemd/dracut-tmpfiles.conf
+@@ -0,0 +1,3 @@
++d /run/initramfs     0755 root root -
++d /run/initramfs/log 0755 root root -
++L /var/log           -    -    -    - ../run/initramfs/log
+diff --git a/modules.d/98systemd/module-setup.sh b/modules.d/98systemd/module-setup.sh
+index f62f551..aae0319 100755
+--- a/modules.d/98systemd/module-setup.sh
++++ b/modules.d/98systemd/module-setup.sh
+@@ -121,6 +121,8 @@ install() {
+         $systemdsystemunitdir/slices.target \
+         $systemdsystemunitdir/system.slice \
+         \
++        $tmpfilesdir/systemd.conf \
++        \
+         journalctl systemctl echo swapoff systemd-cgls systemd-tmpfiles
+ 
+     inst_multiple -o \
+@@ -230,6 +232,9 @@ install() {
+         ln_r "$systemdsystemunitdir/${i}" "$systemdsystemunitdir/initrd.target.wants/${i}"
+     done
+ 
++    inst_simple "$moddir/dracut-tmpfiles.conf" "$tmpfilesdir/dracut-tmpfiles.conf"
++
++
+     mkdir -p "$initdir/etc/systemd"
+     # turn off RateLimit for journal
+     {
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index b0ac08a..b490e82 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -4,6 +4,17 @@
+ 
+ export DRACUT_SYSTEMD
+ export NEWROOT
++if [ -n "$NEWROOT" ]; then
++    [ -d $NEWROOT ] || mkdir -p -m 0755 $NEWROOT
++fi
++
++if ! [ -d /run/initramfs ]; then
++    mkdir -p -m 0755 /run/initramfs/log
++    ln -sfn /run/initramfs/log /var/log
++fi
++
++[ -d /run/lock ] || mkdir -p -m 0755 /run/lock
++[ -d /run/log ] || mkdir -p -m 0755 /run/log
+ 
+ debug_off() {
+     set +x

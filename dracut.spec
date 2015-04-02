@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 241%{?dist}.1
+Release: 243%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -269,6 +269,8 @@ Patch237: 0237-network-net-lib.sh-parse_iscsi_root-fix-c-p-bug.patch
 Patch238: 0238-network-ifup-source-team-info-if-present.patch
 Patch239: 0239-fips-add-drbg-kernel-module.patch
 Patch240: 0240-network-do-not-destroy-the-team-interface-on-teamd-s.patch
+Patch241: 0241-do-not-symlink-var-log-to-run-log.patch
+Patch242: 0242-dracut.sh-add-tmpfilesdir-to-install-files-to-usr-li.patch
 
 
 BuildRequires: bash git
@@ -695,6 +697,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Apr 02 2015 Harald Hoyer <harald@redhat.com> 033-243
+- /run/log is now symlinked to /run/initramfs/log
+Resolves: rhbz#1199645
+
 * Thu Feb 19 2015 Harald Hoyer <harald@redhat.com> 033-241.1
 - subversion inc
 
