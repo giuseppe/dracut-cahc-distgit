@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 243%{?dist}
+Release: 244%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -271,6 +271,7 @@ Patch239: 0239-fips-add-drbg-kernel-module.patch
 Patch240: 0240-network-do-not-destroy-the-team-interface-on-teamd-s.patch
 Patch241: 0241-do-not-symlink-var-log-to-run-log.patch
 Patch242: 0242-dracut.sh-add-tmpfilesdir-to-install-files-to-usr-li.patch
+Patch243: 0243-fips-add-some-s390-kernel-modules.patch
 
 
 BuildRequires: bash git
@@ -697,6 +698,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Apr 28 2015 Harald Hoyer <harald@redhat.com> 033-244
+- fips: add some s390 kernel modules
+Resolves: rhbz#1215766
+
 * Thu Apr 02 2015 Harald Hoyer <harald@redhat.com> 033-243
 - /run/log is now symlinked to /run/initramfs/log
 Resolves: rhbz#1199645
