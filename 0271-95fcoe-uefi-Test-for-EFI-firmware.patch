@@ -1,0 +1,32 @@
+From 7b3178d9ad9b571312131bba34fd54460a7b4a25 Mon Sep 17 00:00:00 2001
+From: Hannes Reinecke <hare@suse.de>
+Date: Mon, 23 Mar 2015 17:12:18 +0100
+Subject: [PATCH] 95fcoe-uefi: Test for EFI firmware
+
+The fcoe-uefi module should test for EFI firmware when called
+in 'hostonly' mode; of no EFI firmware is found then the module
+doesn't need to be included.
+
+References: bnc#882412
+
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Thomas Renninger <trenn@suse.de>
+(cherry picked from commit 6755c208556be7a85c76e731de48a56f56e81c4c)
+---
+ modules.d/95fcoe-uefi/module-setup.sh | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/modules.d/95fcoe-uefi/module-setup.sh b/modules.d/95fcoe-uefi/module-setup.sh
+index 0fb06e2..f5277f4 100755
+--- a/modules.d/95fcoe-uefi/module-setup.sh
++++ b/modules.d/95fcoe-uefi/module-setup.sh
+@@ -4,6 +4,9 @@
+ 
+ # called by dracut
+ check() {
++    [[ $hostonly ]] || [[ $mount_needs ]] && {
++        [ -d /sys/firmware/efi ] || return 255
++    }
+     require_binaries dcbtool fipvlan lldpad ip readlink || return 1
+     return 0
+ }

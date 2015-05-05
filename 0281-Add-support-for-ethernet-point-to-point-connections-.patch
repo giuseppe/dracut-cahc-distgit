@@ -1,0 +1,46 @@
+From 28be8992c3c1facfd80dfcc6afad951f33098783 Mon Sep 17 00:00:00 2001
+From: Gerd von Egidy <gerd.von.egidy@intra2net.com>
+Date: Thu, 5 Mar 2015 12:07:57 +0100
+Subject: [PATCH] Add support for ethernet point-to-point connections
+ configured via DHCP
+
+When current dracut receives an ip with netmask of 255.255.255.255 via DHCP,
+setting the also supplied default gateway fails (because it is obviously not
+within the netmask).
+
+The setup with a netmask of /32 is quite common in colocation datacenters
+where you don't want the machines of two different customers to directly talk
+to each other. At least two of the biggest colocation providers in Germany
+(1&1 and Strato) do it that way. NetworkManager supports this kind of setup
+and the dhclient-scripts of several distributions too.
+
+In this patch I have implemented a simple approach very similar to what is
+found in Debian. The dhclient-script from Fedora uses a more sophisticated
+approach, but that relies on the ipcalc utility which would introduce a
+dependency on Fedora-initscripts for dracut.
+
+Signed-off-by: Gerd von Egidy <gerd.von.egidy@intra2net.com>
+(cherry picked from commit 99ccbc30dff9fa51dd3187dc10f8f632e5e54e4b)
+---
+ modules.d/40network/dhclient-script.sh | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/40network/dhclient-script.sh b/modules.d/40network/dhclient-script.sh
+index 7972af9..12e2869 100755
+--- a/modules.d/40network/dhclient-script.sh
++++ b/modules.d/40network/dhclient-script.sh
+@@ -49,7 +49,13 @@ setup_interface() {
+         ${lease_time:+valid_lft $lease_time} \
+         ${preferred_lft:+preferred_lft ${preferred_lft}}
+ 
+-    [ -n "$gw" ] && echo ip route replace default via $gw dev $netif > /tmp/net.$netif.gw
++    if [ -n "$gw" ] ; then
++        if [ "$mask" == "255.255.255.255" ] ; then
++            # point-to-point connection => set explicit route to gateway
++            echo ip route add $gw dev $netif > /tmp/net.$netif.gw
++        fi
++        echo ip route replace default via $gw dev $netif >> /tmp/net.$netif.gw
++    fi
+ 
+     [ -n "${search}${domain}" ] && echo "search $search $domain" > /tmp/net.$netif.resolv.conf
+     if  [ -n "$namesrv" ] ; then

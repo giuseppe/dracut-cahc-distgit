@@ -1,0 +1,40 @@
+From 77ffc465b9c5615040b427dfdf35a3487ef9943c Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 28 Jan 2015 13:25:09 +0000
+Subject: [PATCH] lvm: add cache tools for dm-cache usage
+
+(cherry picked from commit 70598ac292bce6e554cf0dc327426a7dbf92c65f)
+---
+ modules.d/90lvm/module-setup.sh | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/modules.d/90lvm/module-setup.sh b/modules.d/90lvm/module-setup.sh
+index 5ec6281..90bc39f 100755
+--- a/modules.d/90lvm/module-setup.sh
++++ b/modules.d/90lvm/module-setup.sh
+@@ -107,12 +107,19 @@ install() {
+             dev=$(</sys/block/${dev#/dev/}/dm/name)
+             eval $(dmsetup splitname --nameprefixes --noheadings --rows "$dev" 2>/dev/null)
+             [[ ${DM_VG_NAME} ]] && [[ ${DM_LV_NAME} ]] || continue
+-            if [[ "$(lvs --noheadings -o segtype ${DM_VG_NAME} 2>/dev/null)" == *thin* ]] ; then
+-                inst_multiple -o thin_dump thin_restore thin_check thin_repair
+-                break
+-            fi
++            case "$(lvs --noheadings -o segtype ${DM_VG_NAME} 2>/dev/null)" in
++                *thin*|*cache*|*era*)
++                    inst_multiple -o thin_dump thin_restore thin_check thin_repair \
++                                  cache_dump cache_restore cache_check cache_repair \
++                                  era_check era_dump era_invalidate era_restore
++                    break;;
++            esac
+         done
+-    else
+-        inst_multiple -o thin_dump thin_restore thin_check thin_repair
++    fi
++
++    if ! [[ $hostonly ]]; then
++        inst_multiple -o thin_dump thin_restore thin_check thin_repair \
++                      cache_dump cache_restore cache_check cache_repair \
++                      era_check era_dump era_invalidate era_restore
+     fi
+ }

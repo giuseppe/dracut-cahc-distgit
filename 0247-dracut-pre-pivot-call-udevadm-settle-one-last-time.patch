@@ -1,0 +1,51 @@
+From 1ad2884d82f15e9d1a6f3e24da42d56f47ebe949 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 16 Jun 2015 13:28:48 +0200
+Subject: [PATCH] dracut-pre-pivot: call udevadm settle one last time
+
+Some Hardware needs initialization and killing modprobe or modprobe
+scripts would harm the process.
+---
+ modules.d/98systemd/dracut-pre-pivot.service |  7 -------
+ modules.d/98systemd/dracut-pre-pivot.sh      | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/modules.d/98systemd/dracut-pre-pivot.service b/modules.d/98systemd/dracut-pre-pivot.service
+index d7c7b1d..f453900 100644
+--- a/modules.d/98systemd/dracut-pre-pivot.service
++++ b/modules.d/98systemd/dracut-pre-pivot.service
+@@ -16,13 +16,6 @@ Before=initrd-cleanup.service
+ Wants=remote-fs.target
+ After=remote-fs.target
+ ConditionPathExists=/etc/initrd-release
+-ConditionDirectoryNotEmpty=|/lib/dracut/hooks/pre-pivot
+-ConditionDirectoryNotEmpty=|/lib/dracut/hooks/cleanup
+-ConditionKernelCommandLine=|rd.break=pre-pivot
+-ConditionKernelCommandLine=|rd.break=cleanup
+-ConditionKernelCommandLine=|rd.break
+-ConditionPathExists=|/dev/root
+-ConditionPathExists=|/dev/nfs
+ 
+ [Service]
+ Environment=DRACUT_SYSTEMD=1
+diff --git a/modules.d/98systemd/dracut-pre-pivot.sh b/modules.d/98systemd/dracut-pre-pivot.sh
+index e62a1ce..afe3466 100755
+--- a/modules.d/98systemd/dracut-pre-pivot.sh
++++ b/modules.d/98systemd/dracut-pre-pivot.sh
+@@ -26,4 +26,16 @@ getarg rd.break -d rdbreak && emergency_shell -n switch_root "Break before switc
+ [ -h /dev/root ] && rm -f -- /dev/root
+ [ -h /dev/nfs ] && rm -f -- /dev/nfs
+ 
++udevadm settle
++
++cnt=0
++while ! udevadm settle --timeout=0; do
++    info "udev still not settled. Waiting."
++    udevadm settle
++    cnt=$(($cnt+1))
++    [ $cnt -gt 10 ] && break
++done
++
++udevadm control --exit
++
+ exit 0

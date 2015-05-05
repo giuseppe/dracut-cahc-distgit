@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 244%{?dist}
+Release: 283%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -272,6 +272,45 @@ Patch240: 0240-network-do-not-destroy-the-team-interface-on-teamd-s.patch
 Patch241: 0241-do-not-symlink-var-log-to-run-log.patch
 Patch242: 0242-dracut.sh-add-tmpfilesdir-to-install-files-to-usr-li.patch
 Patch243: 0243-fips-add-some-s390-kernel-modules.patch
+Patch244: 0244-rearrange-fips-module-ordering-due-to-zlib.patch
+Patch245: 0245-network-dhcp-wait_for_ipv6_dad-in-PREINIT6.patch
+Patch246: 0246-network-net-lib.sh-iface_has_link-wait-5s-for-the-ca.patch
+Patch247: 0247-dracut-pre-pivot-call-udevadm-settle-one-last-time.patch
+Patch248: 0248-dracut.sh-add-devices-with-x-initrd.mount-in-etc-fst.patch
+Patch249: 0249-crypt-add-drbg-kernel-module.patch
+Patch250: 0250-dracut-lib.sh-info-output-info-to-stderr.patch
+Patch251: 0251-Factor-out-all-the-type-V-commands.patch
+Patch252: 0252-network-dhclient-script.sh-add-RENEW-REBIND.patch
+Patch253: 0253-network-dhclient-script.sh-make-IPv4-DHCP-lease-time.patch
+Patch254: 0254-network-don-t-use-ifup-m.patch
+Patch255: 0255-nfs-parse-nfsroot.sh-don-t-unset-netroot-if-not-nfs.patch
+Patch256: 0256-Change-the-fs_passno-of-nfs-to-0.patch
+Patch257: 0257-nfs-nfs-lib.sh-add-anaconda_nfsv6_to_var.patch
+Patch258: 0258-splitup-dracut-init.sh-from-dracut-functions.sh.patch
+Patch259: 0259-Adding-support-for-read-write-filesystem-images.patch
+Patch260: 0260-dmsquash-Add-rd.live.overlay.thin.patch
+Patch261: 0261-dmsquash-live-setup-the-images-in-run-initramfs.patch
+Patch262: 0262-dmsquash-Add-squashfs-support-to-rd.live.fsimg.patch
+Patch263: 0263-doc-Add-a-minimal-rd.live.overlay-documentation.patch
+Patch264: 0264-50drm-add-hyperv_fb-kernel-module.patch
+Patch265: 0265-kernel-modules-install-all-HID-drivers.patch
+Patch266: 0266-network-add-options-to-tweak-timeouts.patch
+Patch267: 0267-fcoe-start-with-fcoemon-instead-of-fipvlan.patch
+Patch268: 0268-fcoe-EDD-parsing-patch-for-i40e.patch
+Patch269: 0269-fcoe-fcoe-edd.sh-cleanup-the-script.patch
+Patch270: 0270-livenet-don-t-attempt-to-download-the-image-for-ever.patch
+Patch271: 0271-95fcoe-uefi-Test-for-EFI-firmware.patch
+Patch272: 0272-base-Don-t-wait-for-swap-devices-in-host-only-mode.patch
+Patch273: 0273-dracut-functions.sh-check-if-dinfo-is-a-function.patch
+Patch274: 0274-dmsquash-live-do-not-abort-if-user-pressed-ESC-on-ch.patch
+Patch275: 0275-Add-rd.live.overlay.size-option.patch
+Patch276: 0276-base-dracut-lib.sh-read-proc-cmdline-with-multiple-l.patch
+Patch277: 0277-multipath-install-all-multipath-path-selector-kernel.patch
+Patch278: 0278-man-page-changed-grub.conf-to-grub2.cfg.patch
+Patch279: 0279-lsinitrd.sh-ignore-cat-write-error-Broken-pipe.patch
+Patch280: 0280-network-setup-gateway-after-setting-up-resolv.conf.patch
+Patch281: 0281-Add-support-for-ethernet-point-to-point-connections-.patch
+Patch282: 0282-lvm-add-cache-tools-for-dm-cache-usage.patch
 
 
 BuildRequires: bash git
@@ -540,6 +579,7 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 %dir %{dracutlibdir}
 %dir %{dracutlibdir}/modules.d
+%{dracutlibdir}/dracut-init.sh
 %{dracutlibdir}/dracut-functions.sh
 %{dracutlibdir}/dracut-functions
 %{dracutlibdir}/dracut-version.sh
@@ -698,6 +738,75 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Jul 03 2015 Harald Hoyer <harald@redhat.com> 033-283
+- add support for "x-initrd.mount"
+Resolves: rhbz#1080405
+- add network timeout kernel command line arguments
+Resolves: rhbz#1088808
+- use fcoemon and write out fcoemon config
+Resolves: rhbz#1129884 rhbz#1129888
+- add fcoe module EDD parsing quirk for i40e
+Resolves: rhbz#1129886
+- add RENEW to dhclient-script
+Resolves: rhbz#1144277
+- only fetch squashfs.img once
+Resolves: rhbz#1152485
+- add more input kernel drivers
+Resolves: rhbz#1165585 rhbz#1194529
+- be more sloppy with swap partitions and don't fail without them
+Resolves: rhbz#1165736
+- don't call dinfo binary
+Resolves: rhbz#1167082
+- don't halt the system, if the media check is aborted
+Resolves: rhbz#1167735
+- add boot option to spcecify size of live image rw overlay
+Resolves: rhbz#1183566
+- fix nfs dracut module, to not alter rootok for non nfs root
+Resolves: rhbz#1186004
+- don't fsck nfs 
+Resolves: rhbz#1186699
+- correctly parse multi line kernel command line
+Resolves: rhbz#1186822
+- add hyperv_fb module
+Resolves: rhbz#1187428
+- fixup IPv6 NFS addresses parsing
+Resolves: rhbz#1190098
+- add drbg kernel module in fips mode
+Resolves: rhbz#1193147
+- add all multipath path selector kernel modules
+Resolves: rhbz#1195392
+- don't symlink /var/log /run/log
+Resolves: rhbz#1199645
+- wait for IPv6 link local addresses
+Resolves: rhbz#1209814
+- fix references to grub config file in dracut man page
+Resolves: rhbz#1209962
+- add s390 kernel crypto modules to dracut-fips
+Resolves: rhbz#1215766
+- suppress 'cat: write error: Broken pipe' for lsinitrd
+Resolves: rhbz#1223888
+- enable DNS before routes to avoid race conditions
+Resolves: rhbz#1226004
+- add point-to-point ethernet configured via DHCP
+Resolves: rhbz#1227813
+- add virtio-pci
+Resolves: rhbz#1231716
+- add cache tools for dm-cache usage
+Resolves: rhbz#1234407
+- dracut-functions: move non-function code to dracut-init.sh
+Resolves: rhbz#1235500
+- add more information why a dracut module could not be included
+Resolves: rhbz#1236190
+- fixup iBFT parsing
+Resolves: rhbz#1236610
+
+* Tue Jun 16 2015 Harald Hoyer <harald@redhat.com> 033-248
+- fips: rearrange fips modules due to zlib
+Resolves: rhbz#1216086
+- wait for IPV6 DAD in DHCP PREINIT6
+- wait 5s for an network link carrier to appear
+Resolves: rhbz#1088808
+
 * Tue Apr 28 2015 Harald Hoyer <harald@redhat.com> 033-244
 - fips: add some s390 kernel modules
 Resolves: rhbz#1215766

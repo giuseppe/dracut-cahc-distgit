@@ -1,0 +1,24 @@
+From afbff20e51c34be078db8e55f76c3304f7f6ab6a Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Mon, 18 May 2015 13:43:26 +0200
+Subject: [PATCH] 50drm: add hyperv_fb kernel module
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1192035
+(cherry picked from commit 81b67232dcc796178124676d124d7d91514e4a8f)
+---
+ modules.d/50drm/module-setup.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/modules.d/50drm/module-setup.sh b/modules.d/50drm/module-setup.sh
+index bf33c5b..0e1c5ff 100755
+--- a/modules.d/50drm/module-setup.sh
++++ b/modules.d/50drm/module-setup.sh
+@@ -48,6 +48,8 @@ installkernel() {
+         return 0
+     }
+ 
++    instmods amdkfd hyperv_fb
++
+     for _modname in $(find_kernel_modules_by_path drivers/gpu/drm \
+         | drm_module_filter) ; do
+         # if the hardware is present, include module even if it is not currently loaded,

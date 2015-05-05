@@ -1,0 +1,51 @@
+From efe5301ab91a0e871f2c68faf1f835f306388690 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 1 Jul 2015 14:53:33 +0200
+Subject: [PATCH] network/dhclient-script.sh: add RENEW/REBIND
+
+(cherry picked from commit cf627b20d039c527f4de167e38978d4984e4d727)
+---
+ modules.d/40network/dhclient-script.sh | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/modules.d/40network/dhclient-script.sh b/modules.d/40network/dhclient-script.sh
+index aef94d6..d96f7d9 100755
+--- a/modules.d/40network/dhclient-script.sh
++++ b/modules.d/40network/dhclient-script.sh
+@@ -131,6 +131,17 @@ case $reason in
+         >/tmp/net.$netif.up
+         ;;
+ 
++    RENEW|REBIND)
++        unset lease_time
++        [ -n "$new_dhcp_lease_time" ] && lease_time=$new_dhcp_lease_time
++        [ -n "$new_max_life" ] && lease_time=$new_max_life
++        preferred_lft=$lease_time
++        [ -n "$new_preferred_life" ] && preferred_lft=$new_preferred_life
++        ip -4 addr change ${new_ip_address}/${new_prefix} broadcast ${new_broadcast_address} dev ${interface} \
++           ${lease_time:+valid_lft $lease_time} ${preferred_lft:+preferred_lft ${preferred_lft}} \
++           >/dev/null 2>&1
++        ;;
++
+     BOUND6)
+         echo "dhcp: BOND6 setting $netif"
+         setup_interface6
+@@ -151,6 +162,18 @@ case $reason in
+         echo "[ -f /tmp/net.$netif.did-setup ]" > $hookdir/initqueue/finished/dhclient-$netif.sh
+         >/tmp/net.$netif.up
+         ;;
++
++    RENEW6|REBIND6)
++        unset lease_time
++        [ -n "$new_dhcp_lease_time" ] && lease_time=$new_dhcp_lease_time
++        [ -n "$new_max_life" ] && lease_time=$new_max_life
++        preferred_lft=$lease_time
++        [ -n "$new_preferred_life" ] && preferred_lft=$new_preferred_life
++        ip -6 addr change ${new_ip6_address}/${new_ip6_prefixlen} dev ${interface} scope global \
++           ${lease_time:+valid_lft $lease_time} ${preferred_lft:+preferred_lft ${preferred_lft}} \
++           >/dev/null 2>&1
++        ;;
++
+     *) echo "dhcp: $reason";;
+ esac
+ 

@@ -1,0 +1,38 @@
+From 10e5b14705e5bb732e66e8f08317529aa7bc8017 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 7 May 2015 14:42:10 +0200
+Subject: [PATCH] network:dhcp:wait_for_ipv6_dad() in PREINIT6
+
+---
+ modules.d/40network/dhclient-script.sh | 3 ++-
+ modules.d/40network/net-lib.sh         | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/40network/dhclient-script.sh b/modules.d/40network/dhclient-script.sh
+index 885303a..aef94d6 100755
+--- a/modules.d/40network/dhclient-script.sh
++++ b/modules.d/40network/dhclient-script.sh
+@@ -95,8 +95,9 @@ case $reason in
+         ;;
+ 
+     PREINIT6)
+-        echo "dhcp: PREINIT $netif up"
++        echo "dhcp: PREINIT6 $netif up"
+         linkup $netif
++        wait_for_ipv6_dad $netif
+         ;;
+ 
+     BOUND)
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index 89b1101..220480b 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -522,7 +522,7 @@ wait_for_ipv6_dad() {
+     local cnt=0
+     local li
+     while [ $cnt -lt 500 ]; do
+-        li=$(ip -6 addr show dev $1)
++        li=$(ip -6 addr show dev $1 scope link)
+         strstr "$li" "tentative" || return 0
+         sleep 0.1
+         cnt=$(($cnt+1))

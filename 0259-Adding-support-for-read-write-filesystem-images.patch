@@ -1,0 +1,173 @@
+From b9c6d2b2afa94dcba7129390edb7b1a2eaf2c31c Mon Sep 17 00:00:00 2001
+From: Major Hayden <major@mhtx.net>
+Date: Mon, 4 Aug 2014 10:27:36 -0500
+Subject: [PATCH] Adding support for read/write filesystem images
+
+A user can provide a filesystem image (rootfs.img) inside a compressed
+tarball and that filesystem image will be mounted read/write.  This provides
+some benefits over a device mapper snapshot overlay, especially when the
+live system becomes full.  The boot command line simple needs
+"rd.writable.fsimg" added to utilize this feature.
+
+Additional documentation for this option as well as other live boot
+options is included.
+
+Signed-off-by: Major Hayden <major@mhtx.net>
+(cherry picked from commit 504c0a8feca7d7ef470e4483a68cbaf9cb7df2bf)
+---
+ dracut.cmdline.7.asc                            | 82 ++++++++++++++++++++++++-
+ modules.d/90dmsquash-live/dmsquash-live-root.sh | 16 ++++-
+ modules.d/90dmsquash-live/module-setup.sh       |  2 +-
+ 3 files changed, 96 insertions(+), 4 deletions(-)
+
+diff --git a/dracut.cmdline.7.asc b/dracut.cmdline.7.asc
+index bce8608..0493dcd 100644
+--- a/dracut.cmdline.7.asc
++++ b/dracut.cmdline.7.asc
+@@ -729,10 +729,90 @@ rd.znet=qeth,0.0.0600,0.0.0601,0.0.0602,layer2=1,portname=foo
+ rd.znet=ctc,0.0.0600,0.0.0601,protocol=bar
+ --
+ 
++Booting live images
++~~~~~~~~~~~~~~~~~~~
++Dracut offers multiple options for live booted images:
++
++=====================
++squashfs with read-only filesystem image::: The system will boot with a read
++only filesystem from the squashfs and apply a writable device mapper snapshot
++over the read only filesystem.  Using this method ensures a relatively fast
++boot and lower RAM usage. Users **must be careful** to avoid writing too many
++blocks to the snapshot volume.  Once the blocks of the snapshot are exhaused,
++the live filesystem becomes unusable and requires a reboot.
+++
++The filesystem structure is expected to be:
+++
++[listing]
++--
++squashfs.img          |  Squashfs downloaded via network
++   !(mount)
++   /LiveOS
++       |- ext3fs.img  |  Filesystem image to mount read-only
++            !(mount)
++            /bin      |  Live filesystem
++            /boot     |
++            /dev      |
++            ...       |
++--
+++
++Dracut uses this method of live booting by default.  No additional command line
++options are required other than **root=live:<URL>** to specify the location
++of your squashed filesystem.
+++
++writable filesystem image::: The system will retrieve a compressed filesystem
++image, connect it to a loopback device, and mount it as a writable volume.  More
++RAM is required during boot but the live filesystem is easier to manage if it
++becomes full.  Users can make a filesystem image of any size and that size will
++be maintained when the system boots.
+++
++The filesystem structure is expected to be:
+++
++[listing]
++--
++rootfs.tgz            |  Compressed tarball containing fileystem image
++   !(unpack)
++   /rootfs.img        |  Filesystem image
++      !(mount)
++      /bin            |  Live filesystem
++      /boot           |
++      /dev            |
++      ...             |
++--
+++
++To use this boot option, ensure that **rd.writable_fsimg=1** is in your kernel
++command line and add the **root=live:<URL>** to specify the location
++of your compressed filesystem image tarball.
++=====================
++
++**root=**live:__<url>__::
++Boots a live image retrieved from __<url>__.  Valid handlers: __http, httpd, ftp, tftp__.
+++
++[listing]
++.Example
++--
++root=live:http://example.com/liveboot.img
++root=live:ftp://ftp.example.com/liveboot.img
++--
++
++**rd.live.debug=**1::
++Enables debug output from the live boot process.
++
++**rd.live.dir=**__<path>__::
++Specifies the directory within the squashfs where the ext3fs.img or rootfs.img
++can be found.  By default, this is __LiveOS__.
++
++**rd.writable.fsimg=**1::
++Enables writable filesystem support.  The system will boot with a fully 
++writable filesystem without snapshots __(see notes above about available live boot options)__.
++You can use the **rootflags** option to set mount options for the live
++filesystem as well __(see documentation about rootflags in the **Standard** section above)__.
++
++
+ Plymouth Boot Splash
+ ~~~~~~~~~~~~~~~~~~~~
+ **plymouth.enable=0**::
+-    disable the plymouth bootsplash completly.
++    disable the plymouth bootsplash completely.
+ 
+ **rd.plymouth=0**::
+     disable the plymouth bootsplash only for the initramfs.
+diff --git a/modules.d/90dmsquash-live/dmsquash-live-root.sh b/modules.d/90dmsquash-live/dmsquash-live-root.sh
+index 5705e8d..c6c02c7 100755
+--- a/modules.d/90dmsquash-live/dmsquash-live-root.sh
++++ b/modules.d/90dmsquash-live/dmsquash-live-root.sh
+@@ -4,6 +4,8 @@
+ 
+ type getarg >/dev/null 2>&1 || . /lib/dracut-lib.sh
+ 
++command -v unpack_archive >/dev/null || . /lib/img-lib.sh
++
+ PATH=/usr/sbin:/usr/bin:/sbin:/bin
+ 
+ if getargbool 0 rd.live.debug -n -y rdlivedebug; then
+@@ -26,6 +28,7 @@ getargbool 0 rd.live.ram -d -y live_ram && live_ram="yes"
+ getargbool 0 rd.live.overlay.reset -d -y reset_overlay && reset_overlay="yes"
+ getargbool 0 rd.live.overlay.readonly -d -y readonly_overlay && readonly_overlay="--readonly" || readonly_overlay=""
+ overlay=$(getarg rd.live.overlay -d overlay)
++getargbool 0 rd.writable.fsimg -d -y writable_fsimg && writable_fsimg="yes"
+ 
+ # CD/DVD media check
+ [ -b $livedev ] && fs=$(blkid -s TYPE -o value $livedev)
+@@ -180,9 +183,18 @@ fi
+ 
+ if [ -n "$FSIMG" ] ; then
+     BASE_LOOPDEV=$( losetup -f )
+-    losetup -r $BASE_LOOPDEV $FSIMG
+ 
+-    do_live_from_base_loop
++    if [ -n "$writable_fsimg" ] ; then
++        # mount the provided fileysstem read/write
++        echo "Unpacking live filesystem (may take some time)"
++        unpack_archive $FSIMG /tmp/fsimg/
++        losetup $BASE_LOOPDEV /tmp/fsimg/rootfs.img
++        echo "0 $( blockdev --getsize $BASE_LOOPDEV ) linear $BASE_LOOPDEV 0" | dmsetup create live-rw
++    else
++        # mount the filesystem read-only and add a dm snapshot for writes
++        losetup -r $BASE_LOOPDEV $FSIMG
++        do_live_from_base_loop
++    fi
+ fi
+ 
+ # we might have an embedded fs image on squashfs (compressed live)
+diff --git a/modules.d/90dmsquash-live/module-setup.sh b/modules.d/90dmsquash-live/module-setup.sh
+index c6d1f9d..f52717d 100755
+--- a/modules.d/90dmsquash-live/module-setup.sh
++++ b/modules.d/90dmsquash-live/module-setup.sh
+@@ -11,7 +11,7 @@ check() {
+ depends() {
+     # if dmsetup is not installed, then we cannot support fedora/red hat
+     # style live images
+-    echo dm rootfs-block
++    echo dm rootfs-block img-lib
+     return 0
+ }
+ 

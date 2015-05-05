@@ -1,0 +1,38 @@
+From 2af6708641bb896f0c117ae49906783cfd46f0a8 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 25 Nov 2014 13:44:54 +0100
+Subject: [PATCH] dmsquash-live: do not abort, if user pressed ESC on
+ checkisomd5
+
+If the user pressed ESC while checkisomd5 runs the media check, it will
+exit with "2". Previously that would mean, that the media check was not
+successful.
+
+(cherry picked from commit 370035d561baa6852bcb02161ef736a78b62b336)
+---
+ modules.d/90dmsquash-live/checkisomd5@.service  | 1 +
+ modules.d/90dmsquash-live/dmsquash-live-root.sh | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/90dmsquash-live/checkisomd5@.service b/modules.d/90dmsquash-live/checkisomd5@.service
+index 20e40bd..c4ca10f 100644
+--- a/modules.d/90dmsquash-live/checkisomd5@.service
++++ b/modules.d/90dmsquash-live/checkisomd5@.service
+@@ -11,3 +11,4 @@ StandardInput=tty-force
+ StandardOutput=inherit
+ StandardError=inherit
+ TimeoutSec=0
++SuccessExitStatus=2
+diff --git a/modules.d/90dmsquash-live/dmsquash-live-root.sh b/modules.d/90dmsquash-live/dmsquash-live-root.sh
+index 64abc0b..8d5476c 100755
+--- a/modules.d/90dmsquash-live/dmsquash-live-root.sh
++++ b/modules.d/90dmsquash-live/dmsquash-live-root.sh
+@@ -46,7 +46,7 @@ if [ -n "$check" ]; then
+     else
+         checkisomd5 --verbose $livedev
+     fi
+-    if [ $? -ne 0 ]; then
++    if [ $? -eq 1 ]; then
+         die "CD check failed!"
+         exit 1
+     fi

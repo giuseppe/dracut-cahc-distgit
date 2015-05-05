@@ -1,0 +1,32 @@
+From 968c66b609f1e894d7522d622ddc95d14d49d66d Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 28 May 2015 19:44:55 +0200
+Subject: [PATCH] network: setup gateway after setting up resolv.conf
+
+If a daemon listens for route changes and wants to use the interface
+afterwards, it should be able to resolve DNS
+
+(cherry picked from commit 0b7bfacfeaf86c4001dc2ea46cecdc65c9cdfff1)
+---
+ modules.d/40network/net-lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index de5273c..cfc06fe 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -96,13 +96,13 @@ setup_net() {
+     [ -e "/tmp/net.ifaces" ] && read IFACES < /tmp/net.ifaces
+     [ -z "$IFACES" ] && IFACES="$netif"
+     # run the scripts written by ifup
+-    [ -e /tmp/net.$netif.gw ]            && . /tmp/net.$netif.gw
+     [ -e /tmp/net.$netif.hostname ]      && . /tmp/net.$netif.hostname
+     [ -e /tmp/net.$netif.override ]      && . /tmp/net.$netif.override
+     [ -e /tmp/dhclient.$netif.dhcpopts ] && . /tmp/dhclient.$netif.dhcpopts
+     # set up resolv.conf
+     [ -e /tmp/net.$netif.resolv.conf ] && \
+         cp -f /tmp/net.$netif.resolv.conf /etc/resolv.conf
++    [ -e /tmp/net.$netif.gw ]            && . /tmp/net.$netif.gw
+ 
+     # add static route
+     for _p in $(getargs rd.route); do

@@ -1,0 +1,44 @@
+From 4ec362ce0ba3fc8b10df83c015d88e002f8ccd36 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 1 Jul 2015 14:57:15 +0200
+Subject: [PATCH] network/dhclient-script.sh: make IPv4 DHCP lease time
+ optionally
+
+If bootp is used, no lease time is provided in the packet from the bootp
+server.
+
+(cherry picked from commit 0f89ec314b062a410199251db0356a55b4773173)
+---
+ modules.d/40network/dhclient-script.sh | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/modules.d/40network/dhclient-script.sh b/modules.d/40network/dhclient-script.sh
+index d96f7d9..7972af9 100755
+--- a/modules.d/40network/dhclient-script.sh
++++ b/modules.d/40network/dhclient-script.sh
+@@ -23,7 +23,11 @@ setup_interface() {
+     search=$(printf -- "$new_domain_search")
+     namesrv=$new_domain_name_servers
+     hostname=$new_host_name
+-    lease_time=$new_dhcp_lease_time
++
++    [ -n "$new_dhcp_lease_time" ] && lease_time=$new_dhcp_lease_time
++    [ -n "$new_max_life" ] && lease_time=$new_max_life
++    preferred_lft=$lease_time
++    [ -n "$new_preferred_life" ] && preferred_lft=$new_preferred_life
+ 
+     [ -f /tmp/net.$netif.override ] && . /tmp/net.$netif.override
+ 
+@@ -41,9 +45,9 @@ setup_interface() {
+         fi
+     fi
+ 
+-    ip addr add $ip${mask:+/$mask} ${bcast:+broadcast $bcast} \
+-        valid_lft ${lease_time} preferred_lft ${lease_time} \
+-        dev $netif
++    ip addr add $ip${mask:+/$mask} ${bcast:+broadcast $bcast} dev $netif \
++        ${lease_time:+valid_lft $lease_time} \
++        ${preferred_lft:+preferred_lft ${preferred_lft}}
+ 
+     [ -n "$gw" ] && echo ip route replace default via $gw dev $netif > /tmp/net.$netif.gw
+ 

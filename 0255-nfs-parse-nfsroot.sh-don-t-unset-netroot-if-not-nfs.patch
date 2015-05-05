@@ -1,0 +1,30 @@
+From fe15c6b6cb03f518c79d990b7054792e1d23c7ba Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 20 Mar 2015 15:48:15 +0100
+Subject: [PATCH] nfs/parse-nfsroot.sh: don't unset netroot, if not nfs
+
+(cherry picked from commit afcc697cb8c588eef68bb635f790991411209089)
+---
+ modules.d/95nfs/parse-nfsroot.sh | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/95nfs/parse-nfsroot.sh b/modules.d/95nfs/parse-nfsroot.sh
+index 9fc2a8c..a84cd43 100755
+--- a/modules.d/95nfs/parse-nfsroot.sh
++++ b/modules.d/95nfs/parse-nfsroot.sh
+@@ -59,7 +59,14 @@ fi
+ 
+ case "$netroot" in
+     /dev/nfs) netroot=nfs;;
+-    /dev/*) unset netroot; return;;
++    /dev/*)
++        if [ -n "$oldnetroot" ]; then
++            netroot="$oldnetroot"
++        else
++            unset netroot
++        fi
++	return
++	;;
+     # LEGACY: root=<server-ip>:/<path
+     [0-9]*:/*|[0-9]*\.[0-9]*\.[0-9]*[!:]|/*)
+         netroot=nfs:$netroot;;

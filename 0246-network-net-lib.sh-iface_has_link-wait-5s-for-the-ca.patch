@@ -1,0 +1,36 @@
+From e863891c154419932617e101ef5549dda41f6e62 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 7 May 2015 14:47:58 +0200
+Subject: [PATCH] network/net-lib.sh:iface_has_link() wait 5s for the carrier
+ to appear
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1088808
+---
+ modules.d/40network/net-lib.sh | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/40network/net-lib.sh b/modules.d/40network/net-lib.sh
+index 220480b..1f77a15 100755
+--- a/modules.d/40network/net-lib.sh
++++ b/modules.d/40network/net-lib.sh
+@@ -556,13 +556,18 @@ hostname() {
+ }
+ 
+ iface_has_link() {
++    local cnt=0
+     local interface="$1" flags=""
+     [ -n "$interface" ] || return 2
+     interface="/sys/class/net/$interface"
+     [ -d "$interface" ] || return 2
+     linkup "$1"
+-    [ "$(cat $interface/carrier)" = 1 ] || return 1
+-    # XXX Do we need to reset the flags here? anaconda never bothered..
++    while [ $cnt -lt 50 ]; do
++        [ "$(cat $interface/carrier)" = 1 ] && return 0
++        sleep 0.1
++        cnt=$(($cnt+1))
++    done
++    return 1
+ }
+ 
+ find_iface_with_link() {

@@ -1,0 +1,43 @@
+From 34b49be88219519f678f665987787784751b11bd Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 19 Mar 2015 12:33:03 +0100
+Subject: [PATCH] base/dracut-lib.sh: read /proc/cmdline with multiple lines
+
+also parse cmdline files without an ending newline
+
+(cherry picked from commit 9f0878540bdc8054dc2b45427eed957b9bd25f2d)
+---
+ modules.d/99base/dracut-lib.sh | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index 69f7079..3ffbb02 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -115,6 +115,7 @@ getcmdline() {
+     local _i
+     local CMDLINE_ETC_D
+     local CMDLINE_ETC
++    local CMDLINE_PROC
+     unset _line
+ 
+     if [ -e /etc/cmdline ]; then
+@@ -124,13 +125,15 @@ getcmdline() {
+     fi
+     for _i in /etc/cmdline.d/*.conf; do
+         [ -e "$_i" ] || continue
+-        while read -r _line; do
++        while read -r _line || [ -n "$_line" ]; do
+             CMDLINE_ETC_D="$CMDLINE_ETC_D $_line";
+         done <"$_i";
+     done
+     if [ -e /proc/cmdline ]; then
+-        read -r CMDLINE </proc/cmdline;
+-        CMDLINE="$CMDLINE_ETC_D $CMDLINE_ETC $CMDLINE"
++        while read -r _line || [ -n "$_line" ]; do
++            CMDLINE_PROC="$CMDLINE_PROC $_line"
++        done </proc/cmdline;
++        CMDLINE="$CMDLINE_ETC_D $CMDLINE_ETC $CMDLINE_PROC"
+     fi
+     printf "%s" "$CMDLINE"
+ }

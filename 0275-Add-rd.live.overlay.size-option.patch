@@ -1,0 +1,32 @@
+From ccebb4c045a7cc6c22977c9b23b95108030901ea Mon Sep 17 00:00:00 2001
+From: Radek Vykydal <rvykydal@redhat.com>
+Date: Tue, 13 Jan 2015 15:14:10 +0100
+Subject: [PATCH] Add rd.live.overlay.size option
+
+(cherry picked from commit 18423f7951de7b9cb4007438b58b6067aa6f2e93)
+---
+ modules.d/90dmsquash-live/dmsquash-live-root.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/90dmsquash-live/dmsquash-live-root.sh b/modules.d/90dmsquash-live/dmsquash-live-root.sh
+index 8d5476c..6631d9a 100755
+--- a/modules.d/90dmsquash-live/dmsquash-live-root.sh
++++ b/modules.d/90dmsquash-live/dmsquash-live-root.sh
+@@ -29,6 +29,8 @@ getargbool 0 rd.live.overlay.reset -d -y reset_overlay && reset_overlay="yes"
+ getargbool 0 rd.live.overlay.readonly -d -y readonly_overlay && readonly_overlay="--readonly" || readonly_overlay=""
+ overlay=$(getarg rd.live.overlay -d overlay)
+ getargbool 0 rd.writable.fsimg -d -y writable_fsimg && writable_fsimg="yes"
++overlay_size=$(getarg rd.live.overlay.size=)
++[ -z "$overlay_size" ] && overlay_size=512
+ 
+ getargbool 0 rd.live.overlay.thin && thin_snapshot="yes"
+ 
+@@ -129,7 +131,7 @@ do_live_overlay() {
+             sleep 5
+         fi
+ 
+-        dd if=/dev/null of=/overlay bs=1024 count=1 seek=$((512*1024)) 2> /dev/null
++        dd if=/dev/null of=/overlay bs=1024 count=1 seek=$((overlay_size*1024)) 2> /dev/null
+         if [ -n "$setup" -a -n "$readonly_overlay" ]; then
+             RO_OVERLAY_LOOPDEV=$( losetup -f )
+             losetup $RO_OVERLAY_LOOPDEV /overlay

@@ -1,0 +1,37 @@
+From a218f3253c3c39c58d60d1a6696facf88f3e4be0 Mon Sep 17 00:00:00 2001
+From: Chao Fan <cfan@redhat.com>
+Date: Wed, 20 May 2015 18:07:14 +0800
+Subject: [PATCH] Change the fs_passno of nfs to 0
+
+There is a bug that kdump-initrd contains entry requesting nfs dump
+filesystem to get filesystemchecked. And there is an erro message said
+that nfs need be checked. But there's no fsck for nfs utility, e.g
+fsck.nfs like other file system. Whatever fs_passno 0 or 2 are passed,
+no fsck is executed at all for nfs mount.But in dracut, set it to be 2
+always, so the erro message appear and it should be set to 0.
+
+In the fstab,the sixth variable fs_passno stands for that the device need
+checked or not,and dracut set it to "2".To fix this issue, it should
+be "0" when the device is nfs.The third variable stands for the type of
+the filesystem and we can use it to judge whether the device is nfs.
+So when the third variable of fstab contains "nfs", the sixth variable
+fs_passno should be set to "0".
+
+Signed-off-by: Chao Fan <cfan@redhat.com>
+(cherry picked from commit 3586a7aa770016aeadb23257c27916fd009bec42)
+---
+ dracut.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dracut.sh b/dracut.sh
+index 0e60022..cc22a14 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -1348,6 +1348,7 @@ if [[ $kernel_only != yes ]]; then
+         [ -z "${line[3]}" ] && line[3]="defaults"
+         [ -z "${line[4]}" ] && line[4]="0"
+         [ -z "${line[5]}" ] && line[5]="2"
++        strstr "${line[2]}" "nfs" && line[5]="0"
+         echo "${line[@]}" >> "${initdir}/etc/fstab"
+     done
+ 
