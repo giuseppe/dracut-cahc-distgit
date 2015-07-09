@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 283%{?dist}
+Release: 284%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -311,6 +311,7 @@ Patch279: 0279-lsinitrd.sh-ignore-cat-write-error-Broken-pipe.patch
 Patch280: 0280-network-setup-gateway-after-setting-up-resolv.conf.patch
 Patch281: 0281-Add-support-for-ethernet-point-to-point-connections-.patch
 Patch282: 0282-lvm-add-cache-tools-for-dm-cache-usage.patch
+Patch283: 0283-crypt-install-drbg-unconditionally-in-hostonly-mode.patch
 
 
 BuildRequires: bash git
@@ -738,6 +739,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Jul 09 2015 Harald Hoyer <harald@redhat.com> 033-284
+- unconditionally install the drbg module in hostonly mode
+Resolves: rhbz#1240438
+
 * Fri Jul 03 2015 Harald Hoyer <harald@redhat.com> 033-283
 - add support for "x-initrd.mount"
 Resolves: rhbz#1080405
