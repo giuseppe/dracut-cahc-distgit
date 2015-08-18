@@ -1,0 +1,47 @@
+From 0c0abf97ccc2306a7089d53a0a1f92e80b2e733c Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 18 Aug 2015 12:25:53 +0200
+Subject: [PATCH] udev-rules: install 40-redhat.rules
+
+---
+ modules.d/95udev-rules/module-setup.sh | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
+
+diff --git a/modules.d/95udev-rules/module-setup.sh b/modules.d/95udev-rules/module-setup.sh
+index fdea8c6..e0f2e38 100755
+--- a/modules.d/95udev-rules/module-setup.sh
++++ b/modules.d/95udev-rules/module-setup.sh
+@@ -26,15 +26,26 @@ install() {
+         exit 1
+     fi
+ 
+-    inst_rules 50-udev-default.rules 60-persistent-storage.rules \
+-        61-persistent-storage-edd.rules 80-drivers.rules 95-udev-late.rules \
+-        60-pcmcia.rules \
+-        50-udev.rules 95-late.rules \
++    inst_rules \
++        40-redhat.rules \
+         50-firmware.rules \
+-        70-uaccess.rules 71-seat.rules 73-seat-late.rules \
+-        75-net-description.rules 80-net-name-slot.rules \
++        50-udev-default.rules \
++        50-udev.rules \
+         "$moddir/59-persistent-storage.rules" \
+-        "$moddir/61-persistent-storage.rules"
++        /59-persistent-storage.rules \
++        60-pcmcia.rules \
++        60-persistent-storage.rules \
++        61-persistent-storage-edd.rules \
++        "$moddir/61-persistent-storage.rules" \
++        70-uaccess.rules \
++        71-seat.rules \
++        73-seat-late.rules \
++        75-net-description.rules \
++        80-drivers.rules \
++        80-net-name-slot.rules \
++        95-late.rules \
++        95-udev-late.rules \
++        ${NULL}
+ 
+     prepare_udev_rules 59-persistent-storage.rules 61-persistent-storage.rules
+     # debian udev rules

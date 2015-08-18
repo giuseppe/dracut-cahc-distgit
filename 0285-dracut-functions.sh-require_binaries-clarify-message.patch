@@ -1,0 +1,29 @@
+From 1db0d1f78ba67e61ca3fafbec44f8bc79c75eb94 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 20 May 2014 13:23:43 +0200
+Subject: [PATCH] dracut-functions.sh:require_binaries() clarify message
+
+The info message written by require_binaries() was a bit frighten to
+users. So just be a little bit more verbose.
+
+If you have ideas on how to improve the message for these "soft"
+dependency modules, please submit patches.
+
+(cherry picked from commit 0fa5dbedc5b222435f51f7460a81232ee120c4e1)
+---
+ dracut-functions.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index 65ccebe..585b683 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -44,7 +44,7 @@ require_binaries() {
+ 
+     for cmd in "$@"; do
+         if ! find_binary "$cmd" &>/dev/null; then
+-            dinfo "$_module_name: Could not find command '$cmd'!"
++            dinfo "dracut module '${_module_name#[0-9][0-9]}' will not be installed, because command '$cmd' could not be found!"
+             ((_ret++))
+         fi
+     done

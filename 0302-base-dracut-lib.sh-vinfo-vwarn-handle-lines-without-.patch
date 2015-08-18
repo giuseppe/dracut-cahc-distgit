@@ -1,0 +1,29 @@
+From ad565584a3b7d5795be80aee34307f1752a093b4 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 18 Aug 2015 11:50:40 +0200
+Subject: [PATCH] base/dracut-lib.sh:vinfo/vwarn handle lines without newline
+
+---
+ modules.d/99base/dracut-lib.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index 3ffbb02..b6593a0 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -67,13 +67,13 @@ else
+ fi
+ 
+ vwarn() {
+-    while read line; do
++    while read line || [ -n "$line" ]; do
+         warn $line;
+     done
+ }
+ 
+ vinfo() {
+-    while read line; do
++    while read line || [ -n "$line" ]; do
+         info $line;
+     done
+ }

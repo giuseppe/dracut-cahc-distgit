@@ -1,0 +1,24 @@
+From 88329f6b4f4581a50842d1fe82f11cb052e7f100 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Sat, 15 Aug 2015 13:21:29 +0200
+Subject: [PATCH] iscsi/iscsiroot.sh: systemd-run does not understand
+ --no-block
+
+not yet on RHEL-7
+---
+ modules.d/95iscsi/iscsiroot.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/95iscsi/iscsiroot.sh b/modules.d/95iscsi/iscsiroot.sh
+index 9452afe..2ac9ed3 100755
+--- a/modules.d/95iscsi/iscsiroot.sh
++++ b/modules.d/95iscsi/iscsiroot.sh
+@@ -186,7 +186,7 @@ handle_netroot()
+         is_active=$?
+         if [ $is_active -ne 0 ]; then
+             if [ "$status" != "activating" ] && ! systemctl is-failed "$netroot_enc" >/dev/null 2>&1; then
+-                systemd-run --no-block --service-type=oneshot --remain-after-exit --quiet \
++                systemd-run --service-type=oneshot --remain-after-exit --quiet \
+                             --description="Login iSCSI Target $iscsi_target_name" \
+                             --unit="$netroot_enc" -- \
+                             $(command -v iscsistart) \

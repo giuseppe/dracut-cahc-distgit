@@ -1,0 +1,22 @@
+From 415d0c68ab1aaff7892e2187f8a18341bfeef796 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Sat, 15 Aug 2015 15:42:51 +0200
+Subject: [PATCH] dracut-logger.sh: log also rest of line without return
+
+---
+ dracut-logger.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut-logger.sh b/dracut-logger.sh
+index 70b0da4..ffa5616 100755
+--- a/dracut-logger.sh
++++ b/dracut-logger.sh
+@@ -367,7 +367,7 @@ dlog() {
+     if (( $# > 1 )); then
+         _do_dlog "$@"
+     else
+-        while read line; do
++        while read line || [ -n "$line" ]; do
+             _do_dlog "$1" "$line"
+         done
+     fi

@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 284%{?dist}
+Release: 314%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -312,6 +312,36 @@ Patch280: 0280-network-setup-gateway-after-setting-up-resolv.conf.patch
 Patch281: 0281-Add-support-for-ethernet-point-to-point-connections-.patch
 Patch282: 0282-lvm-add-cache-tools-for-dm-cache-usage.patch
 Patch283: 0283-crypt-install-drbg-unconditionally-in-hostonly-mode.patch
+Patch284: 0284-dracut-functions.sh-degrade-info-about-missing-binar.patch
+Patch285: 0285-dracut-functions.sh-require_binaries-clarify-message.patch
+Patch286: 0286-dracut-systemd-dracut-initqueue.sh-be-verbose-about-.patch
+Patch287: 0287-nfs-parse-nfsroot.sh-silence-useless-warning-if-netr.patch
+Patch288: 0288-network-parse-ip-opts.sh-assume-rd.neednet-for-multi.patch
+Patch289: 0289-systemd-add-systemd-run-and-systemd-escape.patch
+Patch290: 0290-network-net-lib.sh-add-is_ip.patch
+Patch291: 0291-iscsi-integrate-with-systemd-and-improve-robustness.patch
+Patch292: 0292-dracut.cmdline.7.asc-document-rd.iscsi.waitnet-and-r.patch
+Patch293: 0293-iscsi-parse-iscsiroot.sh-use-iBFT-initiator-name.patch
+Patch294: 0294-iscsi-iscsiroot.sh-handle-timeout-with-all-interface.patch
+Patch295: 0295-TEST-30-ISCSI-dhcpd.conf-set-the-LUN.patch
+Patch296: 0296-TEST-30-ISCSI-switch-to-scsi-target-utils.patch
+Patch297: 0297-iscsi-iscsiroot.sh-systemd-run-does-not-understand-n.patch
+Patch298: 0298-iscsi-module-setup.sh-iscsid-need-var-lib-iscsi.patch
+Patch299: 0299-TEST-30-ISCSI-fix-test-to-run-with-new-iscsi.patch
+Patch300: 0300-dracut-logger.sh-log-also-rest-of-line-without-retur.patch
+Patch301: 0301-iscsi-handle-timeout-case-better.patch
+Patch302: 0302-base-dracut-lib.sh-vinfo-vwarn-handle-lines-without-.patch
+Patch303: 0303-systemd-dracut-cmdline.sh-print-out-cmdline-in-one-l.patch
+Patch304: 0304-network-ifup.sh-let-dhcp-client-run-in-the-backgroun.patch
+Patch305: 0305-network-ifup.sh-arping-for-static-IPv4-addresses.patch
+Patch306: 0306-network-parse-ip-opts.sh-bind-enx-interface-to-the-M.patch
+Patch307: 0307-udev-rules-install-40-redhat.rules.patch
+Patch308: 0308-fcoe-cleanup-lldpad.patch
+Patch309: 0309-network-net-lib.sh-ibft-unset-gateway-or-dns-if-set-.patch
+Patch310: 0310-network-dhclient-exit-arping-immediatly-if-we-get-an.patch
+Patch311: 0311-dmraid-only-scan-once-because-of-one-device.patch
+Patch312: 0312-test-TEST-04-FULL-SYSTEMD-create-root.sh-modprobe-bt.patch
+Patch313: 0313-TEST-15-BTRFS-load-btrfs-module.patch
 
 
 BuildRequires: bash git
@@ -739,6 +769,22 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 18 2015 Harald Hoyer <harald@redhat.com> 033-314
+- fixed iSCSI handling
+Resolves: rhbz#1114966 rhbz#1189891
+- check for duplicate IPv4 address
+Resolves: rhbz#1202553
+- wait udev to be settled before transitioning to the real root
+Resolves: rhbz#1231373
+- support ip= parameter with enx* interface for autobinding to MAC
+Resolves: rhbz#1241102
+- include 40-redhat.rules in the initramfs
+Resolves: rhbz#1241547
+- degrade missing binaries for modules to info level
+Resolves: rhbz#1242845
+- cleanup lldpad cleanly to help out in state transition from initramfs
+Resolves: rhbz#1246217
+
 * Thu Jul 09 2015 Harald Hoyer <harald@redhat.com> 033-284
 - unconditionally install the drbg module in hostonly mode
 Resolves: rhbz#1240438

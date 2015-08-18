@@ -1,0 +1,21 @@
+From fc0ead21c9cc4aaf569f61dda998d81cab2a18c9 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 13 Aug 2015 15:24:53 +0200
+Subject: [PATCH] systemd: add systemd-run and systemd-escape
+
+---
+ modules.d/98systemd/module-setup.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules.d/98systemd/module-setup.sh b/modules.d/98systemd/module-setup.sh
+index d0271f1..a656fe0 100755
+--- a/modules.d/98systemd/module-setup.sh
++++ b/modules.d/98systemd/module-setup.sh
+@@ -123,6 +123,7 @@ install() {
+         \
+         $tmpfilesdir/systemd.conf \
+         \
++        systemd-run systemd-escape \
+         journalctl systemctl echo swapoff systemd-cgls systemd-tmpfiles
+ 
+     inst_multiple -o \

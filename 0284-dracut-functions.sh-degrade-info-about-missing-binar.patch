@@ -1,0 +1,33 @@
+From a6470f332f1b522f8d1c159a9c15b520d35ef6d4 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Wed, 5 Mar 2014 12:23:49 +0100
+Subject: [PATCH] dracut-functions.sh: degrade info about missing binaries to
+ info
+
+(cherry picked from commit 83a3cba777efb71be6c368a65e2ed5794395168e)
+---
+ dracut-functions.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/dracut-functions.sh b/dracut-functions.sh
+index 973e231..65ccebe 100755
+--- a/dracut-functions.sh
++++ b/dracut-functions.sh
+@@ -44,7 +44,7 @@ require_binaries() {
+ 
+     for cmd in "$@"; do
+         if ! find_binary "$cmd" &>/dev/null; then
+-            dwarning "$_module_name: Could not find command '$cmd'!"
++            dinfo "$_module_name: Could not find command '$cmd'!"
+             ((_ret++))
+         fi
+     done
+@@ -68,7 +68,7 @@ require_any_binary() {
+     done
+ 
+     if (( $_ret != 0 )); then
+-        dwarning "$_module_name: Could not find any command of '$@'!"
++        dinfo "$_module_name: Could not find any command of '$@'!"
+         return 1
+     fi
+ 
