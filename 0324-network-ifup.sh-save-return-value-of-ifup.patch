@@ -1,0 +1,30 @@
+From b4006781e8a59dc69a0dd3836fce137f08b23001 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 25 Aug 2015 11:20:30 +0200
+Subject: [PATCH] network/ifup.sh: save return value of ifup
+
+---
+ modules.d/40network/ifup.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/40network/ifup.sh b/modules.d/40network/ifup.sh
+index e51b453..2562af6 100755
+--- a/modules.d/40network/ifup.sh
++++ b/modules.d/40network/ifup.sh
+@@ -396,6 +396,7 @@ for p in $(getargs ip=); do
+                 do_static ;;
+         esac
+     done
++    ret=$?
+ 
+     > /tmp/net.${netif}.up
+ 
+@@ -403,7 +404,7 @@ for p in $(getargs ip=); do
+         dhcp|on|any|dhcp6)
+             ;;
+         *)
+-            if [ $? -eq 0 ]; then
++            if [ $ret -eq 0 ]; then
+                 setup_net $netif
+                 source_hook initqueue/online $netif
+                 if [ -z "$manualup" ]; then

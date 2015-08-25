@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 314%{?dist}
+Release: 328%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -342,6 +342,20 @@ Patch310: 0310-network-dhclient-exit-arping-immediatly-if-we-get-an.patch
 Patch311: 0311-dmraid-only-scan-once-because-of-one-device.patch
 Patch312: 0312-test-TEST-04-FULL-SYSTEMD-create-root.sh-modprobe-bt.patch
 Patch313: 0313-TEST-15-BTRFS-load-btrfs-module.patch
+Patch314: 0314-network-ifup.sh-do_static-error-out-if-interface-cou.patch
+Patch315: 0315-network-ifup.sh-do_static-error-out-if-IP-is-already.patch
+Patch316: 0316-crypt-module-setup.sh-fixed-parsing-crypttab-with-no.patch
+Patch317: 0317-TEST-30-ISCSI-add-rd.scsi.firmware.patch
+Patch318: 0318-initqueue-add-online-queue.patch
+Patch319: 0319-dracut.spec-raise-systemd-requirement-to-219.patch
+Patch320: 0320-iscsi-iscsiroot.sh-handle-firmware-in-online-queue.patch
+Patch321: 0321-iscsi-parse-iscsiroot.sh-do-not-modify-netroot.patch
+Patch322: 0322-iscsi-parse-iscsiroot.sh-handle-firmware-in-online-q.patch
+Patch323: 0323-iscsi-parse-iscsiroot.sh-restart-iscsid-with-try-res.patch
+Patch324: 0324-network-ifup.sh-save-return-value-of-ifup.patch
+Patch325: 0325-network-also-mark-interfaces-up-with-their-MAC.patch
+Patch326: 0326-network-ifup.sh-only-use-dhcp-on-unknown-interfaces-.patch
+Patch327: 0327-multipath-add-hostonly-multipath.conf.patch
 
 
 BuildRequires: bash git
@@ -408,7 +422,7 @@ Requires: kpartx
 
 %if 0%{?fedora} || 0%{?rhel} > 6
 Requires: util-linux >= 2.21
-Requires: systemd >= 199
+Requires: systemd >= 219
 Requires: procps-ng
 Conflicts: grubby < 8.23
 %else
@@ -769,6 +783,15 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Aug 25 2015 Harald Hoyer <harald@redhat.com> 033-328
+- add hostonly multipath.conf (to save memory in kdump)
+Resolves: rhbz#994702
+- increase version number of systemd dependency
+- fixed more iSCSI handling
+Resolves: rhbz#1114966 rhbz#1189891
+- check for duplicate IPv4 address
+Resolves: rhbz#1202553
+
 * Tue Aug 18 2015 Harald Hoyer <harald@redhat.com> 033-314
 - fixed iSCSI handling
 Resolves: rhbz#1114966 rhbz#1189891

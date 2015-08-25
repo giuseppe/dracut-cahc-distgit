@@ -1,0 +1,23 @@
+From 7c24815034241e490422691b5f18671c4b9812a9 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 25 Aug 2015 11:37:16 +0200
+Subject: [PATCH] network/ifup.sh: only use dhcp on unknown interfaces for
+ ip=dhcp
+
+---
+ modules.d/40network/ifup.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules.d/40network/ifup.sh b/modules.d/40network/ifup.sh
+index d944126..005c2cc 100755
+--- a/modules.d/40network/ifup.sh
++++ b/modules.d/40network/ifup.sh
+@@ -433,7 +433,7 @@ if [ ! -e /tmp/net.${netif}.up ]; then
+     if getargs 'ip=dhcp6'; then
+         load_ipv6
+         do_dhcp -6
+-    else
++    elif getargs 'ip=dhcp'; then
+         do_dhcp -4
+     fi
+ fi

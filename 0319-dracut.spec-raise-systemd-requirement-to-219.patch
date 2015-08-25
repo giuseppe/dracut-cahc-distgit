@@ -1,0 +1,23 @@
+From 35f40b75e444adae3b3c9bb610d635d9c17a753d Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 25 Aug 2015 11:13:38 +0200
+Subject: [PATCH] dracut.spec: raise systemd requirement to >= 219
+
+needs systemd-escape
+---
+ dracut.spec | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dracut.spec b/dracut.spec
+index d22f586..ad737c2 100644
+--- a/dracut.spec
++++ b/dracut.spec
+@@ -94,7 +94,7 @@ Requires: kpartx
+ 
+ %if 0%{?fedora} || 0%{?rhel} > 6
+ Requires: util-linux >= 2.21
+-Requires: systemd >= 199
++Requires: systemd >= 219
+ Requires: procps-ng
+ Conflicts: grubby < 8.23
+ %else
