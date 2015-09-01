@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 328%{?dist}
+Release: 333%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -356,6 +356,11 @@ Patch324: 0324-network-ifup.sh-save-return-value-of-ifup.patch
 Patch325: 0325-network-also-mark-interfaces-up-with-their-MAC.patch
 Patch326: 0326-network-ifup.sh-only-use-dhcp-on-unknown-interfaces-.patch
 Patch327: 0327-multipath-add-hostonly-multipath.conf.patch
+Patch328: 0328-cms-cmsifup.sh-do-not-use-ifup-m.patch
+Patch329: 0329-network-ifup-fix-warning-about-not-bringing-interfac.patch
+Patch330: 0330-network-net-lib.sh-fix-wait_for_if_up.patch
+Patch331: 0331-network-net-lib.sh-fix-IPv6-route-parsing.patch
+Patch332: 0332-network-ifup-do-DHCP-for-BOOTDEV.patch
 
 
 BuildRequires: bash git
@@ -783,6 +788,14 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Sep 01 2015 Harald Hoyer <harald@redhat.com> 033-333
+- fixed more iSCSI handling
+Resolves: rhbz#1114966 rhbz#1189891
+- fixed "ip=ibft"
+Resolves: rhbz#1256814
+- fixed cmsifup and s390 ifup
+Resolves: rhbz#1245660
+
 * Tue Aug 25 2015 Harald Hoyer <harald@redhat.com> 033-328
 - add hostonly multipath.conf (to save memory in kdump)
 Resolves: rhbz#994702
