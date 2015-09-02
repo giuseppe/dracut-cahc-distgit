@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 334%{?dist}
+Release: 335%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -362,6 +362,7 @@ Patch330: 0330-network-net-lib.sh-fix-wait_for_if_up.patch
 Patch331: 0331-network-net-lib.sh-fix-IPv6-route-parsing.patch
 Patch332: 0332-network-ifup-do-DHCP-for-BOOTDEV.patch
 Patch333: 0333-qemu-add-spapr-vscsi-kernel-module.patch
+Patch334: 0334-livenet-livenetroot.sh-fixed-error-condition.patch
 
 
 BuildRequires: bash git
@@ -789,6 +790,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Sep 02 2015 Harald Hoyer <harald@redhat.com> 033-335
+- fixed livenet exit code
+Related: rhbz#1256814
+
 * Wed Sep 02 2015 Harald Hoyer <harald@redhat.com> 033-334
 - add spapr-vscsi kernel module for qemu
 Resolves: rhbz#1245959
