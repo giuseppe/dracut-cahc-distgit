@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 333%{?dist}
+Release: 334%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -361,6 +361,7 @@ Patch329: 0329-network-ifup-fix-warning-about-not-bringing-interfac.patch
 Patch330: 0330-network-net-lib.sh-fix-wait_for_if_up.patch
 Patch331: 0331-network-net-lib.sh-fix-IPv6-route-parsing.patch
 Patch332: 0332-network-ifup-do-DHCP-for-BOOTDEV.patch
+Patch333: 0333-qemu-add-spapr-vscsi-kernel-module.patch
 
 
 BuildRequires: bash git
@@ -788,6 +789,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Sep 02 2015 Harald Hoyer <harald@redhat.com> 033-334
+- add spapr-vscsi kernel module for qemu
+Resolves: rhbz#1245959
+
 * Tue Sep 01 2015 Harald Hoyer <harald@redhat.com> 033-333
 - fixed more iSCSI handling
 Resolves: rhbz#1114966 rhbz#1189891
