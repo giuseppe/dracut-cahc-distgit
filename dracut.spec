@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 337%{?dist}
+Release: 338%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -365,6 +365,7 @@ Patch333: 0333-qemu-add-spapr-vscsi-kernel-module.patch
 Patch334: 0334-livenet-livenetroot.sh-fixed-error-condition.patch
 Patch335: 0335-iscsi-parse-iscsiroot.sh-only-set-initiator-name-if-.patch
 Patch336: 0336-network-move-ip-ibft-handling-to-network-module.patch
+Patch337: 0337-dracut.usage.asc-update-man-page.patch
 
 
 BuildRequires: bash git
@@ -792,6 +793,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Sep 03 2015 Harald Hoyer <harald@redhat.com> 033-338
+- updated the man page for grub config file modifications
+Resolves: rhbz#1209962
+
 * Thu Sep 03 2015 Harald Hoyer <harald@redhat.com> 033-337
 - more "ip=ibft" fixes
 Resolves: rhbz#1256814
