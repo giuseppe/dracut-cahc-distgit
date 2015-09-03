@@ -1,0 +1,48 @@
+From b334c83e4abdc1dd87276fa7de4617cd349a5a4f Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 3 Sep 2015 12:41:44 +0200
+Subject: [PATCH] network: move "ip=ibft" handling to network module
+
+---
+ modules.d/40network/module-setup.sh  | 1 +
+ modules.d/40network/parse-ibft.sh    | 2 ++
+ modules.d/95iscsi/parse-iscsiroot.sh | 2 +-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/40network/module-setup.sh b/modules.d/40network/module-setup.sh
+index 3134b5f..6cbbe8f 100755
+--- a/modules.d/40network/module-setup.sh
++++ b/modules.d/40network/module-setup.sh
+@@ -64,6 +64,7 @@ installkernel() {
+         =drivers/net/team \
+         =drivers/net/ethernet \
+         ecb arc4 bridge stp llc ipv6 bonding 8021q af_packet virtio_net
++    hostonly="" instmods iscsi_ibft crc32c iscsi_boot_sysfs
+ }
+ 
+ install() {
+diff --git a/modules.d/40network/parse-ibft.sh b/modules.d/40network/parse-ibft.sh
+index 643313d..6f7f4e9 100755
+--- a/modules.d/40network/parse-ibft.sh
++++ b/modules.d/40network/parse-ibft.sh
+@@ -6,5 +6,7 @@ command -v getarg >/dev/null          || . /lib/dracut-lib.sh
+ command -v ibft_to_cmdline >/dev/null || . /lib/net-lib.sh
+ 
+ if getargbool 0 rd.iscsi.ibft -d "ip=ibft"; then
++    modprobe -b -q iscsi_boot_sysfs 2>/dev/null
++    modprobe -b -q iscsi_ibft
+     ibft_to_cmdline
+ fi
+diff --git a/modules.d/95iscsi/parse-iscsiroot.sh b/modules.d/95iscsi/parse-iscsiroot.sh
+index 6aa14f5..9546f12 100755
+--- a/modules.d/95iscsi/parse-iscsiroot.sh
++++ b/modules.d/95iscsi/parse-iscsiroot.sh
+@@ -71,7 +71,7 @@ if [ -n "$iscsiroot" ] ; then
+ fi
+ 
+ # iscsi_firmware does not need argument checking
+-if [ -n "$iscsi_firmware" ] || getargbool 0 rd.iscsi.ibft -d "ip=ibft"; then
++if [ -n "$iscsi_firmware" ]; then
+     if [ "$root" != "dhcp" ] && [ "$netroot" != "dhcp" ]; then
+         [ -z "$netroot" ] && netroot=iscsi:
+     fi

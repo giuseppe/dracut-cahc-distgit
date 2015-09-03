@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 335%{?dist}
+Release: 337%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -363,6 +363,8 @@ Patch331: 0331-network-net-lib.sh-fix-IPv6-route-parsing.patch
 Patch332: 0332-network-ifup-do-DHCP-for-BOOTDEV.patch
 Patch333: 0333-qemu-add-spapr-vscsi-kernel-module.patch
 Patch334: 0334-livenet-livenetroot.sh-fixed-error-condition.patch
+Patch335: 0335-iscsi-parse-iscsiroot.sh-only-set-initiator-name-if-.patch
+Patch336: 0336-network-move-ip-ibft-handling-to-network-module.patch
 
 
 BuildRequires: bash git
@@ -790,6 +792,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Sep 03 2015 Harald Hoyer <harald@redhat.com> 033-337
+- more "ip=ibft" fixes
+Resolves: rhbz#1256814
+
 * Wed Sep 02 2015 Harald Hoyer <harald@redhat.com> 033-335
 - fixed livenet exit code
 Related: rhbz#1256814
