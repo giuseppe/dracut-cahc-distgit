@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 338%{?dist}
+Release: 339%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -366,6 +366,7 @@ Patch334: 0334-livenet-livenetroot.sh-fixed-error-condition.patch
 Patch335: 0335-iscsi-parse-iscsiroot.sh-only-set-initiator-name-if-.patch
 Patch336: 0336-network-move-ip-ibft-handling-to-network-module.patch
 Patch337: 0337-dracut.usage.asc-update-man-page.patch
+Patch338: 0338-network-dhclient-script.sh-fix-RENEW.patch
 
 
 BuildRequires: bash git
@@ -793,6 +794,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Sep 08 2015 Harald Hoyer <harald@redhat.com> 033-339
+- fixed dhcp lease RENEW
+Resolves: rhbz#1144277
+
 * Thu Sep 03 2015 Harald Hoyer <harald@redhat.com> 033-338
 - updated the man page for grub config file modifications
 Resolves: rhbz#1209962
