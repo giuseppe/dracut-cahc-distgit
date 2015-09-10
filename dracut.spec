@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 339%{?dist}
+Release: 343%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -367,6 +367,10 @@ Patch335: 0335-iscsi-parse-iscsiroot.sh-only-set-initiator-name-if-.patch
 Patch336: 0336-network-move-ip-ibft-handling-to-network-module.patch
 Patch337: 0337-dracut.usage.asc-update-man-page.patch
 Patch338: 0338-network-dhclient-script.sh-fix-RENEW.patch
+Patch339: 0339-network-add-all_ifaces_setup.patch
+Patch340: 0340-iscsi-iscsiroot.sh-use-all_ifaces_setup.patch
+Patch341: 0341-network-netroot.sh-better-handling-of-netroot-and-dh.patch
+Patch342: 0342-iscsi-iscsiroot.sh-handle-iscsi_firmware-in-online-a.patch
 
 
 BuildRequires: bash git
@@ -794,6 +798,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Sep 10 2015 Harald Hoyer <harald@redhat.com> 033-343
+- fixed more iscsi_firmware / ibft handling
+Resolves: rhbz#1256814
+
 * Tue Sep 08 2015 Harald Hoyer <harald@redhat.com> 033-339
 - fixed dhcp lease RENEW
 Resolves: rhbz#1144277
