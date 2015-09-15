@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 343%{?dist}
+Release: 346%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -371,6 +371,9 @@ Patch339: 0339-network-add-all_ifaces_setup.patch
 Patch340: 0340-iscsi-iscsiroot.sh-use-all_ifaces_setup.patch
 Patch341: 0341-network-netroot.sh-better-handling-of-netroot-and-dh.patch
 Patch342: 0342-iscsi-iscsiroot.sh-handle-iscsi_firmware-in-online-a.patch
+Patch343: 0343-i18n-check-for-i18n_install_all-yes-rather-than-bein.patch
+Patch344: 0344-dracut.sh-add-command-line-option-for-install_i18_al.patch
+Patch345: 0345-dracut.sh-do-not-create-microcode-if-no-firmware-is-.patch
 
 
 BuildRequires: bash git
@@ -798,6 +801,13 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Sep 15 2015 Harald Hoyer <harald@redhat.com> 033-346
+- slim down the image by not including microcode header, if
+  not needed
+- add command line parameter for hostonly keyboard layouts
+   --hostonly-i18n
+Resolves: rhbz#1262208
+
 * Thu Sep 10 2015 Harald Hoyer <harald@redhat.com> 033-343
 - fixed more iscsi_firmware / ibft handling
 Resolves: rhbz#1256814

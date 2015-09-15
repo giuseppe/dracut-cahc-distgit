@@ -1,0 +1,43 @@
+From 34b551a1c4d4513189807ee2a639c9214d887ddb Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 15 Sep 2015 16:04:09 +0200
+Subject: [PATCH] dracut.sh: add command line option for install_i18_all
+
+--no-hostonly-i18n -> install_i18n_all=yes
+--hostonly-i18n -> install_i18n_all=no
+---
+ dracut.sh | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/dracut.sh b/dracut.sh
+index 65824ec..d5f864f 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -369,6 +369,8 @@ rearrange_params()
+         --long noimageifnotneeded \
+         --long early-microcode \
+         --long no-early-microcode \
++        --long no-hostonly-i18n \
++        --long hostonly-i18n \
+         -- "$@")
+ 
+     if (( $? != 0 )); then
+@@ -528,6 +530,10 @@ while :; do
+                        hostonly_l="no" ;;
+         --hostonly-cmdline)
+                        hostonly_cmdline_l="yes" ;;
++        --hostonly-i18n)
++                       i18n_install_all_l="no" ;;
++        --no-hostonly-i18n)
++                       i18n_install_all_l="yes" ;;
+         --no-hostonly-cmdline)
+                        hostonly_cmdline_l="no" ;;
+         --persistent-policy)
+@@ -769,6 +775,7 @@ stdloglvl=$((stdloglvl + verbosity_mod_l))
+ [[ $prefix = "/" ]] && unset prefix
+ [[ $hostonly_l ]] && hostonly=$hostonly_l
+ [[ $hostonly_cmdline_l ]] && hostonly_cmdline=$hostonly_cmdline_l
++[[ $i18n_install_all_l ]] && i18n_install_all=$i18n_install_all_l
+ [[ $persistent_policy_l ]] && persistent_policy=$persistent_policy_l
+ [[ $use_fstab_l ]] && use_fstab=$use_fstab_l
+ [[ $mdadmconf_l ]] && mdadmconf=$mdadmconf_l

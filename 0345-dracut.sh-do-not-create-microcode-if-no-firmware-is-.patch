@@ -1,0 +1,25 @@
+From 13b5c1d09e0e242f1817057501292fe9d7e9ad92 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 15 Sep 2015 16:08:25 +0200
+Subject: [PATCH] dracut.sh: do not create microcode, if no firmware is
+ available
+
+---
+ dracut.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/dracut.sh b/dracut.sh
+index d5f864f..980c7ff 100755
+--- a/dracut.sh
++++ b/dracut.sh
+@@ -1493,6 +1493,10 @@ if [[ $early_microcode = yes ]]; then
+                         break;
+                     fi
+                 fi
++                for i in $_fwdir/$_fw/$_src; do
++                    [ -e $i ] && break
++                    break 2
++                done
+                 cat $_fwdir/$_fw/$_src > $_dest_dir/${ucode_dest[$idx]}
+                 create_early_cpio="yes"
+             fi
