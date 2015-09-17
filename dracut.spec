@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 346%{?dist}
+Release: 349%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -374,6 +374,9 @@ Patch342: 0342-iscsi-iscsiroot.sh-handle-iscsi_firmware-in-online-a.patch
 Patch343: 0343-i18n-check-for-i18n_install_all-yes-rather-than-bein.patch
 Patch344: 0344-dracut.sh-add-command-line-option-for-install_i18_al.patch
 Patch345: 0345-dracut.sh-do-not-create-microcode-if-no-firmware-is-.patch
+Patch346: 0346-scsi-parse-iscsiroot.sh-call-modprobe-with-b.patch
+Patch347: 0347-iscsi-parse-iscsiroot.sh-correct-handling-if-netroot.patch
+Patch348: 0348-dracut.sh-no-microcode-if-get_ucode_file-returns-emp.patch
 
 
 BuildRequires: bash git
@@ -801,6 +804,14 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Sep 17 2015 Harald Hoyer <harald@redhat.com> 033-349
+- no iSCSI timeout and modprobe, if iSCSI is not used
+- modprobe iSCSI modules with "-b" to allow blacklisting
+Resolves: rhbz#1263984
+- check for firmware file existance, before crafting
+  microcode cpio
+Resolves: rhbz#1263798
+
 * Tue Sep 15 2015 Harald Hoyer <harald@redhat.com> 033-346
 - slim down the image by not including microcode header, if
   not needed

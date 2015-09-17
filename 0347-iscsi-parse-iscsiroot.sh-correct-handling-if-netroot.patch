@@ -1,0 +1,26 @@
+From 7fd112f20e63def6d274ab445b5eb82138348901 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 17 Sep 2015 15:41:12 +0200
+Subject: [PATCH] iscsi/parse-iscsiroot.sh: correct handling if netroot isn't
+ set
+
+corrects bfe65f913a4bc6bc5fdb7aa75234c229a2ceef8f
+---
+ modules.d/95iscsi/parse-iscsiroot.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/modules.d/95iscsi/parse-iscsiroot.sh b/modules.d/95iscsi/parse-iscsiroot.sh
+index f19147f..3d74ff2 100755
+--- a/modules.d/95iscsi/parse-iscsiroot.sh
++++ b/modules.d/95iscsi/parse-iscsiroot.sh
+@@ -84,7 +84,9 @@ if [ -n "$iscsi_firmware" ]; then
+     initqueue --unique --onetime --settled /sbin/iscsiroot online "iscsi:" "'$NEWROOT'"
+ fi
+ 
+-[ -z "$netroot" ] || [ "${netroot%%:*}" = "iscsi" ] || return 1
++if [ -z "$netroot" ] || ! [ "${netroot%%:*}" = "iscsi" ]; then
++    return 1
++fi
+ 
+ initqueue --unique --onetime --timeout /sbin/iscsiroot timeout "$netroot" "$NEWROOT"
+ 

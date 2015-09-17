@@ -1,0 +1,31 @@
+From bcc2132dab5bf276a0bd4dce606f4ef534b27800 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Thu, 17 Sep 2015 12:32:07 +0200
+Subject: [PATCH] scsi/parse-iscsiroot.sh: call modprobe with "-b"
+
+honor, if a module is blacklisted
+---
+ modules.d/95iscsi/parse-iscsiroot.sh | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/modules.d/95iscsi/parse-iscsiroot.sh b/modules.d/95iscsi/parse-iscsiroot.sh
+index 9546f12..f19147f 100755
+--- a/modules.d/95iscsi/parse-iscsiroot.sh
++++ b/modules.d/95iscsi/parse-iscsiroot.sh
+@@ -88,11 +88,11 @@ fi
+ 
+ initqueue --unique --onetime --timeout /sbin/iscsiroot timeout "$netroot" "$NEWROOT"
+ 
+-modprobe -q qla4xxx
+-modprobe -q cxgb3i
+-modprobe -q cxgb4i
+-modprobe -q bnx2i
+-modprobe -q be2iscsi
++modprobe -b -q qla4xxx
++modprobe -b -q cxgb3i
++modprobe -b -q cxgb4i
++modprobe -b -q bnx2i
++modprobe -b -q be2iscsi
+ 
+ # ISCSI actually supported?
+ if ! [ -e /sys/module/iscsi_tcp ]; then
