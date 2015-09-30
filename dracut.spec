@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 349%{?dist}
+Release: 353%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -377,6 +377,10 @@ Patch345: 0345-dracut.sh-do-not-create-microcode-if-no-firmware-is-.patch
 Patch346: 0346-scsi-parse-iscsiroot.sh-call-modprobe-with-b.patch
 Patch347: 0347-iscsi-parse-iscsiroot.sh-correct-handling-if-netroot.patch
 Patch348: 0348-dracut.sh-no-microcode-if-get_ucode_file-returns-emp.patch
+Patch349: 0349-network-wait_for_ifup-handle-NO-CARRIER-output.patch
+Patch350: 0350-base-dracut-lib.sh-info-be-more-quiet.patch
+Patch351: 0351-dracut-functions.sh-avoid-tokenizing-ldconfig-output.patch
+Patch352: 0352-dracut.sh-fixed-typo-in-microcode-generation.patch
 
 
 BuildRequires: bash git
@@ -804,6 +808,13 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Sep 30 2015 Harald Hoyer <harald@redhat.com> 033-353
+- fix network wait_for_if_up() to parse NO-CARRIER
+Resolves: rhbz#1249507
+- don't create garbage directories because of ldconfig
+  misparsing
+Resolves: rhbz#1264725
+
 * Thu Sep 17 2015 Harald Hoyer <harald@redhat.com> 033-349
 - no iSCSI timeout and modprobe, if iSCSI is not used
 - modprobe iSCSI modules with "-b" to allow blacklisting
