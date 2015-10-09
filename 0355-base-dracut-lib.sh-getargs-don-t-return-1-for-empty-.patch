@@ -1,0 +1,25 @@
+From d1f7f2ac046c77913d1ca97cf8414d9226ae1286 Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Fri, 9 Oct 2015 11:30:03 +0200
+Subject: [PATCH] base/dracut-lib.sh:getargs() don't return 1 for empty values
+
+getargs() is only used with real values and not booleans.
+
+So, return the values only.
+---
+ modules.d/99base/dracut-lib.sh | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/modules.d/99base/dracut-lib.sh b/modules.d/99base/dracut-lib.sh
+index 50bcf84..cb1ddd7 100755
+--- a/modules.d/99base/dracut-lib.sh
++++ b/modules.d/99base/dracut-lib.sh
+@@ -320,8 +320,6 @@ getargs() {
+     if [ -n "$_gfound" ]; then
+         if [ $# -gt 0 ]; then
+             echo -n "$@"
+-        else
+-            echo -n 1
+         fi
+         debug_on
+         return 0

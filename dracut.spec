@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 353%{?dist}
+Release: 358%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -381,6 +381,11 @@ Patch349: 0349-network-wait_for_ifup-handle-NO-CARRIER-output.patch
 Patch350: 0350-base-dracut-lib.sh-info-be-more-quiet.patch
 Patch351: 0351-dracut-functions.sh-avoid-tokenizing-ldconfig-output.patch
 Patch352: 0352-dracut.sh-fixed-typo-in-microcode-generation.patch
+Patch353: 0353-90qemu-fixed-systemd-detect-virt-output-parsing.patch
+Patch354: 0354-ifcfg-write-ifcfg.sh-unset-vlan.patch
+Patch355: 0355-base-dracut-lib.sh-getargs-don-t-return-1-for-empty-.patch
+Patch356: 0356-ifcfg-write-ifcfg.sh-don-t-bind-interface-if-physica.patch
+Patch357: 0357-network-ifup.sh-skip-empty-nameserver-values.patch
 
 
 BuildRequires: bash git
@@ -808,6 +813,12 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Oct 09 2015 Harald Hoyer <harald@redhat.com> 033-358
+- fixed qemu detection
+Resolves: rhbz#1245959
+- fixed vlan ifcfg generation and nameserver handling
+Resolves: rhbz#1267311
+
 * Wed Sep 30 2015 Harald Hoyer <harald@redhat.com> 033-353
 - fix network wait_for_if_up() to parse NO-CARRIER
 Resolves: rhbz#1249507
