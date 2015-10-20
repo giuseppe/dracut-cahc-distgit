@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 358%{?dist}
+Release: 359%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -386,6 +386,8 @@ Patch354: 0354-ifcfg-write-ifcfg.sh-unset-vlan.patch
 Patch355: 0355-base-dracut-lib.sh-getargs-don-t-return-1-for-empty-.patch
 Patch356: 0356-ifcfg-write-ifcfg.sh-don-t-bind-interface-if-physica.patch
 Patch357: 0357-network-ifup.sh-skip-empty-nameserver-values.patch
+Patch358: 0358-write-ifcfg-fix-creating-configuration-for-VLAN.patch
+Patch359: 0359-90qemu-also-add-ibmvscsi-on-qemu.patch
 
 
 BuildRequires: bash git
@@ -813,6 +815,12 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Tue Oct 20 2015 Lukáš Nykrýn <lnykryn@redhat.com> - 033-359
+- write-ifcfg: fix creating configuration for VLAN
+Resolves: rhbz#1267311
+- 90qemu: also add ibmvscsi on qemu
+Resolves: rhbz#1245959
+
 * Fri Oct 09 2015 Harald Hoyer <harald@redhat.com> 033-358
 - fixed qemu detection
 Resolves: rhbz#1245959
