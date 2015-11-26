@@ -1,7 +1,7 @@
-From fda9e5f8571e57d4cdf5e63d48194499e2a90228 Mon Sep 17 00:00:00 2001
+From 50a00707736d39ff8ccbbcff5693e62061373627 Mon Sep 17 00:00:00 2001
 From: Lukas Nykryn <lnykryn@redhat.com>
 Date: Tue, 20 Oct 2015 15:30:12 +0200
-Subject: [PATCH 359/359] 90qemu: also add ibmvscsi on qemu
+Subject: [PATCH] 90qemu: also add ibmvscsi on qemu
 
 Without this module following scenario does not work:
 1. Install the guest with virtio-scsi-pci as system disk and no other
@@ -22,6 +22,3 @@ index 46b7ae2..4dd5a73 100755
 -            virtio_scsi virtio_console spapr-vscsi
 +            virtio_scsi virtio_console spapr-vscsi ibmvscsi
  }
--- 
-2.4.3
-

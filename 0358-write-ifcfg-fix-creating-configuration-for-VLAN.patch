@@ -1,7 +1,7 @@
-From efd5178b6395f4994d005fd437ca916616d2f1ba Mon Sep 17 00:00:00 2001
+From 32398e15250018c908d344060a7d9ab72c4ce5d0 Mon Sep 17 00:00:00 2001
 From: Fedora dracut team <dracut-maint@redhat.com>
 Date: Mon, 19 Oct 2015 18:27:11 +0200
-Subject: [PATCH 358/359] write-ifcfg: fix creating configuration for VLAN
+Subject: [PATCH] write-ifcfg: fix creating configuration for VLAN
 
 Currently the physdev is unset before it is somehow applied.
 Also there is no DEVICE in the output.
@@ -39,6 +39,3 @@ index 1e7f694..f3a1c10 100755
              echo "VLAN=yes"
              echo "PHYSDEV=\"$phydevice\""
          } >> /tmp/ifcfg/ifcfg-$netif
--- 
-2.4.3
-

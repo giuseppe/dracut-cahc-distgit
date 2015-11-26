@@ -1,0 +1,25 @@
+From d2380720db11dc2220bf8acc251c0e513ff219bc Mon Sep 17 00:00:00 2001
+From: Harald Hoyer <harald@redhat.com>
+Date: Tue, 17 Jul 2012 13:05:11 +0200
+Subject: [PATCH] Don't call udevadm control --exit in systemd mode
+
+This partly reverts commit a43f97c4e35d0d9c7e6e315e11c909e86936e1cc.
+
+(cherry picked from commit 765d8408e9aafa45cd89a039f8b41f85191fd91f)
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1276983
+---
+ modules.d/98systemd/dracut-pre-pivot.sh | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/modules.d/98systemd/dracut-pre-pivot.sh b/modules.d/98systemd/dracut-pre-pivot.sh
+index afe3466..4c3eefc 100755
+--- a/modules.d/98systemd/dracut-pre-pivot.sh
++++ b/modules.d/98systemd/dracut-pre-pivot.sh
+@@ -36,6 +36,4 @@ while ! udevadm settle --timeout=0; do
+     [ $cnt -gt 10 ] && break
+ done
+ 
+-udevadm control --exit
+-
+ exit 0

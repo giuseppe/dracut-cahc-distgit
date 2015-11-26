@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 359%{?dist}
+Release: 360%{?dist}
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -388,6 +388,7 @@ Patch356: 0356-ifcfg-write-ifcfg.sh-don-t-bind-interface-if-physica.patch
 Patch357: 0357-network-ifup.sh-skip-empty-nameserver-values.patch
 Patch358: 0358-write-ifcfg-fix-creating-configuration-for-VLAN.patch
 Patch359: 0359-90qemu-also-add-ibmvscsi-on-qemu.patch
+Patch360: 0360-Don-t-call-udevadm-control-exit-in-systemd-mode.patch
 
 
 BuildRequires: bash git
@@ -815,6 +816,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Nov 26 2015 Harald Hoyer <harald@redhat.com> - 033-360
+- don't call udevadm control --exit in systemd mode
+Resolves: rhbz#1285686
+
 * Tue Oct 20 2015 Lukáš Nykrýn <lnykryn@redhat.com> - 033-359
 - write-ifcfg: fix creating configuration for VLAN
 Resolves: rhbz#1267311
