@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 360%{?dist}
+Release: 360%{?dist}.1
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -389,7 +389,7 @@ Patch357: 0357-network-ifup.sh-skip-empty-nameserver-values.patch
 Patch358: 0358-write-ifcfg-fix-creating-configuration-for-VLAN.patch
 Patch359: 0359-90qemu-also-add-ibmvscsi-on-qemu.patch
 Patch360: 0360-Don-t-call-udevadm-control-exit-in-systemd-mode.patch
-
+Patch378: 0378-shutdown-guard-against-read-only-run.patch
 
 BuildRequires: bash git
 
@@ -816,6 +816,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jun 08 2016 Harald Hoyer <harald@redhat.com> - 033-360.1
+- handle read-only /run on shutdown
+Resolves: rhbz#1338759
+
 * Thu Nov 26 2015 Harald Hoyer <harald@redhat.com> - 033-360
 - don't call udevadm control --exit in systemd mode
 Resolves: rhbz#1285686
