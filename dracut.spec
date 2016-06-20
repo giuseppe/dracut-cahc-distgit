@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 360%{?dist}.1
+Release: 360%{?dist}.2
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -389,6 +389,7 @@ Patch357: 0357-network-ifup.sh-skip-empty-nameserver-values.patch
 Patch358: 0358-write-ifcfg-fix-creating-configuration-for-VLAN.patch
 Patch359: 0359-90qemu-also-add-ibmvscsi-on-qemu.patch
 Patch360: 0360-Don-t-call-udevadm-control-exit-in-systemd-mode.patch
+Patch362: 0362-network-fix-carrier-detection.patch
 Patch378: 0378-shutdown-guard-against-read-only-run.patch
 
 BuildRequires: bash git
@@ -816,6 +817,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jun 20 2016 Harald Hoyer <harald@redhat.com> - 033-360.2
+- fix carrier detection on network interfaces
+Resolves: rhbz#1315709
+
 * Wed Jun 08 2016 Harald Hoyer <harald@redhat.com> - 033-360.1
 - handle read-only /run on shutdown
 Resolves: rhbz#1338759
