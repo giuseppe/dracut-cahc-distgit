@@ -10,7 +10,7 @@
 
 Name: dracut
 Version: 033
-Release: 360%{?dist}.2
+Release: 361%{?dist}.2
 
 Summary: Initramfs generator using udev
 %if 0%{?fedora} || 0%{?rhel}
@@ -391,6 +391,7 @@ Patch359: 0359-90qemu-also-add-ibmvscsi-on-qemu.patch
 Patch360: 0360-Don-t-call-udevadm-control-exit-in-systemd-mode.patch
 Patch362: 0362-network-fix-carrier-detection.patch
 Patch378: 0378-shutdown-guard-against-read-only-run.patch
+Patch379: 0379-Generate-reproducible-initramfs-images.patch
 
 BuildRequires: bash git
 
@@ -817,6 +818,10 @@ rm -rf -- $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Oct 21 2016 Giuseppe Scrivano <gscrivan@redhat.com> - 034-360.2
+- Generate reproducible initramfs images
+Resolves: rhbz#1386675
+
 * Mon Jun 20 2016 Harald Hoyer <harald@redhat.com> - 033-360.2
 - fix carrier detection on network interfaces
 Resolves: rhbz#1315709
